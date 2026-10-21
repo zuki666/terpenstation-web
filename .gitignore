@@ -1,0 +1,16 @@
+# Tajne i podaci kupaca nikad ne idu u git
+.env
+*.db
+*.db-wal
+*.db-shm
+backup/
+cache/
+
+dist/
+__pycache__/
+*.egg-info/
+build/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
