@@ -1,0 +1,13 @@
+{% extends "osnova.html" %}
+{% block sadrzaj %}
+<h1>{{ naslov }}</h1>
+{% for redak in retci %}
+<p>{{ redak }}</p>
+{% endfor %}
+{% if obrazac %}
+<form method="post" action="{{ obrazac.akcija }}">
+  <button class="gumb gumb-glavni" type="submit">{{ obrazac.gumb }}</button>
+</form>
+{% endif %}
+<p><a class="gumb" href="{{ korijen }}{{ put('naslovna') }}">{{ t.opcenito.natrag }}</a></p>
+{% endblock %}

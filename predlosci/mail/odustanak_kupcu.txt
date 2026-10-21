@@ -1,0 +1,15 @@
+{% set m = t.mail_odustanak %}
+{{ t.mail_kupcu.pozdrav.format(ime=o.ime) }}
+
+{{ m.kupcu_uvod.format(broj=o.broj, vrijeme=vrijeme) }}
+{% if o.poruka %}
+
+{{ t.odustanak.poruka }}:
+{{ o.poruka }}
+{% endif %}
+
+{{ m.kupcu_dalje }}
+
+{{ t.mail_kupcu.potpis }}
+{{ firma.naziv }}, {{ firma.adresa }}, OIB {{ firma.oib }}
+{{ firma.email }} · {{ firma.telefon }}

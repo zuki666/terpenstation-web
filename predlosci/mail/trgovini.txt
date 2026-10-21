@@ -1,0 +1,60 @@
+{% set m = t.mail_trgovini %}
+{{ m.narudzba }} {{ n.broj }} · {{ vrijeme }}
+
+{{ m.kupac }}
+{{ n.ime }}
+{{ n.telefon }}
+{{ n.email }}
+{% if n.tvrtka or n.oib %}
+{{ m.tvrtka }}: {{ n.tvrtka }}
+{{ m.oib }}: {{ n.oib }}
+{% endif %}
+{% if n.napomena %}
+
+{{ m.napomena }}
+{{ n.napomena }}
+{% endif %}
+
+{{ m.dostava }}: {{ t.dostave[n.dostava] }}
+{% if n.dostava == "boxnow" %}
+{{ m.paketomat }}: {{ n.paketomat_id }}{% if n.paketomat_adresa %} · {{ n.paketomat_adresa }}{% endif %}
+
+{{ m.boxnow_link }}:
+{{ boxnow_link }}
+{% else %}
+
+{{ m.gls_blok }}
+{{ m.ime }}: {{ n.tvrtka or n.ime }}
+{% if n.tvrtka %}
+{{ m.kupac }}: {{ n.ime }}
+{% endif %}
+{{ m.ulica }}: {{ n.ulica }}
+{{ m.postanski_broj }}: {{ n.postanski_broj }}
+{{ m.mjesto }}: {{ n.mjesto }}
+{{ m.telefon }}: {{ n.telefon }}
+{{ m.email }}: {{ n.email }}
+{% if n.placanje == "pouzece" %}
+{{ m.iznos_pouzeca }}: {{ novac(n.ukupno_c) }}
+{% endif %}
+{% endif %}
+
+{{ m.stavke }}
+{% for stavka in n.stavke %}
+{{ stavka.kolicina }} × {{ stavka.naziv }} · {{ stavka.oznaka }} · {{ novac(stavka.cijena_c * stavka.kolicina) }}
+{% endfor %}
+
+{{ m.iznosi }}
+{{ t.blagajna.meduzbroj }}: {{ novac(n.meduzbroj_c) }}
+{{ t.blagajna.dostava_iznos }}: {{ novac(n.dostava_c) }}
+{% if n.naknada_c %}
+{{ t.blagajna.naknada_pouzeca }}: {{ novac(n.naknada_c) }}
+{% endif %}
+{{ t.blagajna.ukupno }}: {{ novac(n.ukupno_c) }}
+{{ t.blagajna.pdv.format(posto=drzava.pdv_posto) }}: {{ novac(n.pdv_c) }}
+
+{{ m.placanje }}: {{ t.placanja[n.placanje] }}
+{% if n.placanje == "uplata" %}
+{{ m.cekaj_uplatu.format(broj=n.broj) }}
+{% else %}
+{{ m.naplati_pouzece.format(iznos=novac(n.ukupno_c)) }}
+{% endif %}

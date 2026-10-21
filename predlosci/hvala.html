@@ -1,0 +1,35 @@
+{% extends "osnova.html" %}
+{% from "_narudzba.html" import pregled_narudzbe with context %}
+{% block sadrzaj %}
+<h1>{{ t.hvala.naslov }}</h1>
+<p class="uvod">{{ t.hvala.broj }}: <strong>{{ n.broj }}</strong></p>
+<p>{{ t.hvala.potvrda_mailom.format(email=n.email) }}</p>
+
+{% if n.placanje == "uplata" %}
+<section class="uplata">
+  <h2>{{ t.hvala.uplata_naslov }}</h2>
+  <p>{{ t.hvala.uplata_uvod }}</p>
+  <div class="uplata-sadrzaj">
+    <img class="hub3" src="{{ sajt.api }}/hub3/{{ n.broj }}/{{ n.token }}.png" alt="{{ t.hvala.barkod_alt }}" width="{{ uplata.sirina_barkoda }}">
+    <dl class="podaci-uplate">
+      <dt>{{ t.hvala.primatelj }}</dt><dd>{{ uplata.primatelj }}</dd>
+      <dt>{{ t.hvala.iban }}</dt><dd class="broj">{{ uplata.iban }}</dd>
+      <dt>{{ t.hvala.iznos }}</dt><dd class="broj">{{ novac(n.ukupno_c) }}</dd>
+      <dt>{{ t.hvala.model }}</dt><dd class="broj">{{ uplata.model }}</dd>
+      <dt>{{ t.hvala.poziv }}</dt><dd class="broj">{{ n.broj }}</dd>
+      <dt>{{ t.hvala.opis_placanja }}</dt><dd>{{ uplata.opis }}</dd>
+      <dt>{{ t.hvala.rok }}</dt><dd>{{ uplata.rok }}</dd>
+    </dl>
+  </div>
+  <p class="nije-racun">{{ t.hvala.nije_racun }}</p>
+</section>
+{% else %}
+<p class="obavijest">{{ t.hvala.pouzece.format(iznos=novac(n.ukupno_c)) }}</p>
+{% endif %}
+
+<h2>{{ t.hvala.stavke }}</h2>
+{{ pregled_narudzbe(n) }}
+<p>{{ t.hvala.dostava }}: {{ dostava }}</p>
+<p>{{ t.hvala.placanje }}: {{ t.placanja[n.placanje] }}</p>
+<p><a class="gumb" href="{{ korijen }}{{ put('naslovna') }}">{{ t.opcenito.natrag }}</a></p>
+{% endblock %}

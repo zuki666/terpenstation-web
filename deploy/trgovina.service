@@ -1,0 +1,21 @@
+[Unit]
+Description=Terpen Station: backend trgovine (gunicorn)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=trgovina
+WorkingDirectory=/home/trgovina/terpenstation-web
+ExecStart=/home/trgovina/terpenstation-web/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8090 --access-logfile - "backend.aplikacija:stvori()"
+Restart=always
+RestartSec=5
+# Izlaz 2 je tajna koja fali ili nemigrirana baza; ponovno pokretanje to ne popravi.
+RestartPreventExitStatus=2
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/home/trgovina/terpenstation-web
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

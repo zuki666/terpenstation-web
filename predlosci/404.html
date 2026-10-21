@@ -1,0 +1,6 @@
+{% extends "osnova.html" %}
+{% block sadrzaj %}
+<h1>{{ t.greske.nije_nadjeno_naslov }}</h1>
+<p>{{ t.greske.nije_nadjeno }}</p>
+<p><a class="gumb" href="{{ korijen }}{{ put('naslovna') }}">{{ t.opcenito.natrag }}</a></p>
+{% endblock %}

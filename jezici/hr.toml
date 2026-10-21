@@ -1,0 +1,268 @@
+# Svi tekstovi sučelja, mailova i grešaka za hrvatski. Novi jezik je kopija ove datoteke
+# s istim ključevima (test provjerava da nijedan ne fali). {broj}, {iznos}… se ne prevode.
+
+[oblik]
+decimalni_znak = ","
+razdjelnik_tisuca = "."
+uzorak_iznosa = "{iznos} {simbol}"
+datum = "%d. %m. %Y."
+datum_vrijeme = "%d. %m. %Y. u %H:%M"
+
+[url]
+kosarica = "kosarica"
+blagajna = "blagajna"
+proizvod = "proizvod"
+odustanak = "odustanak"
+hvala = "hvala"
+cvijet = "cvijet"
+pribor = "pribor"
+ulje = "ulje"
+dostava_i_placanje = "dostava-i-placanje"
+uvjeti_kupnje = "uvjeti-kupnje"
+privatnost = "privatnost"
+kontakt = "kontakt"
+
+[kategorije]
+cvijet = "Cvijet"
+pribor = "Pribor"
+ulje = "Ulje"
+
+[kategorije_opis]
+cvijet = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže."
+pribor = "Papirići, grinderi i ostali pribor."
+ulje = "CBG ulje iz našeg cvijeta."
+
+[opcenito]
+naziv_sajta = "Terpen Station"
+preskoci = "Preskoči na sadržaj"
+treba_js = "Za košaricu i narudžbu uključite JavaScript u pregledniku."
+natrag = "Natrag u trgovinu"
+
+[izbornik]
+oznaka = "Kategorije"
+kosarica = "Košarica"
+
+[podnozje]
+kupnja = "Kupnja"
+wholesale = "Wholesale"
+drzave = "Država"
+bez_kolacica = "Stranica ne koristi kolačiće ni praćenje."
+
+[naslovna]
+naslov_stranice = "Terpen Station · CBG cvijet iz Zagreba"
+opis = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže. Dostava BOX NOW paketomatom ili GLS-om."
+naslov = "CBG cvijet iz Zagreba, uzgojen u živom tlu"
+uvod = "Indoor cvijet iz naše uzgajaonice, uz laboratorijsku analizu šarže koja je u prodaji. Šaljemo BOX NOW paketomatom ili GLS-om."
+istaknuto = "U ponudi"
+kategorije = "Kategorije"
+uzgoj_naslov = "Gdje raste"
+uzgoj_tekst = "Snimke mobitelom iz naše uzgajaonice: gredice živog tla pod malčem, LED svjetlo i mreže koje drže grane."
+uzgoj_1 = "Mlade biljke u živom tlu"
+uzgoj_2 = "Cvjetanje, uz potporu mreža"
+uzgoj_3 = "Krošnja pod LED svjetlom"
+
+[proizvod]
+od = "od"
+pakiranje = "Pakiranje"
+kolicina = "Količina"
+dodaj = "Dodaj u košaricu"
+dodano = "Dodano u košaricu."
+u_kosaricu = "Otvori košaricu"
+pdv_ukljucen = "Cijene uključuju PDV."
+analiza_naslov = "Analiza šarže"
+cbg = "CBG"
+thc = "THC"
+sarza = "Šarža"
+analiza_pdf = "Laboratorijska analiza (PDF)"
+bez_slike = "Slika uskoro"
+galerija = "Slike proizvoda"
+
+[kosarica]
+naslov = "Košarica"
+prazna = "Košarica je prazna."
+u_trgovinu = "Pogledaj ponudu"
+kolicina = "Količina"
+ukloni = "Ukloni"
+meduzbroj = "Međuzbroj"
+dostava_napomena = "Dostava i način plaćanja biraju se na blagajni."
+na_blagajnu = "Na blagajnu"
+
+[blagajna]
+naslov = "Blagajna"
+prazna = "Košarica je prazna, nema što naručiti."
+kontakt = "Vaši podaci"
+dostava = "Dostava"
+placanje = "Plaćanje"
+tvrtka_naslov = "Račun na tvrtku (neobavezno)"
+pregled = "Pregled narudžbe"
+meduzbroj = "Međuzbroj"
+dostava_iznos = "Dostava"
+besplatno = "besplatno"
+naknada_pouzeca = "Naknada za pouzeće"
+ukupno = "Ukupno"
+pdv = "od toga PDV {posto} %"
+punoljetan = "Imam 18 ili više godina"
+uvjeti_prije = "Prihvaćam"
+uvjeti_poveznica = "uvjete kupnje"
+naruci = "Naruči s obvezom plaćanja"
+ispravi = "Narudžba nije poslana. Ispravite označena polja."
+cijene_promijenjene = "Cijene su se u međuvremenu promijenile. Provjerite novi iznos i pošaljite narudžbu ponovno."
+prebrzo = "Pričekajte trenutak i pošaljite narudžbu ponovno."
+nedostupno = "Narudžbe trenutno ne primamo preko weba. Javite nam se mailom ili telefonom i naručit ćemo za vas:"
+odaberi_paketomat = "Odaberi paketomat"
+paketomat_odabran = "Odabrani paketomat:"
+probni_paketomat = "ID paketomata (probno, dok BOX NOW widget nije postavljen)"
+probna_adresa = "Adresa paketomata (probno)"
+mamac = "Ovo polje ostavite prazno"
+
+[blagajna.polja]
+ime = "Ime i prezime"
+email = "Email"
+telefon = "Mobitel"
+telefon_pomoc = "Treba za obavijest o dostavi."
+ulica = "Ulica i kućni broj"
+postanski_broj = "Poštanski broj"
+mjesto = "Mjesto"
+tvrtka = "Naziv tvrtke"
+oib = "OIB tvrtke"
+napomena = "Napomena (neobavezno)"
+
+[dostave]
+boxnow = "BOX NOW paketomat"
+gls = "GLS, dostava na adresu"
+
+[dostave_opis]
+boxnow = "Paket preuzimate u paketomatu koji odaberete."
+gls = "Kurir dostavlja paket na vašu adresu."
+
+[placanja]
+uplata = "Uplata na račun"
+pouzece = "Pouzeće"
+
+[placanja_opis]
+uplata = "Podatke za uplatu i barkod dobivate odmah nakon narudžbe. Paket šaljemo kad uplata stigne."
+pouzece = "Plaćate pri preuzimanju paketa."
+
+[hvala]
+naslov = "Hvala, narudžba je zaprimljena"
+broj = "Broj narudžbe"
+potvrda_mailom = "Potvrdu smo poslali na {email}."
+uplata_naslov = "Podaci za uplatu"
+uplata_uvod = "Paket šaljemo kad uplata stigne. Platite skeniranjem barkoda u aplikaciji banke ili upišite podatke ručno."
+primatelj = "Primatelj"
+iban = "IBAN"
+iznos = "Iznos"
+model = "Model"
+poziv = "Poziv na broj"
+opis_placanja = "Opis plaćanja"
+opis_vrijednost = "Narudžba {broj}"
+rok = "Rok uplate"
+barkod_alt = "HUB-3 barkod za plaćanje"
+nije_racun = "OVO NIJE FISKALIZIRANI RAČUN"
+pouzece = "Iznos od {iznos} plaćate pri preuzimanju paketa."
+dostava = "Dostava"
+placanje = "Plaćanje"
+stavke = "Stavke"
+preusmjeravanje = "Narudžba je poslana"
+otvori = "Otvori potvrdu narudžbe"
+
+[odustanak]
+naslov = "Odustanak od ugovora"
+opis = "Obrazac za odustanak od ugovora sklopljenog u trgovini Terpen Station."
+otvori = "Odustani od ugovora"
+uvod_obrasca = "Upišite broj narudžbe i email iz potvrde narudžbe."
+broj = "Broj narudžbe"
+email = "Email"
+ime = "Ime i prezime"
+poruka = "Poruka (neobavezno)"
+potvrdi = "Potvrdi odustanak"
+primljeno_naslov = "Zahtjev za odustanak je zaprimljen"
+primljeno = "Primili smo vaš zahtjev za odustanak od narudžbe {broj}, {vrijeme}. Potvrdu smo poslali na {email}."
+
+[mail_trgovini]
+predmet = "Narudžba {broj} · {dostava} · {placanje} · {ukupno}"
+narudzba = "Narudžba"
+kupac = "Kupac"
+tvrtka = "Tvrtka"
+oib = "OIB"
+napomena = "Napomena"
+dostava = "Dostava"
+paketomat = "Paketomat"
+boxnow_link = "Napravi BOX NOW naljepnicu"
+gls_blok = "Za MyGLS"
+ime = "Ime"
+ulica = "Ulica"
+postanski_broj = "Poštanski broj"
+mjesto = "Mjesto"
+telefon = "Telefon"
+email = "Email"
+iznos_pouzeca = "Iznos pouzeća"
+stavke = "Stavke"
+iznosi = "Iznosi"
+placanje = "Plaćanje"
+cekaj_uplatu = "Čekaj uplatu s pozivom na broj {broj} prije slanja."
+naplati_pouzece = "Pouzeće: naplatiti {iznos}."
+
+[mail_kupcu]
+predmet = "Narudžba {broj} je zaprimljena"
+pozdrav = "Dobar dan, {ime},"
+uvod = "zaprimili smo vašu narudžbu {broj}."
+dostava_boxnow = "O dolasku paketa u paketomat obavještava vas BOX NOW."
+dostava_gls = "O dostavi paketa obavještava vas GLS."
+pitanja = "Za pitanja odgovorite na ovaj mail."
+uvjeti = "Uvjeti kupnje"
+odustanak = "Odustanak od ugovora"
+potpis = "Terpen Station"
+
+[mail_odustanak]
+predmet_trgovini = "Odustanak od narudžbe {broj}"
+predmet_kupcu = "Zaprimljen zahtjev za odustanak od narudžbe {broj}"
+trgovini_uvod = "Kupac je poslao zahtjev za odustanak od ugovora."
+kupcu_uvod = "zaprimili smo vaš zahtjev za odustanak od ugovora za narudžbu {broj}, {vrijeme}."
+kupcu_dalje = "Odgovorit ćemo vam na ovaj mail."
+primljeno = "Primljeno"
+narudzba_nije_nadjena = "Narudžba s tim brojem i emailom nije pronađena u bazi; provjeri s kupcem."
+
+[boxnow]
+potvrda_naslov = "BOX NOW naljepnica za narudžbu {broj}"
+potvrda_uvod = "Klik na gumb stvara BOX NOW pošiljku i otvara naljepnicu. Kod uplate na račun prvo provjeri je li uplata stigla."
+napravi = "Napravi pošiljku i naljepnicu"
+greska_naslov = "BOX NOW nije napravio pošiljku"
+greska_uvod = "Narudžba je ostala bez pošiljke. Popravi uzrok i klikni link iz maila ponovno."
+nema_podataka = "BOX NOW pristupni podaci nisu upisani na serveru (.env)."
+nije_boxnow = "Ova narudžba ne ide BOX NOW-om."
+nedostupan = "BOX NOW se ne javlja. Pokušaj za nekoliko minuta."
+
+[boxnow.kodovi]
+P405 = "Telefon kupca nije u međunarodnom obliku."
+P411 = "BOX NOW ugovor ne uključuje pouzeće."
+
+[greske]
+obavezno = "Ovo polje je obavezno."
+email = "Upišite ispravnu email adresu."
+telefon = "Upišite broj mobitela, npr. 091 234 5678."
+oib = "OIB ima 11 znamenki; provjerite ga."
+postanski_broj = "Upišite ispravan poštanski broj."
+predugo = "Tekst je predug."
+paketomat = "Odaberite paketomat."
+dostava = "Odaberite način dostave."
+placanje = "Odaberite način plaćanja."
+pouzece = "Pouzeće nije moguće uz odabranu dostavu."
+punoljetan = "Narudžba je moguća samo uz potvrdu da imate 18 ili više godina."
+uvjeti = "Za narudžbu treba prihvatiti uvjete kupnje."
+kosarica = "Košarica nije ispravna ili je prazna. Vratite se u košaricu i pokušajte ponovno."
+nedostupno = "Proizvoda „{naziv}” više nema u ponudi; maknite ga iz košarice."
+previse = "Previše zahtjeva s vaše adrese. Pokušajte ponovno za sat vremena ili nam se javite mailom."
+odbijeno = "Narudžba nije poslana. Pokušajte ponovno."
+katalog = "Ponuda se trenutno ne može učitati. Pokušajte ponovno za minutu."
+broj_narudzbe = "Upišite broj narudžbe iz potvrde, npr. 2026-0012."
+nije_nadjeno_naslov = "Stranica nije pronađena"
+nije_nadjeno = "Ova stranica ne postoji ili je proizvod maknut iz ponude."
+
+[js]
+maknuto = "Neki proizvodi više nisu u ponudi pa su maknuti iz košarice."
+greska_kataloga = "Ponuda se nije učitala. Osvježite stranicu."
+previse_stavki = "U košarici može biti najviše 30 različitih stavki."
+paketomat = "Odaberite paketomat."
+besplatno = "besplatno"
+salje = "Šaljem…"

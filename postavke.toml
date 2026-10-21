@@ -1,0 +1,31 @@
+# Zajedničke postavke svih država. Tajne su samo u .env na serveru (deploy/.env.example).
+
+[sajt]
+adresa = "https://terpenstation.com"
+api = "https://api.terpenstation.com"
+
+[trgovina]
+kategorije = ["cvijet", "pribor", "ulje"]   # redoslijed u izborniku; isti popis je u CMS-u
+zadani_jezik = "hr"                         # default_locale u static/admin/config.yml
+# Stranice iz sadrzaj/stranice/<država>/<ključ>.md, redom u podnožju; odustanak ima svoju.
+pravne_stranice = ["dostava_i_placanje", "uvjeti_kupnje", "privatnost", "kontakt"]
+istaknutih_na_naslovnoj = 8
+
+[mail]
+posiljatelj = "Terpen Station <narudzbe@terpenstation.com>"
+smtp_korisnik = "sales@terpenstation.com"
+smtp_posluzitelj = "smtp.gmail.com"
+smtp_port = 587
+trgovina = "narudzbe@terpenstation.com"   # kamo stiže mail s narudžbom
+
+[boxnow]
+partner_id = ""            # za widget (W4)
+skladiste = ""             # Warehouse ID (origin.locationId) (W4)
+skripta_widgeta = "https://widget-cdn.boxnow.hr/map-widget/client/v5.js"
+posiljatelj_ime = "Terpen Station"
+posiljatelj_email = "narudzbe@terpenstation.com"
+posiljatelj_telefon = "+385923728991"
+
+[zastita]
+narudzbi_po_ip_na_sat = 5
+najmanje_sekundi_na_obrascu = 3

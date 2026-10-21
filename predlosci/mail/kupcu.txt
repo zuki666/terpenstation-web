@@ -1,0 +1,47 @@
+{% set m = t.mail_kupcu %}
+{% set h = t.hvala %}
+{{ m.pozdrav.format(ime=n.ime) }}
+
+{{ m.uvod.format(broj=n.broj) }}
+
+{% for stavka in n.stavke %}
+{{ stavka.kolicina }} × {{ stavka.naziv }} · {{ stavka.oznaka }} · {{ novac(stavka.cijena_c * stavka.kolicina) }}
+{% endfor %}
+
+{{ t.blagajna.meduzbroj }}: {{ novac(n.meduzbroj_c) }}
+{{ t.blagajna.dostava_iznos }}: {{ novac(n.dostava_c) if n.dostava_c else t.blagajna.besplatno }}
+{% if n.naknada_c %}
+{{ t.blagajna.naknada_pouzeca }}: {{ novac(n.naknada_c) }}
+{% endif %}
+{{ t.blagajna.ukupno }}: {{ novac(n.ukupno_c) }}
+{{ t.blagajna.pdv.format(posto=drzava.pdv_posto) }}: {{ novac(n.pdv_c) }}
+
+{{ h.dostava }}: {{ dostava }}
+{{ h.placanje }}: {{ t.placanja[n.placanje] }}
+{% if n.placanje == "uplata" %}
+
+{{ h.uplata_naslov }}
+{{ h.uplata_uvod }}
+{{ h.primatelj }}: {{ uplata.primatelj }}
+{{ h.iban }}: {{ uplata.iban }}
+{{ h.iznos }}: {{ novac(n.ukupno_c) }}
+{{ h.model }}: {{ uplata.model }}
+{{ h.poziv }}: {{ n.broj }}
+{{ h.opis_placanja }}: {{ uplata.opis }}
+{{ h.rok }}: {{ uplata.rok }}
+
+{{ h.nije_racun }}
+{% else %}
+
+{{ h.pouzece.format(iznos=novac(n.ukupno_c)) }}
+{% endif %}
+
+{{ m["dostava_" ~ n.dostava] }}
+{{ m.pitanja }}
+
+{{ m.uvjeti }}: {{ adresa }}{{ put('uvjeti_kupnje') }}
+{{ m.odustanak }}: {{ adresa }}{{ put('odustanak') }}
+
+{{ m.potpis }}
+{{ firma.naziv }}, {{ firma.adresa }}, OIB {{ firma.oib }}
+{{ firma.email }} · {{ firma.telefon }}

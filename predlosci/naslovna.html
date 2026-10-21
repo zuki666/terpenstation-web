@@ -1,0 +1,45 @@
+{% extends "osnova.html" %}
+{% from "_kartica.html" import kartica with context %}
+{% block sadrzaj %}
+<section class="uvod-trgovine">
+  <h1>{{ t.naslovna.naslov }}</h1>
+  <p class="uvod">{{ t.naslovna.uvod }}</p>
+</section>
+
+{% if istaknuti %}
+<section>
+  <h2>{{ t.naslovna.istaknuto }}</h2>
+  <ul class="mreza">
+    {% for p in istaknuti %}
+    {{ kartica(p) }}
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if kategorije|length > 1 %}
+<section>
+  <h2>{{ t.naslovna.kategorije }}</h2>
+  <ul class="popis-kategorija">
+    {% for kategorija in kategorije %}
+    <li><a class="gumb" href="{{ kategorija.url }}">{{ kategorija.naziv }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="o-uzgoju">
+  <h2>{{ t.naslovna.uzgoj_naslov }}</h2>
+  <p>{{ t.naslovna.uzgoj_tekst }}</p>
+  <div class="uzgoj">
+    {% for video, opis in [("uzgoj-zivo-tlo", t.naslovna.uzgoj_1), ("uzgoj-krosnja", t.naslovna.uzgoj_2), ("uzgoj-cvjetanje", t.naslovna.uzgoj_3)] %}
+    <figure>
+      <video autoplay muted loop playsinline preload="metadata" poster="/mediji/{{ video }}-poster.jpg" width="320" height="568" aria-label="{{ opis }}">
+        <source src="/mediji/{{ video }}.mp4" type="video/mp4">
+      </video>
+      <figcaption>{{ opis }}</figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

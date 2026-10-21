@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terpen Station — wholesale indoor CBG flower</title>
+<meta name="description" content="Indoor CBG flower from Zagreb, grown in living soil. Wholesale for shops, with the lab report for the batch on sale.">
+<link rel="canonical" href="https://terpenstation.com/wholesale/">
+<link rel="preload" href="/font/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(/font/archivo.woff2) format("woff2");
+}
+
+/* Hrvatska slova (ć u adresi) iz Archivovog latin-ext skupa, samo deset znakova. */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(/font/archivo-latin-ext.woff2) format("woff2");
+  unicode-range: U+0106-0107, U+010C-010D, U+0110-0111, U+0160-0161, U+017D-017E;
+}
+
+:root {
+  color-scheme: light;
+  --papir: #ecefe9;
+  --tinta: #24211c;
+  --tinta-blijeda: #5a5a50;
+  --list: #3d5638;
+  --smola: #b5770f;
+  --crta: #c7cdc1;
+  --sirina: 44rem;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--papir);
+  color: var(--tinta);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-stretch: 100%;
+}
+
+.stranica {
+  max-width: var(--sirina);
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+a { color: var(--list); text-underline-offset: 0.18em; }
+a:focus-visible, .gumb:focus-visible {
+  outline: 3px solid var(--smola);
+  outline-offset: 3px;
+}
+
+.zaglavlje { padding: 3.5rem 0 2.5rem; container-type: inline-size; }
+
+.znak {
+  margin: 0;
+  line-height: 0.86;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.znak span { display: block; }
+/* Široki i uski redak iste širine, kao natpis na kolodvoru; veličina prati širinu zaglavlja. */
+.znak .terpen {
+  font-stretch: 125%;
+  font-size: 16vw;
+  font-size: 18.7cqi;
+}
+.znak .station {
+  font-stretch: 75%;
+  font-weight: 700;
+  font-size: 25vw;
+  font-size: 29.4cqi;
+  margin-top: 0.02em;
+}
+
+/* Rub perona: jedini ukras na stranici, ispod imena. */
+.peron {
+  height: 0.55rem;
+  margin: 1.4rem 0 1.8rem;
+  background: var(--smola);
+}
+
+.uvod {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  max-width: 34rem;
+}
+
+.cinjenice {
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+  list-style: none;
+  color: var(--tinta-blijeda);
+}
+.cinjenice li { padding: 0.15rem 0; }
+
+.gumb {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--tinta);
+  border-radius: 3px;
+  color: var(--tinta);
+  font-weight: 650;
+  text-decoration: none;
+}
+.gumb:hover { background: var(--tinta); color: var(--papir); }
+
+section { padding-top: 3rem; }
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-stretch: 75%;
+  font-weight: 700;
+}
+
+p { margin: 0 0 1rem; max-width: 38rem; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.7rem 0.75rem 0.7rem 0;
+  border-bottom: 1px solid var(--crta);
+  vertical-align: baseline;
+}
+th {
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--tinta-blijeda);
+  border-bottom-color: var(--tinta);
+}
+td.sorta {
+  font-stretch: 75%;
+  font-weight: 650;
+  font-size: 1.2rem;
+}
+td:last-child, th:last-child { text-align: right; padding-right: 0; }
+.broj { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sorta .opis {
+  display: block;
+  font-stretch: 100%;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--tinta-blijeda);
+}
+.napomena { font-size: 0.875rem; color: var(--tinta-blijeda); }
+@media (max-width: 30rem) {
+  th, td { padding-right: 0.5rem; }
+}
+
+.kontakt { margin: 0; }
+.kontakt dt { font-weight: 650; }
+.kontakt dd { margin: 0 0 0.75rem; }
+
+.podnozje {
+  margin-top: 4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--crta);
+  font-size: 0.875rem;
+  color: var(--tinta-blijeda);
+}
+.podnozje p { margin-bottom: 0.4rem; }
+
+.galerija {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+}
+.galerija video, .galerija img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--crta);
+}
+/* Video zauzme lijevi stupac uz dvije fotke, pa mu visinu određuju one. */
+.galerija .video { grid-row: span 2; }
+.galerija .uz-video { aspect-ratio: 9 / 8; }
+.galerija .uz-video.cvijet { object-position: 50% 35%; }
+.galerija .obicna { aspect-ratio: 4 / 5; }
+
+/* Tri uska videa iz uzgoja, od mladih biljaka do cvjetanja, jedan uz drugi i na mobitelu. */
+.uzgoj {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+}
+.uzgoj figure { margin: 0; }
+.uzgoj video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 320 / 568;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--crta);
+}
+.uzgoj figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--tinta-blijeda);
+}
+@media (max-width: 30rem) {
+  .uzgoj { gap: 0.35rem; }
+  .uzgoj figcaption { font-size: 0.8125rem; }
+}
+
+</style>
+</head>
+<body>
+<div class="stranica">
+
+<header class="zaglavlje">
+  <h1 class="znak" aria-label="Terpen Station"><span class="terpen">TERPEN</span><span class="station">STATION</span></h1>
+  <div class="peron" aria-hidden="true"></div>
+  <p class="uvod">Indoor CBG flower from Zagreb, grown in living soil. Wholesale for shops, in smaller quantities too.</p>
+  <ul class="cinjenice">
+    <li>The lab report for the batch on sale is below.</li>
+    <li>Free 2&nbsp;g sample with its lab report; €10 shipping, deducted from your first order.</li>
+    <li>Prices on request.</li>
+  </ul>
+  <a class="gumb" href="mailto:sales@terpenstation.com?subject=Sample">Ask for a sample</a>
+</header>
+
+<main>
+  <section id="flower">
+    <h2>Gelonade</h2>
+    <p>Phone footage of the flower we sell, without filters.</p>
+    <div class="galerija">
+      <video class="video" autoplay muted loop playsinline preload="metadata" poster="/mediji/gelonade-video.jpg" width="720" height="1280" aria-label="Gelonade buds in hand, a single bud up close and the batch in bulk">
+        <source src="/mediji/gelonade.mp4" type="video/mp4">
+      </video>
+      <img class="uz-video cvijet" src="/mediji/gelonade-cvijet.jpg" width="1080" height="1350" alt="A single Gelonade bud held between the fingers">
+      <img class="uz-video" src="/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="Gelonade buds in a clear jar, close up">
+      <img class="obicna" src="/mediji/gelonade-nekoliko.jpg" width="1280" height="1600" alt="A few Gelonade buds in the palm of a hand" loading="lazy">
+      <img class="obicna" src="/mediji/gelonade-rinfuza.jpg" width="1280" height="1600" alt="Gelonade buds in bulk, seen from above" loading="lazy">
+    </div>
+  </section>
+
+  <section id="grow">
+    <h2>Where it grows</h2>
+    <p>Phone footage from our grow room: beds of living soil under mulch, LED light and nets that hold the branches up.</p>
+    <div class="uzgoj">
+      <figure>
+        <video autoplay muted loop playsinline preload="metadata" poster="/mediji/uzgoj-zivo-tlo-poster.jpg" width="320" height="568" aria-label="Young plants in mulched beds of living soil">
+          <source src="/mediji/uzgoj-zivo-tlo.mp4" type="video/mp4">
+        </video>
+        <figcaption>Young plants in living soil</figcaption>
+      </figure>
+      <figure>
+        <video autoplay muted loop playsinline preload="metadata" poster="/mediji/uzgoj-krosnja-poster.jpg" width="320" height="568" aria-label="Flowering plants held up by a net">
+          <source src="/mediji/uzgoj-krosnja.mp4" type="video/mp4">
+        </video>
+        <figcaption>Flowering, held up by nets</figcaption>
+      </figure>
+      <figure>
+        <video autoplay muted loop playsinline preload="metadata" poster="/mediji/uzgoj-cvjetanje-poster.jpg" width="320" height="568" aria-label="The flowering canopy under LED light">
+          <source src="/mediji/uzgoj-cvjetanje.mp4" type="video/mp4">
+        </video>
+        <figcaption>The canopy under LED light</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="analyses">
+    <h2>Strains and lab reports</h2>
+    <table>
+      <thead>
+        <tr><th scope="col">Strain</th><th scope="col" class="broj">CBG</th><th scope="col" class="broj">THC</th><th scope="col">Batch</th><th scope="col">Report</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sorta">Gelonade<span class="opis">Dense, resinous buds with a citrus aroma</span></td>
+          <td class="broj">8.08&nbsp;%</td>
+          <td class="broj">0.09&nbsp;%</td>
+          <td class="broj">102-4</td>
+          <td><a href="/analize/gelonade-102-4.pdf">PDF</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="napomena">CBD not detected. Values from lab report A14536-1 (GC‑FID), confirmed on 13 October 2025.</p>
+  </section>
+
+  <section id="prices">
+    <h2>Prices</h2>
+    <p>Wholesale prices are on request. Tell us roughly how much you would order, and we will send you an offer.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Samples and orders</h2>
+    <p>Write or call, and we will send you a 2&nbsp;g sample with its lab report. The sample is free; shipping is €10, and we deduct it from your first order.</p>
+    <dl class="kontakt">
+      <dt>Robi</dt>
+      <dd><a href="tel:+385923728991">+385 92 372 8991</a><br><a href="mailto:sales@terpenstation.com?subject=Sample">sales@terpenstation.com</a></dd>
+    </dl>
+  </section>
+</main>
+
+<footer class="podnozje">
+  <p>Terpen Station is a brand of Proper Stuff, obrt za trgovinu i usluge, Martićeva ulica 67, 10000 Zagreb, Croatia. OIB&nbsp;29737469043.</p>
+  <p>This page uses no cookies and no tracking.</p>
+</footer>
+
+</div>
+<script>
+// Tko je u sustavu zatražio manje pokreta, videi ne kreću sami nego dobiju kontrole.
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  for (const video of document.querySelectorAll("video[autoplay]")) {
+    video.removeAttribute("autoplay");
+    video.pause();
+    video.controls = true;
+  }
+}
+</script>
+</body>
+</html>

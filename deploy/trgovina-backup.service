@@ -1,0 +1,12 @@
+[Unit]
+Description=Terpen Station: kopija baze
+
+[Service]
+Type=oneshot
+User=trgovina
+WorkingDirectory=/home/trgovina/terpenstation-web
+ExecStart=/bin/sh deploy/backup.sh
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/home/trgovina/terpenstation-web
+PrivateTmp=yes
