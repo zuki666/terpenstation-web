@@ -3,8 +3,7 @@ backend:
   name: github
   repo: zuki666/terpenstation-web
   branch: main
-  # Adresa Workera sveltia-cms-auth upisuje se pri postavljanju (SPEC §13, korak 3).
-  base_url: https://sveltia-cms-auth.RACUN.workers.dev
+  base_url: https://sveltia-cms-auth.drproper-dobarbad.workers.dev
   commit_messages:
     create: "Proizvod: novi {{slug}}"
     update: "Proizvod: izmjena {{slug}}"

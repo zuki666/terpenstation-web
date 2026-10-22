@@ -51,7 +51,7 @@ Prijava u Sveltia CMS ide preko GitHuba, kroz mali Cloudflare Worker.
 
 1. **Worker:** na <https://github.com/sveltia/sveltia-cms-auth> gumb *Deploy to Cloudflare Workers*. Zapiši adresu Workera (`https://sveltia-cms-auth.<račun>.workers.dev`).
 2. **GitHub OAuth aplikacija:** GitHub → Settings → Developer settings → OAuth Apps → New. Homepage `https://terpenstation.com`, Authorization callback URL `<adresa Workera>/callback`. Zapiši Client ID i napravi Client secret.
-3. **Varijable Workera** (Settings → Variables): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (kao *Secret*), `ALLOWED_DOMAINS` = `terpenstation.com`.
+3. **Varijable Workera** (Settings → Variables): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (kao *Secret*), `ALLOWED_DOMAINS` = `terpenstation.com,www.terpenstation.com`.
 4. U `static/admin/config.yml` zamijeni `RACUN` u `base_url` adresom Workera (PR).
 5. **Frend:** GitHub račun s njegovim mailom, poziv u ovaj repo s pravom pisanja (Settings → Collaborators). Na njegovom mobitelu otvori `terpenstation.com/admin`, prijava kroz GitHub, pa *Dodaj na početni zaslon*.
 
