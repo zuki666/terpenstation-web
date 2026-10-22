@@ -1,0 +1,152 @@
+{% extends "osnova.html" %}
+{% macro greska(naziv) %}
+{% if greske.get(naziv) %}<p class="greska-polja" id="greska-{{ naziv }}">{{ greske[naziv] }}</p>{% endif %}
+{% endmacro %}
+{% macro polje(naziv, tip="text", autocomplete="", obavezno=true, dodatno="") %}
+<div class="polje">
+  <label for="polje-{{ naziv }}">{{ t.blagajna.polja[naziv] }}</label>
+  <input id="polje-{{ naziv }}" name="{{ naziv }}" type="{{ tip }}" value="{{ v.get(naziv, '') }}"{% if autocomplete %} autocomplete="{{ autocomplete }}"{% endif %}{% if obavezno %} required{% endif %}{% if greske.get(naziv) %} aria-invalid="true" aria-describedby="greska-{{ naziv }}"{% endif %} {{ dodatno|safe }}>
+  {{ greska(naziv) }}
+</div>
+{% endmacro %}
+{% block sadrzaj %}
+<h1>{{ t.blagajna.naslov }}</h1>
+{% if obavijest %}
+<p class="obavijest" role="alert">{{ obavijest }}</p>
+{% endif %}
+{% if greske %}
+<p class="obavijest greska" role="alert">{{ t.blagajna.ispravi }}</p>
+{{ greska("opcenito") }}
+{% endif %}
+<div data-prazna hidden>
+  <p>{{ t.blagajna.prazna }}</p>
+  <p><a class="gumb" href="{{ korijen }}{{ put('naslovna') }}">{{ t.kosarica.u_trgovinu }}</a></p>
+</div>
+<p class="poruka" data-poruka role="status" hidden></p>
+<div class="obavijest greska" data-nedostupno role="alert" hidden>
+  <p>{{ t.blagajna.nedostupno }}</p>
+  <p><a href="mailto:{{ firma.email }}">{{ firma.email }}</a> · <a href="tel:{{ firma.telefon|replace(' ', '') }}">{{ firma.telefon }}</a></p>
+</div>
+
+<form class="blagajna" method="post" action="{{ sajt.api }}/narudzba" data-blagajna>
+  <fieldset>
+    <legend>{{ t.blagajna.kontakt }}</legend>
+    {{ polje("ime", autocomplete="name", dodatno='maxlength="100"') }}
+    {{ polje("email", tip="email", autocomplete="email", dodatno='maxlength="254"') }}
+    {{ polje("telefon", tip="tel", autocomplete="tel", dodatno='maxlength="30"') }}
+    <p class="napomena">{{ t.blagajna.polja.telefon_pomoc }}</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ t.blagajna.dostava }}</legend>
+    {% for dostava in drzava.dostave %}
+    <label class="izbor">
+      <input type="radio" name="dostava" value="{{ dostava }}" required{% if v.get('dostava') == dostava %} checked{% endif %}>
+      <span class="izbor-naziv">{{ t.dostave[dostava] }}</span>
+      <span class="izbor-cijena" data-cijena-dostave="{{ dostava }}">{{ novac(drzava.dostava[dostava].cijena_c) }}</span>
+      <span class="napomena">{{ t.dostave_opis[dostava] }}</span>
+    </label>
+    {% endfor %}
+    {{ greska("dostava") }}
+
+    {% if "boxnow" in drzava.dostave %}
+    <div class="panel" data-za-dostavu="boxnow" hidden>
+      {% if boxnow.partner_id %}
+      <button class="gumb" type="button" id="boxnow-gumb">{{ t.blagajna.odaberi_paketomat }}</button>
+      <p class="paketomat" data-paketomat-prikaz{% if not v.get('paketomat_adresa') %} hidden{% endif %}>{{ t.blagajna.paketomat_odabran }} <strong data-paketomat-adresa>{{ v.get('paketomat_adresa', '') }}</strong></p>
+      <input type="hidden" name="paketomat_id" value="{{ v.get('paketomat_id', '') }}">
+      <input type="hidden" name="paketomat_adresa" value="{{ v.get('paketomat_adresa', '') }}">
+      <div id="boxnowmap"></div>
+      {% else %}
+      <div class="polje">
+        <label for="polje-paketomat_id">{{ t.blagajna.probni_paketomat }}</label>
+        <input id="polje-paketomat_id" name="paketomat_id" value="{{ v.get('paketomat_id', '') }}" maxlength="20">
+      </div>
+      <div class="polje">
+        <label for="polje-paketomat_adresa">{{ t.blagajna.probna_adresa }}</label>
+        <input id="polje-paketomat_adresa" name="paketomat_adresa" value="{{ v.get('paketomat_adresa', '') }}" maxlength="200">
+      </div>
+      {% endif %}
+      {{ greska("paketomat_id") }}
+    </div>
+    {% endif %}
+
+    {% if "gls" in drzava.dostave %}
+    <div class="panel" data-za-dostavu="gls" hidden>
+      {{ polje("ulica", autocomplete="street-address", obavezno=false, dodatno='maxlength="100" data-obavezno-uz="gls"') }}
+      <div class="polja-u-redu">
+        {{ polje("postanski_broj", autocomplete="postal-code", obavezno=false, dodatno='maxlength="10" inputmode="numeric" data-obavezno-uz="gls"') }}
+        {{ polje("mjesto", autocomplete="address-level2", obavezno=false, dodatno='maxlength="60" data-obavezno-uz="gls"') }}
+      </div>
+    </div>
+    {% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ t.blagajna.placanje }}</legend>
+    {% for placanje in drzava.placanja %}
+    <label class="izbor">
+      <input type="radio" name="placanje" value="{{ placanje }}" required{% if v.get('placanje') == placanje %} checked{% endif %}>
+      <span class="izbor-naziv">{{ t.placanja[placanje] }}</span>
+      {% if placanje == "pouzece" and drzava.placanje.pouzece.naknada_c %}
+      <span class="izbor-cijena">+ {{ novac(drzava.placanje.pouzece.naknada_c) }}</span>
+      {% endif %}
+      <span class="napomena">{{ t.placanja_opis[placanje] }}</span>
+    </label>
+    {% endfor %}
+    {{ greska("placanje") }}
+  </fieldset>
+
+  <details class="tvrtka"{% if v.get('tvrtka') or v.get('oib') or greske.get('oib') %} open{% endif %}>
+    <summary>{{ t.blagajna.tvrtka_naslov }}</summary>
+    {{ polje("tvrtka", autocomplete="organization", obavezno=false, dodatno='maxlength="100"') }}
+    {{ polje("oib", obavezno=false, dodatno='maxlength="11" inputmode="numeric"') }}
+  </details>
+
+  <div class="polje">
+    <label for="polje-napomena">{{ t.blagajna.polja.napomena }}</label>
+    <textarea id="polje-napomena" name="napomena" rows="3" maxlength="1000">{{ v.get('napomena', '') }}</textarea>
+    {{ greska("napomena") }}
+  </div>
+
+  <section class="pregled" aria-labelledby="naslov-pregleda">
+    <h2 id="naslov-pregleda">{{ t.blagajna.pregled }}</h2>
+    <ul class="pregled-stavke" data-pregled-stavke></ul>
+    <dl class="iznosi">
+      <div><dt>{{ t.blagajna.meduzbroj }}</dt><dd data-iznos="meduzbroj"></dd></div>
+      <div><dt>{{ t.blagajna.dostava_iznos }}</dt><dd data-iznos="dostava"></dd></div>
+      <div data-red-naknade hidden><dt>{{ t.blagajna.naknada_pouzeca }}</dt><dd data-iznos="naknada"></dd></div>
+      <div class="ukupno"><dt>{{ t.blagajna.ukupno }}</dt><dd data-iznos="ukupno"></dd></div>
+      <div class="napomena"><dt>{{ t.blagajna.pdv.format(posto=drzava.pdv_posto) }}</dt><dd data-iznos="pdv"></dd></div>
+    </dl>
+    {{ greska("stavke") }}
+  </section>
+
+  <label class="kvacica">
+    <input type="checkbox" name="punoljetan" value="da" required{% if v.get('punoljetan') %} checked{% endif %}>
+    <span>{{ t.blagajna.punoljetan }}</span>
+  </label>
+  {{ greska("punoljetan") }}
+  <label class="kvacica">
+    <input type="checkbox" name="uvjeti" value="da" required{% if v.get('uvjeti') %} checked{% endif %}>
+    <span>{{ t.blagajna.uvjeti_prije }} <a href="{{ korijen }}{{ put('uvjeti_kupnje') }}" target="_blank">{{ t.blagajna.uvjeti_poveznica }}</a></span>
+  </label>
+  {{ greska("uvjeti") }}
+
+  <div class="mamac" aria-hidden="true">
+    <label for="polje-web">{{ t.blagajna.mamac }}</label>
+    <input id="polje-web" name="web" tabindex="-1" autocomplete="off">
+  </div>
+  <input type="hidden" name="drzava" value="{{ drzava.kod }}">
+  <input type="hidden" name="stavke" value="{{ v.get('stavke', '') }}">
+  <input type="hidden" name="verzija" value="{{ v.get('verzija', '') }}">
+  <input type="hidden" name="ukupno_c" value="">
+  <input type="hidden" name="sekundi" value="">
+
+  <button class="gumb gumb-glavni naruci" type="submit">{{ t.blagajna.naruci }}</button>
+  <noscript><p class="napomena">{{ t.opcenito.treba_js }}</p></noscript>
+</form>
+{% endblock %}
+{% block podaci %}
+<script id="ts-blagajna" type="application/json">{{ blagajna_js|tojson }}</script>
+{% endblock %}

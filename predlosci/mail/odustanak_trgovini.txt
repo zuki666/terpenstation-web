@@ -1,0 +1,16 @@
+{% set m = t.mail_odustanak %}
+{{ m.trgovini_uvod }}
+
+{{ t.odustanak.broj }}: {{ o.broj }}
+{{ t.odustanak.ime }}: {{ o.ime }}
+{{ t.odustanak.email }}: {{ o.email }}
+{{ m.primljeno }}: {{ vrijeme }}
+{% if o.poruka %}
+
+{{ t.odustanak.poruka }}:
+{{ o.poruka }}
+{% endif %}
+{% if not narudzba_postoji %}
+
+{{ m.narudzba_nije_nadjena }}
+{% endif %}

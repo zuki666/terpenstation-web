@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="{{ drzava.jezik }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ stranica.naslov }}</title>
+<meta name="description" content="{{ stranica.opis }}">
+{% if stranica.bez_indeksa %}
+<meta name="robots" content="noindex">
+{% endif %}
+{% if stranica.kanonski %}
+<link rel="canonical" href="{{ stranica.kanonski }}">
+{% endif %}
+{% for alternativa in stranica.alternativni %}
+<link rel="alternate" hreflang="{{ alternativa.jezik }}" href="{{ alternativa.url }}">
+{% endfor %}
+<meta property="og:site_name" content="{{ t.opcenito.naziv_sajta }}">
+<meta property="og:type" content="{{ stranica.og_tip }}">
+<meta property="og:title" content="{{ stranica.naslov }}">
+<meta property="og:description" content="{{ stranica.opis }}">
+{% if stranica.og_slika %}
+<meta property="og:image" content="{{ stranica.og_slika }}">
+{% endif %}
+<link rel="preload" href="{{ korijen }}/font/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ korijen }}{{ datoteke.css }}">
+<link rel="icon" href="{{ korijen }}/favicon.svg" type="image/svg+xml">
+</head>
+<body data-drzava="{{ drzava.kod }}" data-katalog="{{ korijen }}{{ drzava.put }}proizvodi.json" data-api="{{ sajt.api }}">
+<a class="preskoci" href="#sadrzaj">{{ t.opcenito.preskoci }}</a>
+<header class="vrh">
+  <div class="vrh-unutra">
+    <a class="logo" href="{{ korijen }}{{ put('naslovna') }}" aria-label="{{ t.opcenito.naziv_sajta }}"><span class="terpen">TERPEN</span><span class="station">STATION</span></a>
+    <a class="kosarica-link" href="{{ korijen }}{{ put('kosarica') }}">{{ t.izbornik.kosarica }}<span class="broj-stavki" data-broj-stavki hidden>0</span></a>
+    {% if kategorije %}
+    <nav class="izbornik" aria-label="{{ t.izbornik.oznaka }}">
+      {% for kategorija in kategorije %}
+      <a href="{{ korijen }}{{ kategorija.url }}"{% if kategorija.kljuc == stranica.aktivna %} aria-current="page"{% endif %}>{{ kategorija.naziv }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+  <div class="peron" aria-hidden="true"></div>
+</header>
+<main id="sadrzaj" class="sadrzaj">
+{% block sadrzaj %}{% endblock %}
+</main>
+<footer class="podnozje">
+  <div class="podnozje-unutra">
+    <nav class="podnozje-veze" aria-label="{{ t.podnozje.kupnja }}">
+      {% for veza in pravne %}
+      <a href="{{ korijen }}{{ veza.url }}">{{ veza.naziv }}</a>
+      {% endfor %}
+      <a href="{{ korijen }}{{ put('odustanak') }}">{{ t.odustanak.naslov }}</a>
+      <a href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
+    </nav>
+    <p>{{ firma.naziv }}, {{ firma.adresa }}. OIB&nbsp;{{ firma.oib }}.</p>
+    <p><a href="mailto:{{ firma.email }}">{{ firma.email }}</a> · <a href="tel:{{ firma.telefon|replace(' ', '') }}">{{ firma.telefon }}</a></p>
+    {% if drzave|length > 1 %}
+    <nav class="drzave" aria-label="{{ t.podnozje.drzave }}">
+      {% for druga in drzave %}
+      <a href="{{ korijen }}{{ druga.put }}" hreflang="{{ druga.jezik }}"{% if druga.kod == drzava.kod %} aria-current="page"{% endif %}>{{ druga.naziv }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+    <p>{{ t.podnozje.bez_kolacica }}</p>
+  </div>
+</footer>
+<script id="ts-podaci" type="application/json">{{ js_podaci|tojson }}</script>
+{% block podaci %}{% endblock %}
+<script src="{{ korijen }}{{ datoteke.js }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% macro slika_proizvoda(slika, alt, sizes, lijeno=true) %}
+<img src="{{ slika.src }}" srcset="{{ slika.srcset }}" sizes="{{ sizes }}" width="{{ slika.sirina }}" height="{{ slika.visina }}" alt="{{ alt }}"{% if lijeno %} loading="lazy"{% endif %}>
+{% endmacro %}
+
+{% macro kartica(p) %}
+<li class="kartica">
+  <a href="{{ korijen }}{{ p.url }}">
+    {% if p.slika %}
+    {{ slika_proizvoda(p.slika, p.naziv, "(min-width: 60rem) 18rem, (min-width: 40rem) 30vw, 46vw") }}
+    {% else %}
+    <span class="bez-slike">{{ t.proizvod.bez_slike }}</span>
+    {% endif %}
+    <span class="kartica-naziv">{{ p.naziv }}</span>
+    <span class="kartica-cijena">{% if p.vise_cijena %}{{ t.proizvod.od }} {% endif %}{{ novac(p.najniza_c) }}</span>
+  </a>
+  {% if p.kratki_opis %}
+  <p>{{ p.kratki_opis }}</p>
+  {% endif %}
+</li>
+{% endmacro %}

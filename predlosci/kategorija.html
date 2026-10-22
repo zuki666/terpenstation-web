@@ -1,0 +1,11 @@
+{% extends "osnova.html" %}
+{% from "_kartica.html" import kartica with context %}
+{% block sadrzaj %}
+<h1>{{ naziv_kategorije }}</h1>
+<p class="uvod">{{ opis_kategorije }}</p>
+<ul class="mreza">
+  {% for p in proizvodi %}
+  {{ kartica(p) }}
+  {% endfor %}
+</ul>
+{% endblock %}

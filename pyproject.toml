@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "terpenstation-web"
+version = "0.1.0"
+description = "Terpen Station: statični webshop i mali backend za narudžbe"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Cloudflare Pages instalira samo ovo (pip install .[web]).
+web = [
+    "jinja2>=3.1",  # predlošci stranica i mailova
+    "markdown>=3.5",  # pravne stranice i opisi proizvoda
+    "pillow>=10.0",  # WebP u tri širine za srcset
+]
+backend = [
+    "jinja2>=3.1",  # isti predlošci kao gradnja
+    "pillow>=10.0",  # pdf417gen crta barkod kao sliku
+    "flask>=3.0",  # rute narudžbe, zahvale, naljepnice i odustanka
+    "gunicorn>=22.0",  # servis iza Cloudflare Tunnela
+    "httpx>=0.27",  # BOX NOW API i dohvat proizvodi.json
+    "pdf417gen>=0.8,<0.9",  # HUB-3 barkod; hub3.py koristi njegove unutarnje funkcije za binarni način
+]
+razvoj = ["terpenstation-web[web,backend]", "ruff", "pytest"]
+
+[tool.setuptools.packages.find]
+include = ["web*", "backend*"]
+
+[tool.pytest.ini_options]
+testpaths = ["testovi"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "C90", "PLR", "T20", "ERA"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 4
+max-statements = 40
+max-branches = 10
+
+[tool.ruff.lint.per-file-ignores]
+"testovi/*" = ["PLR2004"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["web", "backend"]

@@ -1,0 +1,34 @@
+{% extends "osnova.html" %}
+{% block sadrzaj %}
+<article class="tekst">
+  {{ tekst_html|safe }}
+</article>
+<details class="odustanak">
+  <summary class="gumb">{{ t.odustanak.otvori }}</summary>
+  <form method="post" action="{{ sajt.api }}/odustanak" class="obrazac-odustanka">
+    <p>{{ t.odustanak.uvod_obrasca }}</p>
+    <div class="polje">
+      <label for="odustanak-broj">{{ t.odustanak.broj }}</label>
+      <input id="odustanak-broj" name="broj" required maxlength="20" placeholder="2026-0012">
+    </div>
+    <div class="polje">
+      <label for="odustanak-email">{{ t.odustanak.email }}</label>
+      <input id="odustanak-email" name="email" type="email" autocomplete="email" required maxlength="254">
+    </div>
+    <div class="polje">
+      <label for="odustanak-ime">{{ t.odustanak.ime }}</label>
+      <input id="odustanak-ime" name="ime" autocomplete="name" required maxlength="100">
+    </div>
+    <div class="polje">
+      <label for="odustanak-poruka">{{ t.odustanak.poruka }}</label>
+      <textarea id="odustanak-poruka" name="poruka" rows="4" maxlength="2000"></textarea>
+    </div>
+    <div class="mamac" aria-hidden="true">
+      <label for="odustanak-web">{{ t.blagajna.mamac }}</label>
+      <input id="odustanak-web" name="web" tabindex="-1" autocomplete="off">
+    </div>
+    <input type="hidden" name="drzava" value="{{ drzava.kod }}">
+    <button class="gumb gumb-glavni" type="submit">{{ t.odustanak.potvrdi }}</button>
+  </form>
+</details>
+{% endblock %}

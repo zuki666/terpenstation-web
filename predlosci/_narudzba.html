@@ -1,0 +1,21 @@
+{% macro pregled_narudzbe(n) %}
+<table class="pregled-narudzbe">
+  <tbody>
+    {% for stavka in n.stavke %}
+    <tr>
+      <td>{{ stavka.naziv }}<span class="napomena"> · {{ stavka.oznaka }} × {{ stavka.kolicina }}</span></td>
+      <td class="broj">{{ novac(stavka.cijena_c * stavka.kolicina) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr><th scope="row">{{ t.blagajna.meduzbroj }}</th><td class="broj">{{ novac(n.meduzbroj_c) }}</td></tr>
+    <tr><th scope="row">{{ t.blagajna.dostava_iznos }}</th><td class="broj">{{ novac(n.dostava_c) if n.dostava_c else t.blagajna.besplatno }}</td></tr>
+    {% if n.naknada_c %}
+    <tr><th scope="row">{{ t.blagajna.naknada_pouzeca }}</th><td class="broj">{{ novac(n.naknada_c) }}</td></tr>
+    {% endif %}
+    <tr class="ukupno"><th scope="row">{{ t.blagajna.ukupno }}</th><td class="broj">{{ novac(n.ukupno_c) }}</td></tr>
+    <tr class="napomena"><th scope="row">{{ t.blagajna.pdv.format(posto=drzava.pdv_posto) }}</th><td class="broj">{{ novac(n.pdv_c) }}</td></tr>
+  </tfoot>
+</table>
+{% endmacro %}

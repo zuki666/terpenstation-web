@@ -1,0 +1,153 @@
+# Sveltia CMS za proizvode. Spremanje ide izravno u main, a svaka izmjena je commit (W10).
+backend:
+  name: github
+  repo: zuki666/terpenstation-web
+  branch: main
+  # Adresa Workera sveltia-cms-auth upisuje se pri postavljanju (SPEC §13, korak 3).
+  base_url: https://sveltia-cms-auth.RACUN.workers.dev
+  commit_messages:
+    create: "Proizvod: novi {{slug}}"
+    update: "Proizvod: izmjena {{slug}}"
+    delete: "Proizvod: brisanje {{slug}}"
+    uploadMedia: "Slika: {{path}}"
+    deleteMedia: "Slika obrisana: {{path}}"
+
+site_url: https://terpenstation.com
+display_url: https://terpenstation.com
+
+media_folder: static/slike
+public_folder: /slike
+media_libraries:
+  default:
+    config:
+      slugify_filename: true
+      # Slike se smanjuju i pretvaraju u WebP već na mobitelu, prije slanja u repo.
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2000
+          height: 2000
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+i18n:
+  structure: single_file
+  locales: [hr]
+  default_locale: hr
+
+collections:
+  - name: proizvodi
+    label: Proizvodi
+    label_singular: Proizvod
+    folder: sadrzaj/proizvodi
+    extension: json
+    format: json
+    create: true
+    delete: true
+    i18n: true
+    identifier_field: naziv
+    slug: "{{naziv}}"
+    summary: "{{naziv}} · {{kategorija}}"
+    sortable_fields: [redoslijed, naziv, kategorija]
+    fields:
+      - name: naziv
+        label: Naziv
+        widget: string
+        i18n: true
+        hint: Iz naziva nastaje adresa stranice pri prvom spremanju.
+      - name: kratki_opis
+        label: Kratki opis
+        widget: text
+        i18n: true
+        required: false
+        hint: Jedna ili dvije rečenice za popis proizvoda.
+      - name: opis
+        label: Opis
+        widget: markdown
+        i18n: true
+        required: false
+        hint: Duži opis na stranici proizvoda.
+      - name: kategorija
+        label: Kategorija
+        widget: select
+        options:
+          - { label: Cvijet, value: cvijet }
+          - { label: Pribor, value: pribor }
+          - { label: Ulje, value: ulje }
+        i18n: duplicate
+      - name: dostupno
+        label: Dostupno
+        widget: boolean
+        default: true
+        i18n: duplicate
+        hint: Isključeno = proizvod se ne prikazuje i ne može se naručiti.
+      - name: redoslijed
+        label: Redoslijed
+        widget: number
+        value_type: int
+        required: false
+        i18n: duplicate
+        hint: Manji broj ide prije; prazno = na kraj.
+      - name: slike
+        label: Slike
+        widget: image
+        multiple: true
+        required: false
+        i18n: duplicate
+        hint: Prva slika je glavna.
+      - name: pakiranja
+        label: Pakiranja i cijene
+        label_singular: Pakiranje
+        widget: list
+        min: 1
+        i18n: duplicate
+        summary: "{{oznaka}} · {{cijena}} €"
+        hint: Proizvod bez varijanti ima jedno pakiranje.
+        fields:
+          - name: oznaka
+            label: Pakiranje
+            widget: string
+            hint: Npr. 1 g, 3 g, 50 listića.
+          - name: cijena
+            label: Cijena s PDV-om (€)
+            widget: number
+            value_type: float
+            min: 0
+            step: 0.1
+            hint: Cijena s PDV-om, u eurima, npr. 9.90.
+          - name: tezina_g
+            label: Težina (g)
+            widget: number
+            value_type: float
+            min: 0
+            required: false
+            hint: Neobavezno; treba za BOX NOW.
+      - name: cbg
+        label: CBG %
+        widget: string
+        required: false
+        i18n: duplicate
+        hint: Samo za cvijet, npr. 8,08 %.
+      - name: thc
+        label: THC %
+        widget: string
+        required: false
+        i18n: duplicate
+        hint: Samo za cvijet, npr. 0,09 %.
+      - name: sarza
+        label: Šarža
+        widget: string
+        required: false
+        i18n: duplicate
+        hint: Oznaka šarže s analize, npr. 102-4.
+      - name: analiza
+        label: PDF analize
+        widget: file
+        required: false
+        i18n: duplicate
+        media_folder: /static/analize
+        public_folder: /analize
+        hint: Laboratorijska analiza šarže koja je u prodaji.

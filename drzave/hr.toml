@@ -1,0 +1,39 @@
+kod = "hr"
+naziv = "Hrvatska"
+jezik = "hr"
+put = "/"                  # HR na korijenu; ostale "/si/", "/at/"
+valuta = "EUR"
+pdv_posto = 25
+dostave = ["boxnow", "gls"]
+placanja = ["uplata", "pouzece"]
+besplatna_dostava_od_c = 0 # 0 = nema besplatne dostave
+rok_uplate_dana = 5
+pozivni_broj = "385"        # 09x… → +3859x…; BOX NOW traži međunarodni oblik
+
+# Cijene dostave i naknada pouzeća su probne; prave daje Roberto u W3.
+[dostava.boxnow]
+cijena_c = 350
+pouzece = true             # vrijedi samo ako ga BOX NOW ugovor uključuje
+velicina_pretinca = 1      # 1 mali, 2 srednji, 3 veliki
+
+[dostava.gls]
+cijena_c = 490
+pouzece = true
+
+[placanje.pouzece]
+naknada_c = 150
+
+[primatelj]                # za HUB-3 i upute za uplatu
+naziv = "Proper Stuff"
+ulica = "Martićeva ulica 67"
+mjesto = "10000 Zagreb"
+iban = "HR1210010051863000160"  # primjer iz HUB-ove upute za barkod; pravi IBAN daje Roberto u W3
+model = "HR00"
+sifra_namjene = "OTHR"
+
+[firma]                    # podnožje i kontakt
+naziv = "Proper Stuff, obrt za trgovinu i usluge"
+adresa = "Martićeva ulica 67, 10000 Zagreb"
+oib = "29737469043"
+email = "narudzbe@terpenstation.com"
+telefon = "+385 92 372 8991"

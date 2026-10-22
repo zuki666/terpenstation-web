@@ -1,0 +1,9 @@
+[Unit]
+Description=Terpen Station: kopija baze svaki dan u 02:15
+
+[Timer]
+OnCalendar=*-*-* 02:15:00 Europe/Zagreb
+Persistent=true
+
+[Install]
+WantedBy=timers.target

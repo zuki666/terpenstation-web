@@ -1,0 +1,20 @@
+{
+  "hr": {
+    "naziv": "Gelonade",
+    "kratki_opis": "Gusti, smolasti cvjetovi s mirisom citrusa. Indoor, iz živog tla.",
+    "opis": "Probni opis (W3). Gelonade raste u našoj zagrebačkoj uzgajaonici u gredicama živog tla, pod LED svjetlom.\n\nUz svaku šaržu objavljujemo laboratorijsku analizu.",
+    "kategorija": "cvijet",
+    "dostupno": true,
+    "redoslijed": 1,
+    "slike": ["/slike/gelonade-cvijet.jpg", "/slike/gelonade-staklenka.jpg", "/slike/gelonade-nekoliko.jpg"],
+    "pakiranja": [
+      { "oznaka": "1 g", "cijena": 9.9, "tezina_g": 1 },
+      { "oznaka": "3 g", "cijena": 27, "tezina_g": 3 },
+      { "oznaka": "5 g", "cijena": 42.5, "tezina_g": 5 }
+    ],
+    "cbg": "8,08 %",
+    "thc": "0,09 %",
+    "sarza": "102-4",
+    "analiza": "/analize/gelonade-102-4.pdf"
+  }
+}
