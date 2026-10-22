@@ -1,16 +1,38 @@
 {
   "hr": {
     "naziv": "Gelonade",
-    "kratki_opis": "Gusti, smolasti cvjetovi s mirisom citrusa. Indoor, iz živog tla.",
-    "opis": "Probni opis (W3). Gelonade raste u našoj zagrebačkoj uzgajaonici u gredicama živog tla, pod LED svjetlom.\n\nUz svaku šaržu objavljujemo laboratorijsku analizu.",
+    "kratki_opis": "Hibrid, 10 % CBG. Podrijetlo: GSC × Pink Panties.",
+    "opis": "Naš vlastiti suvenir od industrijske konoplje, iz certificiranih europskih kultura, uzgojen bez pesticida.\n\n- **100 % prirodno:** cvjetovi uzgajani u kontroliranim uvjetima, s pažnjom prema prirodi.\n- **Autentičan izgled:** za ljubitelje i kolekcionare suvenira od konoplje.\n- **Aromatične note:** jedinstveni mirisni profili koji podsjećaju na prirodu.\n\nProizvod dolazi iz održivog uzgoja. Diskretna dostava.\n\n*Napomena:* ovaj proizvod je isključivo namijenjen za kolekcionarske i dekorativne svrhe. Nije namijenjen za konzumaciju. Sadržaj THC-a je ispod 0,2 %, što ga čini potpuno usklađenim sa zakonskim propisima.",
     "kategorija": "cvijet",
     "dostupno": true,
     "redoslijed": 1,
-    "slike": ["/slike/gelonade-cvijet.jpg", "/slike/gelonade-staklenka.jpg", "/slike/gelonade-nekoliko.jpg"],
+    "slike": [
+      "/slike/gelonade-dlan.webp",
+      "/slike/gelonade-cvijet.jpg",
+      "/slike/gelonade-staklenka.jpg",
+      "/slike/gelonade-nekoliko.jpg"
+    ],
     "pakiranja": [
-      { "oznaka": "1 g", "cijena": 9.9, "tezina_g": 1 },
-      { "oznaka": "3 g", "cijena": 27, "tezina_g": 3 },
-      { "oznaka": "5 g", "cijena": 42.5, "tezina_g": 5 }
+      {
+        "oznaka": "1 g",
+        "cijena": 8,
+        "tezina_g": 1
+      },
+      {
+        "oznaka": "3 g",
+        "cijena": 24,
+        "tezina_g": 3
+      },
+      {
+        "oznaka": "5 g",
+        "cijena": 40,
+        "tezina_g": 5
+      },
+      {
+        "oznaka": "10 g",
+        "cijena": 80,
+        "tezina_g": 10
+      }
     ],
     "cbg": "8,08 %",
     "thc": "0,09 %",
