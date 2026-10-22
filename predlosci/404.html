@@ -1,6 +1,10 @@
 {% extends "osnova.html" %}
+{% from "_znakovi.html" import ploce with context %}
 {% block sadrzaj %}
-<h1>{{ t.greske.nije_nadjeno_naslov }}</h1>
-<p>{{ t.greske.nije_nadjeno }}</p>
-<p><a class="gumb" href="{{ korijen }}{{ put('naslovna') }}">{{ t.opcenito.natrag }}</a></p>
+<div class="nije-nadjeno">
+  <p class="ploca ploca-red-sam" data-ploca aria-hidden="true">{{ ploce("404") }}<span class="ploca-status">{{ t.greske.otkazano }}</span></p>
+  <h1>{{ t.greske.nije_nadjeno_naslov }}</h1>
+  <p>{{ t.greske.nije_nadjeno }}</p>
+  <p><a class="gumb gumb-glavni" href="{{ korijen }}{{ put('naslovna') }}">{{ t.opcenito.natrag }}<span class="strelica" aria-hidden="true"></span></a></p>
+</div>
 {% endblock %}

@@ -1,18 +1,19 @@
 {% extends "osnova.html" %}
 {% block sadrzaj %}
-<h1>{{ t.kosarica.naslov }}</h1>
+<h1 class="naslov-stranice">{{ t.kosarica.naslov }}</h1>
 <div class="kosarica" data-kosarica>
   <p class="poruka" data-poruka role="status" hidden></p>
-  <div data-prazna hidden>
+  <div class="prazno" data-prazna hidden>
     <p>{{ t.kosarica.prazna }}</p>
-    <p><a class="gumb" href="{{ put('naslovna') }}">{{ t.kosarica.u_trgovinu }}</a></p>
+    <p><a class="gumb gumb-glavni" href="{{ put('naslovna') }}">{{ t.kosarica.u_trgovinu }}<span class="strelica" aria-hidden="true"></span></a></p>
   </div>
   <ul class="stavke" data-stavke></ul>
-  <div class="zbroj" data-zbroj hidden>
-    <p class="red-zbroja"><span>{{ t.kosarica.meduzbroj }}</span> <strong data-meduzbroj></strong></p>
-    <p class="napomena">{{ t.kosarica.dostava_napomena }}</p>
-    <a class="gumb gumb-glavni" href="{{ put('blagajna') }}">{{ t.kosarica.na_blagajnu }}</a>
-  </div>
+  <aside class="karta zbroj" data-zbroj hidden>
+    <p class="red-zbroja"><span>{{ t.kosarica.meduzbroj }}</span> <strong class="broj" data-meduzbroj></strong></p>
+    <p class="napomena">{{ t.kosarica.dostava_napomena }}{% if dostava_od_c %} {{ t.proizvod.dostava_od.format(iznos=novac(dostava_od_c)) }}{% endif %}</p>
+    <a class="gumb gumb-glavni" href="{{ put('blagajna') }}">{{ t.kosarica.na_blagajnu }}<span class="strelica" aria-hidden="true"></span></a>
+    <a class="nastavi" href="{{ put('naslovna') }}">{{ t.kosarica.nastavi }}</a>
+  </aside>
   <noscript><p>{{ t.opcenito.treba_js }}</p></noscript>
 </div>
 <template id="predlozak-stavke">
@@ -21,12 +22,17 @@
     <div class="stavka-opis">
       <a data-naziv data-poveznica></a>
       <span class="napomena" data-oznaka></span>
-      <span class="napomena" data-cijena></span>
+      <span class="napomena broj" data-cijena></span>
     </div>
-    <label class="kolicina">{{ t.kosarica.kolicina }}
-      <input type="number" min="1" max="20" inputmode="numeric" data-kolicina>
-    </label>
-    <strong class="stavka-iznos" data-iznos></strong>
+    <div class="kolicina">
+      <span class="za-citac">{{ t.kosarica.kolicina }}</span>
+      <span class="koracnik">
+        <button type="button" data-korak="-1" aria-label="{{ t.proizvod.manje }}">−</button>
+        <input type="number" min="1" max="20" inputmode="numeric" aria-label="{{ t.kosarica.kolicina }}" data-kolicina>
+        <button type="button" data-korak="1" aria-label="{{ t.proizvod.vise }}">+</button>
+      </span>
+    </div>
+    <strong class="stavka-iznos broj" data-iznos></strong>
     <button class="ukloni" type="button" data-ukloni>{{ t.kosarica.ukloni }}</button>
   </li>
 </template>

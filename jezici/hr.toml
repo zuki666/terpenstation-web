@@ -43,7 +43,9 @@ oznaka = "Kategorije"
 kosarica = "Košarica"
 
 [podnozje]
+trgovina = "Trgovina"
 kupnja = "Kupnja"
+kontakt = "Kontakt"
 wholesale = "Wholesale"
 drzave = "Država"
 bez_kolacica = "Stranica ne koristi kolačiće ni praćenje."
@@ -51,25 +53,74 @@ bez_kolacica = "Stranica ne koristi kolačiće ni praćenje."
 [naslovna]
 naslov_stranice = "Terpen Station · CBG cvijet iz Zagreba"
 opis = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže. Dostava BOX NOW paketomatom ili GLS-om."
-naslov = "CBG cvijet iz Zagreba, uzgojen u živom tlu"
-uvod = "Indoor cvijet iz naše uzgajaonice, uz laboratorijsku analizu šarže koja je u prodaji. Šaljemo BOX NOW paketomatom ili GLS-om."
-istaknuto = "U ponudi"
+nadnaslov = "Indoor CBG cvijet · Zagreb"
+uvod = "Uzgajamo ga sami, u Zagrebu, u gredicama živog tla pod LED svjetlom. Svaka šarža ima laboratorijsku analizu."
 u_trgovinu = "Pogledaj ponudu"
-slika_uvoda = "Gelonade cvjetovi u staklenci"
-jamstva = [
-  "Laboratorijska analiza svake šarže",
-  "Uzgoj u Zagrebu, u živom tlu",
-  "BOX NOW paketomat ili GLS",
-  "Uplata na račun ili pouzeće",
-]
-uzgoj_naslov = "Gdje raste"
-uzgoj_tekst = "Snimke mobitelom iz naše uzgajaonice: gredice živog tla pod malčem, LED svjetlo i mreže koje drže grane."
-uzgoj_1 = "Mlade biljke u živom tlu"
-uzgoj_2 = "Cvjetanje, uz potporu mreža"
-uzgoj_3 = "Krošnja pod LED svjetlom"
+kako_raste = "Kako raste"
+polasci = "Polasci"
+polasci_opis = "Trenutno u ponudi"
+mjesto = "Zagreb"
+dostupno = "Dostupno"
+ponuda_nadnaslov = "Trgovina"
+istaknuto = "U ponudi"
+izbliza_nadnaslov = "Snimke mobitelom"
+izbliza_naslov = "Gelonade izbliza"
+izbliza_tekst = "Cvijet koji šaljemo, bez filtera."
+izbliza_video = "Gelonade cvjetovi na dlanu, jedan cvijet izbliza i šarža u rinfuzi"
+izbliza_cvijet = "Jedan Gelonade cvijet među prstima"
+izbliza_staklenka = "Gelonade cvjetovi u staklenci, izbliza"
+linija_nadnaslov = "Od uzgajaonice do vas"
+linija_naslov = "Od tla do paketomata"
+linija_uvod = "Pet stanica od gredice do paketa. Prve tri su snimke mobitelom iz naše uzgajaonice."
+
+# Vozni red ispod uvoda: oznaka lijevo, tekst desno.
+[[naslovna.cinjenice]]
+oznaka = "Analiza"
+tekst = "Laboratorijska analiza svake šarže"
+
+[[naslovna.cinjenice]]
+oznaka = "Uzgoj"
+tekst = "Zagreb, u živom tlu"
+
+[[naslovna.cinjenice]]
+oznaka = "Dostava"
+tekst = "BOX NOW paketomat ili GLS"
+
+[[naslovna.cinjenice]]
+oznaka = "Plaćanje"
+tekst = "Uplata na račun ili pouzeće"
+
+[naslovna.stanice.tlo]
+naslov = "Živo tlo"
+tekst = "Mlade biljke rastu u gredicama živog tla, pod malčem."
+video = "Mlade biljke u gredicama živog tla pod malčem"
+
+[naslovna.stanice.cvat]
+naslov = "Cvjetanje"
+tekst = "Dok biljke cvjetaju, grane drže mreže."
+video = "Biljke u cvatu koje drži mreža"
+
+[naslovna.stanice.krosnja]
+naslov = "Krošnja"
+tekst = "Cijela krošnja raste pod LED svjetlom."
+video = "Krošnja u cvatu pod LED svjetlom"
+
+[naslovna.stanice.analiza]
+naslov = "Analiza"
+tekst = "Laboratorij izmjeri CBG i THC svake šarže; analiza u PDF-u je na stranici proizvoda."
+
+[naslovna.stanice.dostava]
+naslov = "Paketomat"
+tekst = "Šaljemo BOX NOW paketomatom ili GLS-om na adresu; plaćate uplatom ili pouzećem."
 
 [proizvod]
 od = "od"
+po_gramu = "{iznos}/g"
+mrvice = "Kategorija"
+manje = "Smanji količinu"
+vise = "Povećaj količinu"
+dostava_od = "Dostava od {iznos}."
+opis = "Opis"
 pakiranje = "Pakiranje"
 kolicina = "Količina"
 dodaj = "Dodaj u košaricu"
@@ -93,6 +144,7 @@ ukloni = "Ukloni"
 meduzbroj = "Međuzbroj"
 dostava_napomena = "Dostava i način plaćanja biraju se na blagajni."
 na_blagajnu = "Na blagajnu"
+nastavi = "Nastavi kupnju"
 
 [blagajna]
 naslov = "Blagajna"
@@ -137,6 +189,10 @@ napomena = "Napomena (neobavezno)"
 [dostave]
 boxnow = "BOX NOW paketomat"
 gls = "GLS, dostava na adresu"
+
+[dostave_kratko]
+boxnow = "BOX NOW"
+gls = "GLS"
 
 [dostave_opis]
 boxnow = "Paket preuzimate u paketomatu koji odaberete."
@@ -265,6 +321,7 @@ katalog = "Ponuda se trenutno ne može učitati. Pokušajte ponovno za minutu."
 broj_narudzbe = "Upišite broj narudžbe iz potvrde, npr. 2026-0012."
 nije_nadjeno_naslov = "Stranica nije pronađena"
 nije_nadjeno = "Ova stranica ne postoji ili je proizvod maknut iz ponude."
+otkazano = "Otkazano"
 
 [js]
 maknuto = "Neki proizvodi više nisu u ponudi pa su maknuti iz košarice."

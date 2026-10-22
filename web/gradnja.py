@@ -9,6 +9,7 @@ from pathlib import Path
 from web import datoteke, stranice
 from web.postavke import KORIJEN, ucitaj_drzave, ucitaj_jezik, ucitaj_postavke
 from web.predlosci import (
+    cijene_po_gramu,
     izbornik_drzava,
     kontekst,
     okruzenje,
@@ -85,6 +86,7 @@ class Gradnja:
             "slika": slike[0] if slike else None,
             "najniza_c": min(cijene),
             "vise_cijena": len(set(cijene)) > 1,
+            **cijene_po_gramu(p.pakiranja, p.kategorija in self.postavke["trgovina"]["po_gramu"]),
         }
 
     def _planiraj(self, drzava: dict, sirovi: list) -> Drzava:

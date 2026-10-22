@@ -1,11 +1,13 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import slika_proizvoda with context %}
+{% from "_znakovi.html" import peron_kategorije with context %}
+{% macro po_gramu(centi) %}<span class="po-jedinici broj">{{ t.proizvod.po_gramu.format(iznos=novac(centi)) }}</span>{% endmacro %}
 {% block sadrzaj %}
-<nav class="mrvice"><a href="{{ p.url_kategorije }}">{{ p.naziv_kategorije }}</a></nav>
+<nav class="mrvice" aria-label="{{ t.proizvod.mrvice }}"><a href="{{ korijen }}{{ p.url_kategorije }}">{{ peron_kategorije(p.kategorija) }}{{ p.naziv_kategorije }}</a></nav>
 <article class="proizvod">
-  <div class="galerija-proizvoda" aria-label="{{ t.proizvod.galerija }}">
+  <div class="galerija-proizvoda" role="group" aria-label="{{ t.proizvod.galerija }}">
     {% for slika in p.slike %}
-    {{ slika_proizvoda(slika, p.naziv, "(min-width: 56rem) 32rem, 100vw", lijeno=not loop.first) }}
+    {{ slika_proizvoda(slika, p.naziv, "(min-width: 56rem) 38rem, 92vw", lijeno=not loop.first, prijelaz=p.slug if loop.first else "") }}
     {% else %}
     <span class="bez-slike">{{ t.proizvod.bez_slike }}</span>
     {% endfor %}
@@ -17,45 +19,58 @@
     <p class="kratko">{{ p.kratki_opis }}</p>
     {% endif %}
     <form class="dodaj" data-dodaj>
-      <fieldset class="pakiranja">
+      <p class="cijena-velika"><span class="broj" data-cijena-prikaz>{{ novac(p.pakiranja[0].cijena_c) }}</span>{% if p.po_gramu_c and p.po_gramu_isti %} {{ po_gramu(p.po_gramu_c) }}{% endif %}</p>
+      <fieldset class="pakiranja"{% if p.pakiranja|length == 1 %} hidden{% endif %}>
         <legend>{{ t.proizvod.pakiranje }}</legend>
         {% for pakiranje in p.pakiranja %}
         <label class="pakiranje">
-          <input type="radio" name="pakiranje" value="{{ pakiranje.id }}"{% if loop.first %} checked{% endif %}>
+          <input type="radio" name="pakiranje" value="{{ pakiranje.id }}" data-cijena-c="{{ pakiranje.cijena_c }}"{% if loop.first %} checked{% endif %}>
           <span class="oznaka">{{ pakiranje.oznaka }}</span>
-          <span class="cijena">{{ novac(pakiranje.cijena_c) }}</span>
+          <span class="cijena broj">{{ novac(pakiranje.cijena_c) }}</span>
+          {% if not p.po_gramu_isti and pakiranje.id in p.po_gramu %}
+          {{ po_gramu(p.po_gramu[pakiranje.id]) }}
+          {% endif %}
         </label>
         {% endfor %}
       </fieldset>
       <div class="dodaj-red">
-        <label class="kolicina">{{ t.proizvod.kolicina }}
-          <input type="number" name="kolicina" value="1" min="1" max="20" inputmode="numeric">
-        </label>
+        <div class="kolicina">
+          <label for="kolicina">{{ t.proizvod.kolicina }}</label>
+          <span class="koracnik">
+            <button type="button" data-korak="-1" aria-label="{{ t.proizvod.manje }}">−</button>
+            <input id="kolicina" type="number" name="kolicina" value="1" min="1" max="20" inputmode="numeric">
+            <button type="button" data-korak="1" aria-label="{{ t.proizvod.vise }}">+</button>
+          </span>
+        </div>
         <button class="gumb gumb-glavni" type="submit">{{ t.proizvod.dodaj }}</button>
       </div>
-      <p class="poruka" data-poruka role="status" hidden>{{ t.proizvod.dodano }} <a href="{{ put('kosarica') }}">{{ t.proizvod.u_kosaricu }}</a></p>
+      <p class="poruka" data-poruka role="status" hidden>{{ t.proizvod.dodano }} <a href="{{ korijen }}{{ put('kosarica') }}">{{ t.proizvod.u_kosaricu }}<span class="strelica" aria-hidden="true"></span></a></p>
       <p class="poruka greska" data-poruka-greska role="alert" hidden></p>
       <noscript><p class="napomena">{{ t.opcenito.treba_js }}</p></noscript>
     </form>
-    <p class="napomena">{{ t.proizvod.pdv_ukljucen }}</p>
+    <p class="napomena">{{ t.proizvod.pdv_ukljucen }}{% if dostava_od_c %} {{ t.proizvod.dostava_od.format(iznos=novac(dostava_od_c)) }}{% endif %}</p>
 
     {% if p.cbg or p.thc or p.sarza %}
-    <h2>{{ t.proizvod.analiza_naslov }}</h2>
-    <table class="analiza">
-      <tbody>
-        {% if p.cbg %}<tr><th scope="row">{{ t.proizvod.cbg }}</th><td class="broj">{{ p.cbg }}</td></tr>{% endif %}
-        {% if p.thc %}<tr><th scope="row">{{ t.proizvod.thc }}</th><td class="broj">{{ p.thc }}</td></tr>{% endif %}
-        {% if p.sarza %}<tr><th scope="row">{{ t.proizvod.sarza }}</th><td class="broj">{{ p.sarza }}</td></tr>{% endif %}
-      </tbody>
-    </table>
-    {% endif %}
-    {% if p.analiza %}
-    <p><a href="{{ p.analiza }}">{{ t.proizvod.analiza_pdf }}</a></p>
+    <section class="analiza" aria-labelledby="naslov-analize">
+      <h2 id="naslov-analize">{{ t.proizvod.analiza_naslov }}{% if p.sarza %} <span class="broj">{{ p.sarza }}</span>{% endif %}</h2>
+      <dl>
+        {% if p.cbg %}<div><dt>{{ t.proizvod.cbg }}</dt><dd class="broj">{{ p.cbg }}</dd></div>{% endif %}
+        {% if p.thc %}<div><dt>{{ t.proizvod.thc }}</dt><dd class="broj">{{ p.thc }}</dd></div>{% endif %}
+      </dl>
+      {% if p.analiza %}
+      <a class="analiza-pdf" href="{{ korijen }}{{ p.analiza }}">{{ t.proizvod.analiza_pdf }}<span class="strelica" aria-hidden="true"></span></a>
+      {% endif %}
+    </section>
+    {% elif p.analiza %}
+    <p><a href="{{ korijen }}{{ p.analiza }}">{{ t.proizvod.analiza_pdf }}</a></p>
     {% endif %}
   </div>
 
   {% if p.opis_html %}
-  <div class="opis tekst">{{ p.opis_html|safe }}</div>
+  <div class="opis tekst">
+    <h2>{{ t.proizvod.opis }}</h2>
+    {{ p.opis_html|safe }}
+  </div>
   {% endif %}
 </article>
 {% endblock %}

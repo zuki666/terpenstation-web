@@ -10,6 +10,8 @@ zadani_jezik = "hr"                         # default_locale u static/admin/conf
 # Stranice iz sadrzaj/stranice/<država>/<ključ>.md, redom u podnožju; odustanak ima svoju.
 pravne_stranice = ["dostava_i_placanje", "uvjeti_kupnje", "privatnost", "kontakt"]
 istaknutih_na_naslovnoj = 8
+# Kategorije koje se prodaju na težinu: uz cijenu pakiranja piše i cijena po gramu.
+po_gramu = ["cvijet"]
 
 [mail]
 posiljatelj = "Terpen Station <narudzbe@terpenstation.com>"

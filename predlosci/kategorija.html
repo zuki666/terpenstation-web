@@ -1,8 +1,11 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import kartica with context %}
+{% from "_znakovi.html" import peron_kategorije with context %}
 {% block sadrzaj %}
-<h1>{{ naziv_kategorije }}</h1>
-<p class="uvod">{{ opis_kategorije }}</p>
+<header class="znak-perona">
+  <h1>{{ peron_kategorije(stranica.aktivna) }}<span>{{ naziv_kategorije }}</span></h1>
+  <p>{{ opis_kategorije }}</p>
+</header>
 <ul class="mreza">
   {% for p in proizvodi %}
   {{ kartica(p) }}
