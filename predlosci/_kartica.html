@@ -1,17 +1,32 @@
-{% macro slika_proizvoda(slika, alt, sizes, lijeno=true) %}
-<img src="{{ slika.src }}" srcset="{{ slika.srcset }}" sizes="{{ sizes }}" width="{{ slika.sirina }}" height="{{ slika.visina }}" alt="{{ alt }}"{% if lijeno %} loading="lazy"{% endif %}>
+{% from "_znakovi.html" import peron_kategorije with context %}
+
+{# Ista slika na kartici i na stranici proizvoda nosi isto ime prijelaza: preglednik koji
+   zna prijelaze među stranicama pretopi sliku s kartice u veliku sliku proizvoda. #}
+{% macro slika_proizvoda(slika, alt, sizes, lijeno=true, prijelaz="") %}
+<img src="{{ slika.src }}" srcset="{{ slika.srcset }}" sizes="{{ sizes }}" width="{{ slika.sirina }}" height="{{ slika.visina }}" alt="{{ alt }}"{% if lijeno %} loading="lazy"{% endif %}{% if prijelaz %} style="view-transition-name: p-{{ prijelaz }}"{% endif %}>
+{% endmacro %}
+
+{% macro cijena(p) %}
+<span class="cijena-red"><span class="broj">{% if p.vise_cijena %}{{ t.proizvod.od }} {% endif %}{{ novac(p.najniza_c) }}</span>
+{%- if p.po_gramu_c and p.po_gramu_c != p.najniza_c %} <span class="po-jedinici broj">{{ t.proizvod.po_gramu.format(iznos=novac(p.po_gramu_c)) }}</span>{% endif %}</span>
 {% endmacro %}
 
 {% macro kartica(p) %}
 <li class="kartica">
   <a href="{{ korijen }}{{ p.url }}">
-    {% if p.slika %}
-    {{ slika_proizvoda(p.slika, p.naziv, "(min-width: 60rem) 18rem, (min-width: 40rem) 30vw, 46vw") }}
-    {% else %}
-    <span class="bez-slike">{{ t.proizvod.bez_slike }}</span>
-    {% endif %}
+    <span class="kartica-slika">
+      {% if p.slika %}
+      {{ slika_proizvoda(p.slika, p.naziv, "(min-width: 64rem) 17rem, (min-width: 40rem) 30vw, 46vw", prijelaz=p.slug) }}
+      {% else %}
+      <span class="bez-slike">{{ t.proizvod.bez_slike }}</span>
+      {% endif %}
+      {% if p.cbg %}
+      <span class="oznaka-cbg">{{ t.proizvod.cbg }} {{ p.cbg }}</span>
+      {% endif %}
+    </span>
+    <span class="kartica-kategorija">{{ peron_kategorije(p.kategorija) }}{{ p.naziv_kategorije }}</span>
     <span class="kartica-naziv">{{ p.naziv }}</span>
-    <span class="kartica-cijena">{% if p.vise_cijena %}{{ t.proizvod.od }} {% endif %}{{ novac(p.najniza_c) }}</span>
+    {{ cijena(p) }}
   </a>
   {% if p.kratki_opis %}
   <p>{{ p.kratki_opis }}</p>

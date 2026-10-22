@@ -9,6 +9,8 @@
   const podaci = JSON.parse(document.getElementById("ts-podaci").textContent);
   const T = podaci.tekstovi;
   const KLJUC = "ts_kosarica_" + tijelo.dataset.drzava;
+  const MIRNO = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ZNAKOVI = "ABCDEFGHIJKLMNOPRSTUVZ0123456789";
   let uMemoriji = [];
 
   const $ = (izbor, unutar = document) => unutar.querySelector(izbor);
@@ -113,7 +115,57 @@
       if (postojeca) postojeca.kolicina = Math.min(MAKS_KOLICINA, postojeca.kolicina + dodano);
       else stavke.push({ id, kolicina: dodano });
       pisi(stavke);
-      poruka($("[data-poruka]", forma));
+      skoci();
+      const potvrda = $("[data-poruka]", forma);
+      potvrda.hidden = true;
+      // Čitanje širine prisili novi izračun stila, pa se ulazna animacija poruke ponovi.
+      void potvrda.offsetWidth;
+      poruka(potvrda);
+    });
+  }
+
+  // Cijena iznad pakiranja i natpis gumba prate odabrano pakiranje i količinu.
+  function cijenaOdabranog(forma) {
+    const prikaz = $("[data-cijena-prikaz]", forma);
+    const gumb = $("button[type=submit]", forma);
+    const natpis = gumb.textContent;
+    const osvjezi = () => {
+      const odabran = $("input[name=pakiranje]:checked", forma);
+      if (!odabran || !prikaz) return;
+      const cijena = Number(odabran.dataset.cijenaC);
+      prikaz.textContent = novac(cijena);
+      gumb.textContent = `${natpis} · ${novac(cijena * kolicina(forma.elements.namedItem("kolicina").value))}`;
+    };
+    forma.addEventListener("input", osvjezi);
+    forma.addEventListener("change", osvjezi);
+    osvjezi();
+  }
+
+  function skoci() {
+    for (const oznaka of $$("[data-broj-stavki]")) {
+      oznaka.classList.remove("skok");
+      // Bez novog izračuna stila preglednik ne bi ponovio istu animaciju.
+      void oznaka.offsetWidth;
+      oznaka.classList.add("skok");
+    }
+  }
+
+  // − i + mijenjaju količinu kao da ju je kupac upisao. Košarica pri tome iznova iscrta
+  // retke, pa se fokus vraća na isti gumb u novom retku.
+  function koraci() {
+    document.addEventListener("click", (dogadaj) => {
+      const gumb = dogadaj.target.closest("[data-korak]");
+      if (!gumb) return;
+      const unos = $("input", gumb.parentElement);
+      const novo = kolicina(parseInt(unos.value, 10) + Number(gumb.dataset.korak));
+      if (String(novo) === unos.value) return;
+      const red = gumb.closest("li");
+      const popis = red && red.parentElement;
+      const mjesto = popis ? Array.prototype.indexOf.call(popis.children, red) : -1;
+      unos.value = novo;
+      unos.dispatchEvent(new Event("change", { bubbles: true }));
+      const noviRed = popis && !red.isConnected ? popis.children[mjesto] : null;
+      if (noviRed) $(`[data-korak="${gumb.dataset.korak}"]`, noviRed).focus();
     });
   }
 
@@ -336,17 +388,95 @@
     location.replace(adresa);
   }
 
-  // Tko je u sustavu zatražio manje pokreta, videi ne kreću sami nego dobiju kontrole.
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    for (const video of $$("video[autoplay]")) {
-      video.removeAttribute("autoplay");
-      video.pause();
-      video.controls = true;
+  // Videi kreću tek kad dođu na ekran i staju kad odu, da mobitel ne vuče sve snimke
+  // odjednom. Tko je u sustavu zatražio manje pokreta, umjesto toga dobije kontrole.
+  function videi() {
+    const svi = $$("video[data-video]");
+    if (MIRNO || !("IntersectionObserver" in window)) {
+      for (const video of svi) video.controls = true;
+      return;
     }
+    const promatrac = new IntersectionObserver(
+      (unosi) => {
+        for (const unos of unosi) {
+          // Preglednik smije odbiti pokretanje (npr. štednja baterije); tada ostaje slika.
+          if (unos.isIntersecting) unos.target.play().catch(() => {});
+          else unos.target.pause();
+        }
+      },
+      { rootMargin: "200px 0px" }
+    );
+    for (const video of svi) promatrac.observe(video);
+  }
+
+  // Ploča polazaka okrene slova kad se prvi put pojavi, kao prava preklopna ploča.
+  function ploce() {
+    const ploca = $$("[data-ploca]");
+    if (MIRNO || !ploca.length || !("IntersectionObserver" in window)) return;
+    const promatrac = new IntersectionObserver(
+      (unosi) => {
+        for (const unos of unosi) {
+          if (!unos.isIntersecting) continue;
+          promatrac.unobserve(unos.target);
+          $$("[data-klap]", unos.target).forEach((klap, i) => okreni(klap, 3 + (i % 7) + Math.floor(i / 9)));
+        }
+      },
+      { threshold: 0.3 }
+    );
+    for (const p of ploca) promatrac.observe(p);
+  }
+
+  function okreni(klap, koraka) {
+    const konacno = klap.textContent;
+    let korak = 0;
+    klap.classList.add("okrece");
+    const sat = setInterval(() => {
+      korak += 1;
+      if (korak < koraka) {
+        klap.textContent = ZNAKOVI[Math.floor(Math.random() * ZNAKOVI.length)];
+        return;
+      }
+      klap.textContent = konacno;
+      klap.classList.remove("okrece");
+      clearInterval(sat);
+    }, 70);
+  }
+
+  // Sat ploče je od istih pločica; kad se promijeni minuta, okrenu se samo znamenke koje
+  // su se promijenile.
+  function sat(polje) {
+    const oblik = new Intl.DateTimeFormat(document.documentElement.lang, {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: polje.dataset.sat,
+    });
+    let prikazano = "";
+    const otkucaj = () => {
+      const vrijeme = oblik.format(new Date());
+      if (vrijeme === prikazano) return;
+      const znakovi = Array.from(vrijeme, (znak, i) => {
+        const klap = document.createElement("span");
+        klap.className = /\d/.test(znak) ? "klap" : "dvotocka";
+        klap.textContent = znak;
+        if (prikazano && prikazano[i] !== znak && !MIRNO) okreni(klap, 6);
+        return klap;
+      });
+      polje.replaceChildren(...znakovi);
+      prikazano = vrijeme;
+    };
+    otkucaj();
+    setInterval(otkucaj, 10000);
   }
 
   osvjeziBroj(citaj());
-  for (const forma of $$("[data-dodaj]")) dodaj(forma);
+  koraci();
+  videi();
+  ploce();
+  for (const polje of $$("[data-sat]")) sat(polje);
+  for (const forma of $$("[data-dodaj]")) {
+    dodaj(forma);
+    cijenaOdabranog(forma);
+  }
   const okvirKosarice = $("[data-kosarica]");
   if (okvirKosarice) kosarica(okvirKosarice);
   const formaBlagajne = $("[data-blagajna]");

@@ -1,3 +1,4 @@
+{% from "_znakovi.html" import peron with context %}
 <!doctype html>
 <html lang="{{ drzava.jezik }}">
 <head>
@@ -21,23 +22,25 @@
 {% if stranica.og_slika %}
 <meta property="og:image" content="{{ stranica.og_slika }}">
 {% endif %}
+<meta name="theme-color" content="#ecefe9">
 <link rel="preload" href="{{ korijen }}/font/archivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ korijen }}{{ datoteke.css }}">
 <link rel="icon" href="{{ korijen }}/favicon.svg" type="image/svg+xml">
 </head>
-<body data-drzava="{{ drzava.kod }}" data-katalog="{{ korijen }}{{ drzava.put }}proizvodi.json" data-api="{{ sajt.api }}">
+<body class="{% block klasa_tijela %}{% endblock %}" data-drzava="{{ drzava.kod }}" data-katalog="{{ korijen }}{{ drzava.put }}proizvodi.json" data-api="{{ sajt.api }}">
 <a class="preskoci" href="#sadrzaj">{{ t.opcenito.preskoci }}</a>
 <header class="vrh">
   <div class="vrh-unutra">
     <a class="logo" href="{{ korijen }}{{ put('naslovna') }}" aria-label="{{ t.opcenito.naziv_sajta }}"><span class="terpen">TERPEN</span><span class="station">STATION</span></a>
-    <a class="kosarica-link" href="{{ korijen }}{{ put('kosarica') }}">{{ t.izbornik.kosarica }}<span class="broj-stavki" data-broj-stavki hidden>0</span></a>
     {% if kategorije %}
     <nav class="izbornik" aria-label="{{ t.izbornik.oznaka }}">
       {% for kategorija in kategorije %}
-      <a href="{{ korijen }}{{ kategorija.url }}"{% if kategorija.kljuc == stranica.aktivna %} aria-current="page"{% endif %}>{{ kategorija.naziv }}</a>
+      <a href="{{ korijen }}{{ kategorija.url }}"{% if kategorija.kljuc == stranica.aktivna %} aria-current="page"{% endif %}>{{ peron(kategorija.peron) }}{{ kategorija.naziv }}</a>
       {% endfor %}
     </nav>
     {% endif %}
+    <a class="vrh-wholesale" href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
+    <a class="kosarica-link" href="{{ korijen }}{{ put('kosarica') }}"><span>{{ t.izbornik.kosarica }}</span><span class="broj-stavki" data-broj-stavki hidden>0</span></a>
   </div>
 </header>
 <main id="sadrzaj" class="sadrzaj">
@@ -45,15 +48,30 @@
 </main>
 <footer class="podnozje">
   <div class="podnozje-unutra">
-    <nav class="podnozje-veze" aria-label="{{ t.podnozje.kupnja }}">
-      {% for veza in pravne %}
-      <a href="{{ korijen }}{{ veza.url }}">{{ veza.naziv }}</a>
-      {% endfor %}
-      <a href="{{ korijen }}{{ put('odustanak') }}">{{ t.odustanak.naslov }}</a>
-      <a href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
-    </nav>
-    <p>{{ firma.naziv }}, {{ firma.adresa }}. OIB&nbsp;{{ firma.oib }}.</p>
-    <p><a href="mailto:{{ firma.email }}">{{ firma.email }}</a> · <a href="tel:{{ firma.telefon|replace(' ', '') }}">{{ firma.telefon }}</a></p>
+    <p class="podnozje-znak" aria-hidden="true"><span class="terpen">TERPEN</span><span class="station">STATION</span></p>
+    <div class="podnozje-stupci">
+      {% if kategorije %}
+      <nav aria-label="{{ t.podnozje.trgovina }}">
+        <p class="podnozje-naslov">{{ t.podnozje.trgovina }}</p>
+        {% for kategorija in kategorije %}
+        <a href="{{ korijen }}{{ kategorija.url }}">{{ kategorija.naziv }}</a>
+        {% endfor %}
+        <a href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
+      </nav>
+      {% endif %}
+      <nav aria-label="{{ t.podnozje.kupnja }}">
+        <p class="podnozje-naslov">{{ t.podnozje.kupnja }}</p>
+        {% for veza in pravne %}
+        <a href="{{ korijen }}{{ veza.url }}">{{ veza.naziv }}</a>
+        {% endfor %}
+        <a href="{{ korijen }}{{ put('odustanak') }}">{{ t.odustanak.naslov }}</a>
+      </nav>
+      <div>
+        <p class="podnozje-naslov">{{ t.podnozje.kontakt }}</p>
+        <a href="mailto:{{ firma.email }}">{{ firma.email }}</a>
+        <a class="broj" href="tel:{{ firma.telefon|replace(' ', '') }}">{{ firma.telefon }}</a>
+      </div>
+    </div>
     {% if drzave|length > 1 %}
     <nav class="drzave" aria-label="{{ t.podnozje.drzave }}">
       {% for druga in drzave %}
@@ -61,7 +79,7 @@
       {% endfor %}
     </nav>
     {% endif %}
-    <p>{{ t.podnozje.bez_kolacica }}</p>
+    <p class="podnozje-dno"><span>{{ firma.naziv }}, {{ firma.adresa }}. OIB&nbsp;{{ firma.oib }}.</span> <span>{{ t.podnozje.bez_kolacica }}</span></p>
   </div>
 </footer>
 <script id="ts-podaci" type="application/json">{{ js_podaci|tojson }}</script>

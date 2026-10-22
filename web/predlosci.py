@@ -39,14 +39,38 @@ def put_stranice(drzava: dict, jezik: dict, kljuc: str, slug: str = "") -> str:
 
 
 def veze_kategorija(drzava: dict, jezik: dict, kljucevi: list[str]) -> list[dict]:
+    """Kategorije za izbornik; `peron` je redni broj, kao broj perona na kolodvoru."""
     return [
         {
             "kljuc": kljuc,
             "naziv": jezik["kategorije"][kljuc],
             "url": put_stranice(drzava, jezik, kljuc),
+            "peron": redni,
         }
-        for kljuc in kljucevi
+        for redni, kljuc in enumerate(kljucevi, start=1)
     ]
+
+
+def cijene_po_gramu(pakiranja: tuple, na_tezinu: bool) -> dict:
+    """Cijena po gramu svakog pakiranja s težinom, za usporedbu pakiranja i sorti.
+
+    Samo za proizvode koji se prodaju na težinu: grinder ima težinu za dostavu, ali cijena
+    po gramu za njega nema smisla.
+    """
+    po_gramu = {
+        pakiranje.id: round(pakiranje.cijena_c / pakiranje.tezina_g)
+        for pakiranje in pakiranja
+        if na_tezinu and pakiranje.tezina_g
+    }
+    return {
+        "po_gramu": po_gramu,
+        "po_gramu_c": min(po_gramu.values(), default=0),
+        "po_gramu_isti": len(set(po_gramu.values())) <= 1,
+    }
+
+
+def najjeftinija_dostava(drzava: dict) -> int:
+    return min(drzava["dostava"][kljuc]["cijena_c"] for kljuc in drzava["dostave"])
 
 
 def izbornik_drzava(drzave: list[dict]) -> list[dict]:
@@ -86,6 +110,7 @@ def kontekst(drzava: dict, jezik: dict, postavke: dict, korijen: str = "") -> di
         "korijen": korijen,
         "novac": partial(iznos, oblik=jezik["oblik"], valuta=drzava["valuta"]),
         "put": partial(put_stranice, drzava, jezik),
+        "dostava_od_c": najjeftinija_dostava(drzava),
         "js_podaci": {
             "tekstovi": jezik["js"],
             "oblik": jezik["oblik"],

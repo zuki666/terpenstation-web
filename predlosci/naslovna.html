@@ -1,26 +1,66 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import kartica with context %}
+{% from "_znakovi.html" import ploce, peron, peron_kategorije with context %}
+{% block klasa_tijela %}naslovna{% endblock %}
 {% block sadrzaj %}
-<section class="uvod-trgovine">
+<section class="uvod" aria-labelledby="znak">
   <div class="uvod-tekst">
-    <h1>{{ t.naslovna.naslov }}</h1>
-    <p class="uvod">{{ t.naslovna.uvod }}</p>
-    {% if kategorije %}
-    <a class="gumb gumb-glavni" href="{{ korijen }}{{ kategorije[0].url }}">{{ t.naslovna.u_trgovinu }}</a>
-    {% endif %}
+    <p class="nadnaslov">{{ t.naslovna.nadnaslov }}</p>
+    <h1 class="znak" id="znak" aria-label="{{ t.opcenito.naziv_sajta }}"><span class="terpen">TERPEN</span><span class="station">STATION</span></h1>
+    <div class="peron-crta" aria-hidden="true"></div>
+    <p class="uvod-glavni">{{ t.naslovna.uvod }}</p>
+    <p class="gumbi">
+      {% if kategorije %}
+      <a class="gumb gumb-glavni" href="{{ korijen }}{{ kategorije[0].url }}">{{ t.naslovna.u_trgovinu }}<span class="strelica" aria-hidden="true"></span></a>
+      {% endif %}
+      <a class="gumb" href="#linija">{{ t.naslovna.kako_raste }}</a>
+    </p>
   </div>
-  <img class="uvod-slika" src="/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.slika_uvoda }}">
+
+  {% if istaknuti %}
+  <section class="ploca" aria-labelledby="naslov-ploce" data-ploca>
+    <header class="ploca-vrh">
+      <div>
+        <h2 id="naslov-ploce">{{ t.naslovna.polasci }}</h2>
+        <p>{{ t.naslovna.polasci_opis }}</p>
+      </div>
+      <p class="ploca-sat" aria-hidden="true">{{ t.naslovna.mjesto }} <span class="broj" data-sat="{{ drzava.vremenska_zona }}"></span></p>
+    </header>
+    <ol class="ploca-redovi">
+      {% for p in istaknuti[:6] %}
+      <li>
+        <a class="ploca-red" href="{{ korijen }}{{ p.url }}">
+          <span class="ploca-naziv">{{ ploce(p.naziv) }}</span>
+          <span class="ploca-cijena broj">{% if p.vise_cijena %}{{ t.proizvod.od }} {% endif %}{{ novac(p.najniza_c) }}</span>
+          <span class="ploca-meta">{{ peron_kategorije(p.kategorija) }}{{ p.naziv_kategorije }}{% if p.cbg %} · {{ t.proizvod.cbg }} {{ p.cbg }}{% endif %}</span>
+          <span class="ploca-status">{{ t.naslovna.dostupno }}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
 </section>
 
-<ul class="jamstva">
-  {% for jamstvo in t.naslovna.jamstva %}
-  <li>{{ jamstvo }}</li>
+<dl class="vozni-red">
+  {% for cinjenica in t.naslovna.cinjenice %}
+  <div><dt>{{ cinjenica.oznaka }}</dt><dd>{{ cinjenica.tekst }}</dd></div>
   {% endfor %}
-</ul>
+</dl>
 
 {% if istaknuti %}
-<section>
-  <h2>{{ t.naslovna.istaknuto }}</h2>
+<section class="odjeljak" aria-labelledby="naslov-ponude">
+  <header class="naslov-odjeljka">
+    <p class="nadnaslov">{{ t.naslovna.ponuda_nadnaslov }}</p>
+    <h2 id="naslov-ponude">{{ t.naslovna.istaknuto }}</h2>
+    {% if kategorije|length > 1 %}
+    <nav class="smjerovi" aria-label="{{ t.izbornik.oznaka }}">
+      {% for kategorija in kategorije %}
+      <a href="{{ korijen }}{{ kategorija.url }}">{{ peron(kategorija.peron) }}{{ kategorija.naziv }}<span class="strelica" aria-hidden="true"></span></a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </header>
   <ul class="mreza">
     {% for p in istaknuti %}
     {{ kartica(p) }}
@@ -29,18 +69,57 @@
 </section>
 {% endif %}
 
-<section class="o-uzgoju">
-  <h2>{{ t.naslovna.uzgoj_naslov }}</h2>
-  <p>{{ t.naslovna.uzgoj_tekst }}</p>
-  <div class="uzgoj">
-    {% for video, opis in [("uzgoj-zivo-tlo", t.naslovna.uzgoj_1), ("uzgoj-krosnja", t.naslovna.uzgoj_2), ("uzgoj-cvjetanje", t.naslovna.uzgoj_3)] %}
-    <figure>
-      <video autoplay muted loop playsinline preload="metadata" poster="/mediji/{{ video }}-poster.jpg" width="320" height="568" aria-label="{{ opis }}">
-        <source src="/mediji/{{ video }}.mp4" type="video/mp4">
-      </video>
-      <figcaption>{{ opis }}</figcaption>
-    </figure>
-    {% endfor %}
+<section class="odjeljak izbliza" aria-labelledby="naslov-izbliza">
+  <header class="naslov-odjeljka">
+    <p class="nadnaslov">{{ t.naslovna.izbliza_nadnaslov }}</p>
+    <h2 id="naslov-izbliza">{{ t.naslovna.izbliza_naslov }}</h2>
+    <p>{{ t.naslovna.izbliza_tekst }}</p>
+  </header>
+  <div class="galerija">
+    <video class="video" muted loop playsinline preload="none" poster="{{ korijen }}/mediji/gelonade-video.jpg" width="720" height="1280" aria-label="{{ t.naslovna.izbliza_video }}" data-video>
+      <source src="{{ korijen }}/mediji/gelonade.mp4" type="video/mp4">
+    </video>
+    <img class="cvijet" src="{{ korijen }}/mediji/gelonade-cvijet.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_cvijet }}" loading="lazy">
+    <img src="{{ korijen }}/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_staklenka }}" loading="lazy">
   </div>
+</section>
+
+{% set analizirani = istaknuti|selectattr("cbg")|list %}
+{% set videi = {"tlo": "uzgoj-zivo-tlo", "cvat": "uzgoj-krosnja", "krosnja": "uzgoj-cvjetanje"} %}
+<section class="odjeljak linija" id="linija" aria-labelledby="naslov-linije">
+  <header class="naslov-odjeljka">
+    <p class="nadnaslov">{{ t.naslovna.linija_nadnaslov }}</p>
+    <h2 id="naslov-linije">{{ t.naslovna.linija_naslov }}</h2>
+    <p>{{ t.naslovna.linija_uvod }}</p>
+  </header>
+  <ol class="stanice">
+    {% for kljuc in ["tlo", "cvat", "krosnja", "analiza", "dostava"] %}
+    {% set stanica = t.naslovna.stanice[kljuc] %}
+    <li class="stanica">
+      <p class="stanica-broj broj" aria-hidden="true">{{ "%02d"|format(loop.index) }}</p>
+      <h3>{{ stanica.naslov }}</h3>
+      <p>{{ stanica.tekst }}</p>
+      {% if kljuc in videi %}
+      <video class="zaslon" muted loop playsinline preload="none" poster="{{ korijen }}/mediji/{{ videi[kljuc] }}-poster.jpg" width="320" height="568" aria-label="{{ stanica.video }}" data-video>
+        <source src="{{ korijen }}/mediji/{{ videi[kljuc] }}.mp4" type="video/mp4">
+      </video>
+      {% elif kljuc == "analiza" %}
+      {% for a in analizirani[:1] %}
+      <a class="zaslon zaslon-ploca" href="{{ korijen }}{{ a.url }}">
+        <span class="zaslon-oznaka">{{ a.naziv }}{% if a.sarza %} · {{ t.proizvod.sarza }} {{ a.sarza }}{% endif %}</span>
+        <span class="zaslon-broj broj">{{ a.cbg }}</span>
+        <span class="zaslon-oznaka">{{ t.proizvod.cbg }}{% if a.thc %} · {{ t.proizvod.thc }} {{ a.thc }}{% endif %}</span>
+      </a>
+      {% endfor %}
+      {% else %}
+      <a class="zaslon zaslon-ploca" href="{{ korijen }}{{ put('dostava_i_placanje') }}">
+        <span class="zaslon-oznaka">{% for dostava in drzava.dostave %}{{ t.dostave_kratko[dostava] }}{% if not loop.last %} · {% endif %}{% endfor %}</span>
+        <span class="zaslon-broj broj">{% if dostava_od_c %}<small>{{ t.proizvod.od }}</small> {{ novac(dostava_od_c) }}{% else %}{{ t.blagajna.besplatno }}{% endif %}</span>
+        <span class="zaslon-oznaka">{% for placanje in drzava.placanja %}{{ t.placanja[placanje] }}{% if not loop.last %} · {% endif %}{% endfor %}</span>
+      </a>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
 </section>
 {% endblock %}

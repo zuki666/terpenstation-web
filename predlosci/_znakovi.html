@@ -1,0 +1,14 @@
+{# Znakovi kolodvora koji se ponavljaju po stranicama: preklopna slova ploče i brojevi perona. #}
+
+{# Čitač ekrana dobije cijeli tekst; preklopi su samo slika teksta, slovo po slovo. #}
+{% macro ploce(tekst) %}
+<span class="ploce"><span class="za-citac">{{ tekst }}</span><span class="preklopi" aria-hidden="true">
+{%- for rijec in tekst.upper().split() %}<span class="rijec">{% for znak in rijec %}<span class="klap" data-klap>{{ znak }}</span>{% endfor %}</span>{% if not loop.last %} {% endif %}{% endfor -%}
+</span></span>
+{%- endmacro %}
+
+{% macro peron(broj) %}<span class="peron-br" aria-hidden="true">{{ broj }}</span>{% endmacro %}
+
+{% macro peron_kategorije(kljuc) %}
+{%- for kategorija in kategorije if kategorija.kljuc == kljuc %}{{ peron(kategorija.peron) }}{% endfor -%}
+{% endmacro %}
