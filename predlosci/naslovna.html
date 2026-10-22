@@ -2,9 +2,21 @@
 {% from "_kartica.html" import kartica with context %}
 {% block sadrzaj %}
 <section class="uvod-trgovine">
-  <h1>{{ t.naslovna.naslov }}</h1>
-  <p class="uvod">{{ t.naslovna.uvod }}</p>
+  <div class="uvod-tekst">
+    <h1>{{ t.naslovna.naslov }}</h1>
+    <p class="uvod">{{ t.naslovna.uvod }}</p>
+    {% if kategorije %}
+    <a class="gumb gumb-glavni" href="{{ korijen }}{{ kategorije[0].url }}">{{ t.naslovna.u_trgovinu }}</a>
+    {% endif %}
+  </div>
+  <img class="uvod-slika" src="/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.slika_uvoda }}">
 </section>
+
+<ul class="jamstva">
+  {% for jamstvo in t.naslovna.jamstva %}
+  <li>{{ jamstvo }}</li>
+  {% endfor %}
+</ul>
 
 {% if istaknuti %}
 <section>
@@ -12,17 +24,6 @@
   <ul class="mreza">
     {% for p in istaknuti %}
     {{ kartica(p) }}
-    {% endfor %}
-  </ul>
-</section>
-{% endif %}
-
-{% if kategorije|length > 1 %}
-<section>
-  <h2>{{ t.naslovna.kategorije }}</h2>
-  <ul class="popis-kategorija">
-    {% for kategorija in kategorije %}
-    <li><a class="gumb" href="{{ kategorija.url }}">{{ kategorija.naziv }}</a></li>
     {% endfor %}
   </ul>
 </section>

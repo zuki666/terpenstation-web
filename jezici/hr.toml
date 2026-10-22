@@ -54,7 +54,14 @@ opis = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom an
 naslov = "CBG cvijet iz Zagreba, uzgojen u živom tlu"
 uvod = "Indoor cvijet iz naše uzgajaonice, uz laboratorijsku analizu šarže koja je u prodaji. Šaljemo BOX NOW paketomatom ili GLS-om."
 istaknuto = "U ponudi"
-kategorije = "Kategorije"
+u_trgovinu = "Pogledaj ponudu"
+slika_uvoda = "Gelonade cvjetovi u staklenci"
+jamstva = [
+  "Laboratorijska analiza svake šarže",
+  "Uzgoj u Zagrebu, u živom tlu",
+  "BOX NOW paketomat ili GLS",
+  "Uplata na račun ili pouzeće",
+]
 uzgoj_naslov = "Gdje raste"
 uzgoj_tekst = "Snimke mobitelom iz naše uzgajaonice: gredice živog tla pod malčem, LED svjetlo i mreže koje drže grane."
 uzgoj_1 = "Mlade biljke u živom tlu"
