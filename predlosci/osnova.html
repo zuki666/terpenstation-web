@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="{{ korijen }}{{ datoteke.css }}">
 <link rel="icon" href="{{ korijen }}/favicon.svg" type="image/svg+xml">
 </head>
-<body data-drzava="{{ drzava.kod }}" data-katalog="{{ korijen }}{{ drzava.put }}proizvodi.json" data-api="{{ sajt.api }}">
+<body class="{% block klasa_tijela %}{% endblock %}" data-drzava="{{ drzava.kod }}" data-katalog="{{ korijen }}{{ drzava.put }}proizvodi.json" data-api="{{ sajt.api }}">
 <a class="preskoci" href="#sadrzaj">{{ t.opcenito.preskoci }}</a>
 <header class="vrh">
   <div class="vrh-unutra">
@@ -39,6 +39,7 @@
     </nav>
     {% endif %}
   </div>
+  <div class="peron" aria-hidden="true"></div>
 </header>
 <main id="sadrzaj" class="sadrzaj">
 {% block sadrzaj %}{% endblock %}

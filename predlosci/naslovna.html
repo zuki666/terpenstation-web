@@ -1,22 +1,20 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import kartica with context %}
+{% block klasa_tijela %}naslovna{% endblock %}
 {% block sadrzaj %}
 <section class="uvod-trgovine">
-  <div class="uvod-tekst">
-    <h1>{{ t.naslovna.naslov }}</h1>
-    <p class="uvod">{{ t.naslovna.uvod }}</p>
-    {% if kategorije %}
-    <a class="gumb gumb-glavni" href="{{ korijen }}{{ kategorije[0].url }}">{{ t.naslovna.u_trgovinu }}</a>
-    {% endif %}
-  </div>
-  <img class="uvod-slika" src="/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.slika_uvoda }}">
+  <h1 class="znak" aria-label="{{ t.opcenito.naziv_sajta }}"><span class="terpen">TERPEN</span><span class="station">STATION</span></h1>
+  <div class="peron-veliki" aria-hidden="true"></div>
+  <p class="uvod">{{ t.naslovna.uvod }}</p>
+  <ul class="cinjenice">
+    {% for jamstvo in t.naslovna.jamstva %}
+    <li>{{ jamstvo }}</li>
+    {% endfor %}
+  </ul>
+  {% if kategorije %}
+  <a class="gumb gumb-glavni" href="{{ korijen }}{{ kategorije[0].url }}">{{ t.naslovna.u_trgovinu }}</a>
+  {% endif %}
 </section>
-
-<ul class="jamstva">
-  {% for jamstvo in t.naslovna.jamstva %}
-  <li>{{ jamstvo }}</li>
-  {% endfor %}
-</ul>
 
 {% if istaknuti %}
 <section>
@@ -28,6 +26,18 @@
   </ul>
 </section>
 {% endif %}
+
+<section>
+  <h2>{{ t.naslovna.izbliza_naslov }}</h2>
+  <p>{{ t.naslovna.izbliza_tekst }}</p>
+  <div class="galerija">
+    <video class="video" autoplay muted loop playsinline preload="metadata" poster="/mediji/gelonade-video.jpg" width="720" height="1280" aria-label="{{ t.naslovna.izbliza_video }}">
+      <source src="/mediji/gelonade.mp4" type="video/mp4">
+    </video>
+    <img class="uz-video cvijet" src="/mediji/gelonade-cvijet.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_cvijet }}" loading="lazy">
+    <img class="uz-video" src="/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_staklenka }}" loading="lazy">
+  </div>
+</section>
 
 <section class="o-uzgoju">
   <h2>{{ t.naslovna.uzgoj_naslov }}</h2>

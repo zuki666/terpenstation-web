@@ -51,17 +51,20 @@ bez_kolacica = "Stranica ne koristi kolačiće ni praćenje."
 [naslovna]
 naslov_stranice = "Terpen Station · CBG cvijet iz Zagreba"
 opis = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže. Dostava BOX NOW paketomatom ili GLS-om."
-naslov = "CBG cvijet iz Zagreba, uzgojen u živom tlu"
-uvod = "Indoor cvijet iz naše uzgajaonice, uz laboratorijsku analizu šarže koja je u prodaji. Šaljemo BOX NOW paketomatom ili GLS-om."
+uvod = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu u našoj uzgajaonici."
 istaknuto = "U ponudi"
 u_trgovinu = "Pogledaj ponudu"
-slika_uvoda = "Gelonade cvjetovi u staklenci"
 jamstva = [
   "Laboratorijska analiza svake šarže",
   "Uzgoj u Zagrebu, u živom tlu",
   "BOX NOW paketomat ili GLS",
   "Uplata na račun ili pouzeće",
 ]
+izbliza_naslov = "Gelonade izbliza"
+izbliza_tekst = "Snimke mobitelom, bez filtera: cvijet koji šaljemo."
+izbliza_video = "Gelonade cvjetovi na dlanu, jedan cvijet izbliza i šarža u rinfuzi"
+izbliza_cvijet = "Jedan Gelonade cvijet među prstima"
+izbliza_staklenka = "Gelonade cvjetovi u staklenci, izbliza"
 uzgoj_naslov = "Gdje raste"
 uzgoj_tekst = "Snimke mobitelom iz naše uzgajaonice: gredice živog tla pod malčem, LED svjetlo i mreže koje drže grane."
 uzgoj_1 = "Mlade biljke u živom tlu"
