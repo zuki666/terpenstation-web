@@ -11,6 +11,9 @@
   <aside class="karta zbroj" data-zbroj hidden>
     <p class="red-zbroja"><span>{{ t.kosarica.meduzbroj }}</span> <strong class="broj" data-meduzbroj></strong></p>
     <p class="napomena">{{ t.kosarica.dostava_napomena }}{% if dostava_od_c %} {{ t.proizvod.dostava_od.format(iznos=novac(dostava_od_c)) }}{% endif %}</p>
+    {% if besplatna_od_c %}
+    <p class="do-besplatne" data-besplatna-od="{{ besplatna_od_c }}" hidden></p>
+    {% endif %}
     <a class="gumb gumb-glavni" href="{{ put('blagajna') }}">{{ t.kosarica.na_blagajnu }}<span class="strelica" aria-hidden="true"></span></a>
     <a class="nastavi" href="{{ put('naslovna') }}">{{ t.kosarica.nastavi }}</a>
   </aside>

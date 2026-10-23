@@ -14,6 +14,10 @@
 {{ m.napomena }}
 {{ n.napomena }}
 {% endif %}
+{% if n.izvor %}
+
+{{ m.izvor }}: {{ t.izvori.get(n.izvor, n.izvor) }}
+{% endif %}
 
 {{ m.dostava }}: {{ t.dostave[n.dostava] }}
 {% if n.dostava == "boxnow" %}

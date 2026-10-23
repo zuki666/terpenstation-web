@@ -2,8 +2,10 @@
 
 {# Ista slika na kartici i na stranici proizvoda nosi isto ime prijelaza: preglednik koji
    zna prijelaze među stranicama pretopi sliku s kartice u veliku sliku proizvoda. #}
-{% macro slika_proizvoda(slika, alt, sizes, lijeno=true, prijelaz="") %}
-<img src="{{ slika.src }}" srcset="{{ slika.srcset }}" sizes="{{ sizes }}" width="{{ slika.sirina }}" height="{{ slika.visina }}" alt="{{ alt }}"{% if lijeno %} loading="lazy"{% endif %}{% if prijelaz %} style="view-transition-name: p-{{ prijelaz }}"{% endif %}>
+{# `prioritet` je fetchpriority: prva slika proizvoda je najveći element prvog ekrana (LCP),
+   a ostale slike galerije ne smiju joj uzimati propusnost. #}
+{% macro slika_proizvoda(slika, alt, sizes, lijeno=true, prijelaz="", prioritet="") %}
+<img src="{{ slika.src }}" srcset="{{ slika.srcset }}" sizes="{{ sizes }}" width="{{ slika.sirina }}" height="{{ slika.visina }}" alt="{{ alt }}"{% if lijeno %} loading="lazy"{% endif %}{% if prioritet %} fetchpriority="{{ prioritet }}"{% endif %}{% if prijelaz %} style="view-transition-name: p-{{ prijelaz }}"{% endif %}>
 {% endmacro %}
 
 {% macro cijena(p) %}

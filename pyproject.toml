@@ -14,7 +14,7 @@ dependencies = []
 web = [
     "jinja2>=3.1",  # predlošci stranica i mailova
     "markdown>=3.5",  # pravne stranice i opisi proizvoda
-    "pillow>=10.0",  # WebP u tri širine za srcset
+    "pillow>=10.0",  # WebP u tri širine za srcset i JPEG za pregled linka
 ]
 backend = [
     "jinja2>=3.1",  # isti predlošci kao gradnja

@@ -27,6 +27,12 @@ cvijet = "Cvijet"
 pribor = "Pribor"
 ulje = "Ulje"
 
+# Naslov stranice i mrvice za Google; izbornik ostaje kratak ([kategorije]).
+[kategorije_naslov]
+cvijet = "CBG cvijet"
+pribor = "Papirići i grinderi"
+ulje = "CBD ulje"
+
 [kategorije_opis]
 cvijet = "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže."
 pribor = "Papirići, grinderi i ostali pribor."
@@ -48,7 +54,7 @@ kupnja = "Kupnja"
 kontakt = "Kontakt"
 wholesale = "Wholesale"
 drzave = "Država"
-bez_kolacica = "Stranica ne koristi kolačiće ni praćenje."
+bez_kolacica = "Stranica ne koristi kolačiće. Posjete broji Cloudflare Web Analytics, bez osobnih podataka."
 
 [naslovna]
 naslov_stranice = "Terpen Station · CBG cvijet iz Zagreba"
@@ -120,6 +126,10 @@ mrvice = "Kategorija"
 manje = "Smanji količinu"
 vise = "Povećaj količinu"
 dostava_od = "Dostava od {iznos}."
+besplatna_od = "Besplatna dostava od {iznos}."
+ili = " ili "
+# Rok slanja u redu uz gumb, npr. „Šaljemo isti ili idući radni dan.”; prazno se ne prikazuje.
+rok_slanja = ""
 opis = "Opis"
 pakiranje = "Pakiranje"
 kolicina = "Količina"
@@ -173,6 +183,16 @@ paketomat_odabran = "Odabrani paketomat:"
 probni_paketomat = "ID paketomata (probno, dok BOX NOW widget nije postavljen)"
 probna_adresa = "Adresa paketomata (probno)"
 mamac = "Ovo polje ostavite prazno"
+izvor = "Kako ste čuli za nas? (neobavezno)"
+izvor_prazno = "Odaberite"
+
+# Ključevi su u postavke.toml ([trgovina].izvori), redom kako se nude.
+[izvori]
+instagram = "Instagram"
+google = "Google"
+preporuka = "Preporuka prijatelja"
+paket = "Kartica u paketu"
+drugo = "Drugo"
 
 [blagajna.polja]
 ime = "Ime i prezime"
@@ -201,6 +221,11 @@ gls = "Kurir dostavlja paket na vašu adresu."
 [placanja]
 uplata = "Uplata na račun"
 pouzece = "Pouzeće"
+
+# Mala slova, za red uz gumb na proizvodu: „BOX NOW 3,50 € · pouzeće ili uplata na račun”.
+[placanja_kratko]
+uplata = "uplata na račun"
+pouzece = "pouzeće"
 
 [placanja_opis]
 uplata = "Podatke za uplatu i barkod dobivate odmah nakon narudžbe. Paket šaljemo kad uplata stigne."
@@ -265,6 +290,7 @@ iznosi = "Iznosi"
 placanje = "Plaćanje"
 cekaj_uplatu = "Čekaj uplatu s pozivom na broj {broj} prije slanja."
 naplati_pouzece = "Pouzeće: naplatiti {iznos}."
+izvor = "Kako su čuli za nas"
 
 [mail_kupcu]
 predmet = "Narudžba {broj} je zaprimljena"
@@ -330,3 +356,5 @@ previse_stavki = "U košarici može biti najviše 30 različitih stavki."
 paketomat = "Odaberite paketomat."
 besplatno = "besplatno"
 salje = "Šaljem…"
+do_besplatne = "Još {iznos} do besplatne dostave."
+besplatna_dostava = "Dostava je besplatna."

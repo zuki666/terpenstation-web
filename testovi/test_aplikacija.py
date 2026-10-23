@@ -151,3 +151,20 @@ def test_nepoznata_adresa(klijent):
     odgovor = klijent.get("/nema")
     assert odgovor.status_code == 404
     assert odgovor.headers["X-Robots-Tag"] == "noindex"
+
+
+def test_izvor_narudzbe_ide_u_bazu_i_mail(klijent, okolina):
+    odgovor = _naruci(klijent, izvor="instagram")
+    broj = parse_qs(urlparse(odgovor.headers["Location"]).query)["n"][0]
+    with baza.povezi(okolina.baza) as veza:
+        assert baza.narudzba(veza, broj)["izvor"] == "instagram"
+    trgovini, _ = okolina.slanje.posta.poslano
+    assert "Kako su čuli za nas: Instagram" in trgovini.get_content()
+
+
+def test_nepoznat_izvor_se_ne_sprema(klijent, okolina):
+    odgovor = _naruci(klijent, izvor="<script>")
+    assert odgovor.status_code == 303
+    broj = parse_qs(urlparse(odgovor.headers["Location"]).query)["n"][0]
+    with baza.povezi(okolina.baza) as veza:
+        assert baza.narudzba(veza, broj)["izvor"] is None

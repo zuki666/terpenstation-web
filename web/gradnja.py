@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from functools import partial
 from pathlib import Path
 
-from web import datoteke, stranice
+from web import datoteke, meta, stranice, strukturirani
 from web.postavke import KORIJEN, ucitaj_drzave, ucitaj_jezik, ucitaj_postavke
 from web.predlosci import (
     cijene_po_gramu,
@@ -34,6 +34,7 @@ class Stranica:
     indeks: bool = True
     og_slika: str = ""
     aktivna: str = ""
+    json_ld: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -56,6 +57,7 @@ class Gradnja:
         self.slike = Slike(korijen / "static", izlaz)
         self.verzija = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
         self.resursi: dict[str, str] = {}
+        self.adresa = self.postavke["sajt"]["adresa"]
 
     def gradi(self) -> list[Drzava]:
         datoteke.pripremi(self.izlaz, self.korijen)
@@ -67,8 +69,7 @@ class Gradnja:
         planovi = [self._planiraj(drzava, sirovi) for drzava in self.drzave]
         for plan in planovi:
             self._iscrtaj(plan, planovi)
-        adresa = self.postavke["sajt"]["adresa"]
-        datoteke.pisi_robots(self.izlaz, adresa, [d["put"] for d in self.drzave])
+        datoteke.pisi_robots(self.izlaz, self.adresa, [d["put"] for d in self.drzave])
         datoteke.pisi_zaglavlja(self.izlaz)
         return planovi
 
@@ -84,6 +85,7 @@ class Gradnja:
             "naziv_kategorije": jezik["kategorije"][p.kategorija],
             "slike": slike,
             "slika": slike[0] if slike else None,
+            "pregled": self.slike.pregled(p.slike[0]) if p.slike else "",
             "najniza_c": min(cijene),
             "vise_cijena": len(set(cijene)) > 1,
             **cijene_po_gramu(p.pakiranja, p.kategorija in self.postavke["trgovina"]["po_gramu"]),
@@ -118,7 +120,8 @@ class Gradnja:
                 "naslovna.html",
                 t["naslovna"]["naslov_stranice"],
                 t["naslovna"]["opis"],
-                {"istaknuti": plan.proizvodi[:istaknutih]},
+                {"istaknuti": plan.proizvodi[:istaknutih], "medij": self.slike.obradi},
+                json_ld=[strukturirani.organizacija(drzava, naziv, self.adresa)],
             ),
             Stranica(
                 ("kosarica", ""),
@@ -185,36 +188,47 @@ class Gradnja:
     def _stranice_proizvoda(self, plan: Drzava) -> list[Stranica]:
         drzava, jezik, t = plan.drzava, plan.jezik, plan.jezik
         naziv = t["opcenito"]["naziv_sajta"]
-        adresa = self.postavke["sajt"]["adresa"]
         popis = []
         for kategorija in self._kategorije(plan):
             proizvodi = [p for p in plan.proizvodi if p["kategorija"] == kategorija]
+            url, naslov = (
+                put_stranice(drzava, jezik, kategorija),
+                t["kategorije_naslov"][kategorija],
+            )
             popis.append(
                 Stranica(
                     ("kategorija", kategorija),
-                    put_stranice(drzava, jezik, kategorija),
+                    url,
                     "kategorija.html",
-                    f"{t['kategorije'][kategorija]} · {naziv}",
+                    f"{naslov} · {naziv}",
                     t["kategorije_opis"][kategorija],
                     {
                         "proizvodi": proizvodi,
                         "naziv_kategorije": t["kategorije"][kategorija],
                         "opis_kategorije": t["kategorije_opis"][kategorija],
                     },
+                    og_slika=next((p["pregled"] for p in proizvodi if p["pregled"]), ""),
                     aktivna=kategorija,
+                    json_ld=[strukturirani.mrvice(drzava, t, self.adresa, [(naslov, url)])],
                 )
             )
         for p in plan.proizvodi:
+            koraci = [(t["kategorije_naslov"][p["kategorija"]], p["url_kategorije"])]
+            koraci.append((p["naziv"], p["url"]))
             popis.append(
                 Stranica(
                     ("proizvod", p["slug"]),
                     p["url"],
                     "proizvod.html",
-                    f"{p['naziv']} · {naziv}",
+                    f"{p['naziv']} · {t['kategorije_naslov'][p['kategorija']]} · {naziv}",
                     p["kratki_opis"] or t["kategorije_opis"][p["kategorija"]],
                     {"p": p},
-                    og_slika=f"{adresa}{p['slika'].velika}" if p["slika"] else "",
+                    og_slika=p["pregled"],
                     aktivna=p["kategorija"],
+                    json_ld=[
+                        strukturirani.proizvod(p, drzava, self.adresa),
+                        strukturirani.mrvice(drzava, t, self.adresa, koraci),
+                    ],
                 )
             )
         return popis
@@ -236,23 +250,20 @@ class Gradnja:
 
     def _iscrtaj(self, plan: Drzava, planovi: list[Drzava]) -> None:
         zajednicko = self._zajednicko(plan)
-        adresa = self.postavke["sajt"]["adresa"]
+        # Svaka stranica koja se indeksira ima sliku u pregledu linka (Instagram, WhatsApp).
+        zadana = self.slike.pregled(self.postavke["trgovina"]["slika_pregleda"])
         for stranica in plan.stranice:
-            meta = {
-                "naslov": stranica.naslov,
-                "opis": stranica.opis or plan.jezik["naslovna"]["opis"],
-                "bez_indeksa": not stranica.indeks,
-                "kanonski": f"{adresa}{stranica.put}" if stranica.indeks else "",
-                "alternativni": alternative(stranica, planovi, adresa) if stranica.indeks else [],
-                "og_tip": "product" if stranica.kljuc[0] == "proizvod" else "website",
-                "og_slika": stranica.og_slika,
-                "aktivna": stranica.aktivna,
-            }
+            if stranica.indeks and not stranica.og_slika:
+                stranica.og_slika = zadana
+            oznake = meta.za_stranicu(stranica, plan, planovi, self.adresa)
             predlozak = self.okruzenje.get_template(stranica.predlozak)
-            html = predlozak.render(**zajednicko, **stranica.podaci, stranica=meta)
+            html = predlozak.render(**zajednicko, **stranica.podaci, stranica=oznake)
             datoteke.pisi(self.izlaz, stranica.put, html)
         self._pisi_katalog(plan)
-        urlovi = [f"{adresa}{s.put}" for s in plan.stranice if s.indeks]
+        urlovi = [f"{self.adresa}{s.put}" for s in plan.stranice if s.indeks]
+        if plan.drzava["put"] == "/":
+            # Wholesale je kopija gotove stranice, pa ga gradnja ne iscrtava i ne zna za njega.
+            urlovi.append(f"{self.adresa}/wholesale/")
         datoteke.pisi_sitemap(self.izlaz, f"{plan.drzava['put']}sitemap.xml", urlovi)
 
     def _pisi_katalog(self, plan: Drzava) -> None:
@@ -281,21 +292,6 @@ def javni_proizvod(p: dict) -> dict:
             for pak in p["pakiranja"]
         ],
     }
-
-
-def alternative(stranica: Stranica, planovi: list[Drzava], adresa: str) -> list[dict]:
-    """hreflang tek kad ima više država; ista stranica se prepoznaje po ključu, ne po URL-u."""
-    if len(planovi) <= 1:
-        return []
-    return [
-        {
-            "jezik": f"{plan.drzava['jezik']}-{plan.drzava['kod'].upper()}",
-            "url": f"{adresa}{druga.put}",
-        }
-        for plan in planovi
-        for druga in plan.stranice
-        if druga.kljuc == stranica.kljuc and druga.indeks
-    ]
 
 
 def gradi(izlaz: Path, korijen: Path = KORIJEN) -> list[Drzava]:

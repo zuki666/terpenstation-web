@@ -3,7 +3,7 @@
 from datetime import UTC, datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from web import stranice
+from web import meta, stranice
 from web.postavke import ucitaj_jezik
 from web.predlosci import izbornik_drzava, iznos, kontekst, okruzenje, veze_kategorija
 
@@ -48,17 +48,8 @@ class Iscrtavac:
     def stranica(self, predlozak: str, drzava: dict, katalog: dict | None, podaci: dict) -> str:
         """`podaci` mora imati `naslov`; ostalo ide predlošku kako jest."""
         osnova = self._kontekst(drzava, katalog)
-        meta = {
-            "naslov": f"{podaci['naslov']} · {osnova['t']['opcenito']['naziv_sajta']}",
-            "opis": "",
-            "bez_indeksa": True,
-            "kanonski": "",
-            "alternativni": [],
-            "og_tip": "website",
-            "og_slika": "",
-            "aktivna": "",
-        }
-        return self.okruzenje.get_template(predlozak).render(**osnova, **podaci, stranica=meta)
+        oznake = meta.prazna(f"{podaci['naslov']} · {osnova['t']['opcenito']['naziv_sajta']}")
+        return self.okruzenje.get_template(predlozak).render(**osnova, **podaci, stranica=oznake)
 
     def tekst(self, predlozak: str, drzava: dict, podaci: dict) -> str:
         return self.okruzenje.get_template(predlozak).render(

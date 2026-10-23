@@ -1,6 +1,18 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import kartica with context %}
 {% from "_znakovi.html" import ploce, peron, peron_kategorije with context %}
+{# Fotke iz /mediji/ idu kroz istu obradu kao slike proizvoda (WebP, srcset); izvorni JPEG
+   ostaje na istoj putanji za wholesale i kad obrada ne uspije. #}
+{% macro fotka(put, alt, sirina, visina, klasa="") %}
+{% set s = medij(put) %}
+{% if s %}
+<img{% if klasa %} class="{{ klasa }}"{% endif %} src="{{ s.src }}" srcset="{{ s.srcset }}" sizes="(min-width: 56rem) 22rem, 46vw" width="{{ s.sirina }}" height="{{ s.visina }}" alt="{{ alt }}" loading="lazy">
+{% else %}
+<img{% if klasa %} class="{{ klasa }}"{% endif %} src="{{ korijen }}{{ put }}" width="{{ sirina }}" height="{{ visina }}" alt="{{ alt }}" loading="lazy">
+{% endif %}
+{% endmacro %}
+{# Poster se vidi samo dok video ne krene, pa je dovoljna najmanja širina. #}
+{% macro poster(put) %}{% set s = medij(put) %}{{ s.mala if s else korijen ~ put }}{% endmacro %}
 {% block klasa_tijela %}naslovna{% endblock %}
 {% block sadrzaj %}
 <section class="uvod" aria-labelledby="znak">
@@ -76,11 +88,11 @@
     <p>{{ t.naslovna.izbliza_tekst }}</p>
   </header>
   <div class="galerija">
-    <video class="video" muted loop playsinline preload="none" poster="{{ korijen }}/mediji/gelonade-video.jpg" width="720" height="1280" aria-label="{{ t.naslovna.izbliza_video }}" data-video>
+    <video class="video" muted loop playsinline preload="none" poster="{{ poster('/mediji/gelonade-video.jpg') }}" width="720" height="1280" aria-label="{{ t.naslovna.izbliza_video }}" data-video>
       <source src="{{ korijen }}/mediji/gelonade.mp4" type="video/mp4">
     </video>
-    <img class="cvijet" src="{{ korijen }}/mediji/gelonade-cvijet.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_cvijet }}" loading="lazy">
-    <img src="{{ korijen }}/mediji/gelonade-staklenka.jpg" width="1080" height="1350" alt="{{ t.naslovna.izbliza_staklenka }}" loading="lazy">
+    {{ fotka("/mediji/gelonade-cvijet.jpg", t.naslovna.izbliza_cvijet, 1080, 1350, "cvijet") }}
+    {{ fotka("/mediji/gelonade-staklenka.jpg", t.naslovna.izbliza_staklenka, 1080, 1350) }}
   </div>
 </section>
 
@@ -100,7 +112,7 @@
       <h3>{{ stanica.naslov }}</h3>
       <p>{{ stanica.tekst }}</p>
       {% if kljuc in videi %}
-      <video class="zaslon" muted loop playsinline preload="none" poster="{{ korijen }}/mediji/{{ videi[kljuc] }}-poster.jpg" width="320" height="568" aria-label="{{ stanica.video }}" data-video>
+      <video class="zaslon" muted loop playsinline preload="none" poster="{{ poster('/mediji/' ~ videi[kljuc] ~ '-poster.jpg') }}" width="320" height="568" aria-label="{{ stanica.video }}" data-video>
         <source src="{{ korijen }}/mediji/{{ videi[kljuc] }}.mp4" type="video/mp4">
       </video>
       {% elif kljuc == "analiza" %}

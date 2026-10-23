@@ -21,6 +21,7 @@ POLJA = (
     "tvrtka",
     "oib",
     "napomena",
+    "izvor",
     "punoljetan",
     "uvjeti",
     "stavke",

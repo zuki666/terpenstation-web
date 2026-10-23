@@ -104,6 +104,18 @@
       {{ polje("oib", obavezno=false, dodatno='maxlength="11" inputmode="numeric"') }}
     </details>
 
+    {% if izvori %}
+    <div class="polje">
+      <label for="polje-izvor">{{ t.blagajna.izvor }}</label>
+      <select id="polje-izvor" name="izvor">
+        <option value="">{{ t.blagajna.izvor_prazno }}</option>
+        {% for izvor in izvori %}
+        <option value="{{ izvor }}"{% if v.get('izvor') == izvor %} selected{% endif %}>{{ t.izvori[izvor] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endif %}
+
     <div class="polje">
       <label for="polje-napomena">{{ t.blagajna.polja.napomena }}</label>
       <textarea id="polje-napomena" name="napomena" rows="3" maxlength="1000">{{ v.get('napomena', '') }}</textarea>

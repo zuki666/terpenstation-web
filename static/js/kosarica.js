@@ -216,6 +216,12 @@
       $("[data-zbroj]", okvir).hidden = prazna;
       const meduzbroj = stanje.stavke.reduce((z, s) => z + s.cijena_c * s.kolicina, 0);
       $("[data-meduzbroj]", okvir).textContent = novac(meduzbroj);
+      const prag = $("[data-besplatna-od]", okvir);
+      if (prag) {
+        const ostatak = Number(prag.dataset.besplatnaOd) - meduzbroj;
+        prag.textContent = ostatak > 0 ? T.do_besplatne.replace("{iznos}", novac(ostatak)) : T.besplatna_dostava;
+        prag.hidden = prazna;
+      }
     }
 
     iscrtaj();
@@ -341,6 +347,11 @@
         return li;
       })
     );
+    // Provjera već pri otvaranju, da kupac ne upiše sve podatke pa tek na kraju sazna da
+    // narudžba preko weba ne ide; provjera pri slanju ostaje, jer backend može pasti usput.
+    zdravlje().then((radi) => {
+      $("[data-nedostupno]").hidden = radi;
+    });
     forma.addEventListener("change", () => osvjeziBlagajnu(pravila, stavke, forma));
     osvjeziBlagajnu(pravila, stavke, forma);
     widget(pravila, forma);

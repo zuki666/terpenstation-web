@@ -1,13 +1,16 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import slika_proizvoda with context %}
 {% from "_znakovi.html" import peron_kategorije with context %}
+{% macro cijena_dostave(centi) %}{% if centi %}{{ novac(centi) }}{% else %}{{ t.blagajna.besplatno }}{% endif %}{% endmacro %}
 {% macro po_gramu(centi) %}<span class="po-jedinici broj">{{ t.proizvod.po_gramu.format(iznos=novac(centi)) }}</span>{% endmacro %}
 {% block sadrzaj %}
 <nav class="mrvice" aria-label="{{ t.proizvod.mrvice }}"><a href="{{ korijen }}{{ p.url_kategorije }}">{{ peron_kategorije(p.kategorija) }}{{ p.naziv_kategorije }}</a></nav>
 <article class="proizvod">
+  {# Na mobitelu jedna slika ide preko cijele širine, a više njih po 62 % (stil.css). #}
+  {% set sirina_galerije = "(min-width: 56rem) 38rem, " ~ ("92vw" if p.slike|length == 1 else "62vw") %}
   <div class="galerija-proizvoda" role="group" aria-label="{{ t.proizvod.galerija }}">
     {% for slika in p.slike %}
-    {{ slika_proizvoda(slika, p.naziv, "(min-width: 56rem) 38rem, 92vw", lijeno=not loop.first, prijelaz=p.slug if loop.first else "") }}
+    {{ slika_proizvoda(slika, p.naziv, sirina_galerije, lijeno=not loop.first, prioritet="high" if loop.first else "low", prijelaz=p.slug if loop.first else "") }}
     {% else %}
     <span class="bez-slike">{{ t.proizvod.bez_slike }}</span>
     {% endfor %}
@@ -44,11 +47,16 @@
         </div>
         <button class="gumb gumb-glavni" type="submit">{{ t.proizvod.dodaj }}</button>
       </div>
+      <p class="uz-gumb">
+        {% for dostava in drzava.dostave %}<span>{{ t.dostave_kratko[dostava] }} <span class="broj">{{ cijena_dostave(drzava.dostava[dostava].cijena_c) }}</span></span>{% endfor %}
+        <span>{% for placanje in drzava.placanja %}{{ t.placanja_kratko[placanje] }}{% if not loop.last %}{{ t.proizvod.ili }}{% endif %}{% endfor %}</span>
+        {% if t.proizvod.rok_slanja %}<span>{{ t.proizvod.rok_slanja }}</span>{% endif %}
+      </p>
       <p class="poruka" data-poruka role="status" hidden>{{ t.proizvod.dodano }} <a href="{{ korijen }}{{ put('kosarica') }}">{{ t.proizvod.u_kosaricu }}<span class="strelica" aria-hidden="true"></span></a></p>
       <p class="poruka greska" data-poruka-greska role="alert" hidden></p>
       <noscript><p class="napomena">{{ t.opcenito.treba_js }}</p></noscript>
     </form>
-    <p class="napomena">{{ t.proizvod.pdv_ukljucen }}{% if dostava_od_c %} {{ t.proizvod.dostava_od.format(iznos=novac(dostava_od_c)) }}{% endif %}</p>
+    <p class="napomena">{{ t.proizvod.pdv_ukljucen }}{% if besplatna_od_c %} {{ t.proizvod.besplatna_od.format(iznos=novac(besplatna_od_c)) }}{% endif %}</p>
 
     {% if p.cbg or p.thc or p.sarza %}
     <section class="analiza" aria-labelledby="naslov-analize">

@@ -7,8 +7,15 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 # Datoteke s hashom u imenu nikad se ne mijenjaju, pa smiju u cache zauvijek. Font treba
-# CORS jer ga učitavaju i stranice backenda s api.terpenstation.com.
-ZAGLAVLJA = """/*
+# CORS jer ga učitavaju i stranice backenda s api.terpenstation.com. Adrese *.pages.dev
+# vraćaju isti sajt kao terpenstation.com, pa ih Google ne smije indeksirati kao duplikat.
+ZAGLAVLJA = """https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
