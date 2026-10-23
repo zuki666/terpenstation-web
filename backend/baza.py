@@ -32,6 +32,7 @@ STUPCI_NARUDZBE = (
     "tvrtka",
     "oib",
     "napomena",
+    "izvor",
     "token",
     "ip",
 )

@@ -48,6 +48,7 @@ def _narudzba(drzava: dict, placanje: str) -> dict:
         "tvrtka": "Firma d.o.o.",
         "oib": "29737469043",
         "napomena": "Zvoniti dvaput",
+        "izvor": "instagram",
         "token": "t" * 22,
         "mail_trgovini": None,
         "mail_kupcu": None,
@@ -74,6 +75,7 @@ def test_stranice_i_mailovi_backenda(drzava, placanje):
         "mail/trgovini.txt", drzava, {"n": n, "boxnow_link": "", "vrijeme": "x"}
     )
     assert "Firma d.o.o." in trgovini and "Zvoniti dvaput" in trgovini
+    assert "Kako su čuli za nas: Instagram" in trgovini
     assert uplata["rok"] == "26. 10. 2026."
 
 

@@ -14,7 +14,7 @@ Podatke za dostavu prosljeđujemo dostavnoj službi koju odaberete (BOX NOW ili 
 
 ## Kolačići i praćenje
 
-Stranica ne koristi kolačiće ni alate za praćenje. Sadržaj košarice sprema se samo u vašem pregledniku (localStorage) i ne šalje se nikamo dok ne pošaljete narudžbu.
+Stranica ne koristi kolačiće. Broj posjeta, stranice i izvore posjeta (npr. Google ili Instagram) mjeri Cloudflare Web Analytics, bez kolačića i bez osobnih podataka posjetitelja. Sadržaj košarice sprema se samo u vašem pregledniku (localStorage) i ne šalje se nikamo dok ne pošaljete narudžbu.
 
 ## Vaša prava
 

@@ -125,6 +125,10 @@ class Narudzba:
         podaci = {
             **{k: p[k] for k in ("ime", "email", "telefon", "dostava", "placanje")},
             **{k: p[k] or None for k in ("tvrtka", "oib", "napomena")},
+            # Neobavezno polje: nepoznata vrijednost se ne odbija, nego se ne sprema.
+            "izvor": p["izvor"]
+            if p["izvor"] in self.okolina.postavke["trgovina"]["izvori"]
+            else None,
             "paketomat_id": p["paketomat_id"] if boxnow else None,
             "paketomat_adresa": (p["paketomat_adresa"] or None) if boxnow else None,
             **{k: None if boxnow else p[k] for k in ("ulica", "postanski_broj", "mjesto")},

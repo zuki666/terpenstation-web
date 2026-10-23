@@ -19,9 +19,20 @@
 <meta property="og:type" content="{{ stranica.og_tip }}">
 <meta property="og:title" content="{{ stranica.naslov }}">
 <meta property="og:description" content="{{ stranica.opis }}">
+<meta property="og:locale" content="{{ drzava.jezik }}_{{ drzava.kod|upper }}">
+{% if stranica.kanonski %}
+<meta property="og:url" content="{{ stranica.kanonski }}">
+{% endif %}
 {% if stranica.og_slika %}
 <meta property="og:image" content="{{ stranica.og_slika }}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="{{ stranica.og_velicina[0] }}">
+<meta property="og:image:height" content="{{ stranica.og_velicina[1] }}">
+<meta name="twitter:card" content="summary_large_image">
 {% endif %}
+{% for podaci in stranica.json_ld %}
+<script type="application/ld+json">{{ podaci|tojson }}</script>
+{% endfor %}
 <meta name="theme-color" content="#ecefe9">
 <link rel="preload" href="{{ korijen }}/font/archivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ korijen }}{{ datoteke.css }}">

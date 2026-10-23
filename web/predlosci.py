@@ -111,6 +111,8 @@ def kontekst(drzava: dict, jezik: dict, postavke: dict, korijen: str = "") -> di
         "novac": partial(iznos, oblik=jezik["oblik"], valuta=drzava["valuta"]),
         "put": partial(put_stranice, drzava, jezik),
         "dostava_od_c": najjeftinija_dostava(drzava),
+        "besplatna_od_c": drzava.get("besplatna_dostava_od_c", 0),
+        "izvori": postavke["trgovina"]["izvori"],
         "js_podaci": {
             "tekstovi": jezik["js"],
             "oblik": jezik["oblik"],

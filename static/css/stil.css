@@ -584,6 +584,12 @@ a.zaslon-ploca:hover { background: #26231e; }
   background: var(--crta);
 }
 .galerija-proizvoda:has(> :only-child) { grid-auto-columns: 100%; }
+/* Na mobitelu niža galerija, da gumb „Dodaj u košaricu” stane na prvi ekran (390 × 844). */
+@media (max-width: 55.99rem) {
+  .galerija-proizvoda { grid-auto-columns: 62%; }
+  .galerija-proizvoda > * { aspect-ratio: 1; }
+  .galerija-proizvoda > :only-child { aspect-ratio: 4 / 3; }
+}
 @media (min-width: 56rem) {
   .galerija-proizvoda { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; margin: 0; padding: 0; }
   .galerija-proizvoda > :first-child { grid-column: 1 / -1; }
@@ -721,8 +727,8 @@ input, select, textarea {
   color: inherit;
   font: inherit;
 }
-input:hover, textarea:hover { border-color: #a5ad9e; }
-input:focus, textarea:focus { border-color: var(--tinta); }
+input:hover, select:hover, textarea:hover { border-color: #a5ad9e; }
+input:focus, select:focus, textarea:focus { border-color: var(--tinta); }
 input[type="radio"], input[type="checkbox"] { width: auto; }
 .polje { display: grid; gap: 0.35rem; margin-bottom: 1rem; }
 .polje label { font-weight: 600; font-size: 0.9375rem; }
@@ -731,6 +737,7 @@ input[type="radio"], input[type="checkbox"] { width: auto; }
 .greska-polja { margin: 0; color: var(--greska); font-size: 0.9375rem; font-weight: 600; }
 .obavijest { max-width: var(--uska); padding: 0.8rem 1rem; border-left: 4px solid var(--smola); background: var(--papir-svj); }
 .obavijest.greska { border-left-color: var(--greska); }
+.obavijest[data-nedostupno] { margin-bottom: 2rem; }
 .obavijest p:last-child { margin-bottom: 0; }
 .prazno { max-width: var(--uska); padding: 2rem 0; }
 
@@ -906,3 +913,6 @@ input[type="radio"], input[type="checkbox"] { width: auto; }
   @view-transition { navigation: auto; }
 }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; }
+
+.uz-gumb { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; margin: 0.8rem 0 0; font-size: 0.9375rem; color: var(--tinta-blijeda); }
+.do-besplatne { margin: 0; font-weight: 600; }

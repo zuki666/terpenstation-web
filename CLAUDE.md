@@ -48,7 +48,7 @@ Python 3.11+ (zbog `tomllib`); server ima 3.13.
 - Jinja ima `StrictUndefined` i autoescape: tekst koji fali ruši gradnju i test, ne prazni stranicu.
 - `logging`, ne `print`. Ruff (E, F, I, B, UP, C90, PLR, T20, ERA; max-complexity 10, max-args 4) mora proći bez upozorenja.
 - Ovisnosti po grupama u `pyproject.toml` (web, backend, razvoj). Novi paket samo uz jak razlog i odluku u ODLUKE.
-- Bez kolačića i praćenja; košarica je u localStorage, uz rad u memoriji kad ne radi (W18).
+- Bez kolačića; posjete broji samo Cloudflare Web Analytics, koji Cloudflare ubacuje sam (W34). Košarica je u localStorage, uz rad u memoriji kad ne radi (W18).
 
 ## Baza
 
