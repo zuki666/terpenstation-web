@@ -153,6 +153,28 @@ def test_sorta_proizvod_naslovna_i_izbornik(izgradjen):
     assert "https://terpenstation.com/dnevnik/gelonade/" in sitemap
 
 
+def test_zapis_bez_slike_nije_u_redu_naslovne_ni_proizvoda(repo_kopija, tmp_path):
+    _proizvod(repo_kopija)
+    _zapis(
+        repo_kopija,
+        "2026-10-26-link",
+        naslov="Samo link",
+        datum="2026-10-26",
+        slike=[],
+        proizvod="gelonade",
+        instagram="https://www.instagram.com/p/abc/",
+    )
+    _zapis(repo_kopija, "2026-10-25-slika", naslov="Sa slikom", proizvod="gelonade")
+    izlaz = tmp_path / "dist"
+    gradi(izlaz, repo_kopija)
+    naslovna = (izlaz / "index.html").read_text(encoding="utf-8")
+    proizvod = _html(izlaz, "proizvod/gelonade")
+    assert "Sa slikom" in naslovna and "Samo link" not in naslovna
+    assert "Sa slikom" in proizvod and "Samo link" not in proizvod
+    for put in ("dnevnik", "dnevnik/gelonade"):
+        assert "Samo link" in _html(izlaz, put)
+
+
 def test_bez_zapisa_nema_dnevnika(repo_kopija, tmp_path):
     _proizvod(repo_kopija)
     izlaz = tmp_path / "dist"

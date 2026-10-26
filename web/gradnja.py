@@ -119,7 +119,9 @@ class Gradnja:
                 {
                     "istaknuti": plan.proizvodi[:istaknutih],
                     "medij": self.slike.obradi,
-                    "zapisi": plan.zapisi[: self.postavke["dnevnik"]["na_naslovnoj"]],
+                    "zapisi": stranice_dnevnika.za_red(
+                        plan.zapisi, self.postavke["dnevnik"]["na_naslovnoj"]
+                    ),
                 },
                 json_ld=[strukturirani.organizacija(drzava, naziv, self.adresa)],
             ),
@@ -213,8 +215,11 @@ class Gradnja:
                     json_ld=[strukturirani.mrvice(drzava, t, self.adresa, [(naslov, url)])],
                 )
             )
-        po_sorti = stranice_dnevnika.po_sorti(plan.zapisi)
         na_proizvodu = self.postavke["dnevnik"]["na_proizvodu"]
+        redovi = {
+            slug: stranice_dnevnika.za_red(zapisi, na_proizvodu)
+            for slug, zapisi in stranice_dnevnika.po_sorti(plan.zapisi).items()
+        }
         for p in plan.proizvodi:
             koraci = [(t["kategorije_naslov"][p["kategorija"]], p["url_kategorije"])]
             koraci.append((p["naziv"], p["url"]))
@@ -225,7 +230,7 @@ class Gradnja:
                     "proizvod.html",
                     f"{p['naziv']} · {t['kategorije_naslov'][p['kategorija']]} · {naziv}",
                     p["kratki_opis"] or t["kategorije_opis"][p["kategorija"]],
-                    {"p": p, "zapisi": po_sorti.get(p["slug"], [])[:na_proizvodu]},
+                    {"p": p, "zapisi": redovi.get(p["slug"], [])},
                     og_slika=p["pregled"],
                     aktivna=p["kategorija"],
                     json_ld=[

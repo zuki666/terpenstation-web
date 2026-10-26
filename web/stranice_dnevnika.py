@@ -110,6 +110,12 @@ def put_dnevnika(zapisi: list[dict], okvir: Okvir) -> str:
     return put_stranice(okvir.drzava, okvir.jezik, "dnevnik") if zapisi else ""
 
 
+def za_red(zapisi: list[dict], broj: int) -> list[dict]:
+    """Prvih `broj` zapisa sa slikom: red na naslovnoj i proizvodu je niz slika, pa bi zapis
+    bez slike u njemu bio prazan okvir. Takav zapis ostaje na popisu dnevnika i sorte."""
+    return [z for z in zapisi if z["slika"]][:broj]
+
+
 def po_sorti(zapisi: list[dict]) -> dict[str, list[dict]]:
     """Zapisi po slugu proizvoda, od najnovijeg; zapis bez sorte nije ni u jednoj."""
     sorte: dict[str, list[dict]] = {}
