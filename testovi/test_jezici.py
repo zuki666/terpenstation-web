@@ -44,3 +44,10 @@ def test_kategorije_iz_postavki_imaju_tekstove_i_url():
         jezik = _ucitaj(put)
         for kategorija in kategorije:
             assert kategorija in jezik["kategorije"] and kategorija in jezik["url"]
+
+
+def test_faze_dnevnika_iz_postavki_imaju_tekstove():
+    faze = _ucitaj(KORIJEN / "postavke.toml")["dnevnik"]["faze"]
+    for put in JEZICI:
+        jezik = _ucitaj(put)
+        assert set(faze) <= set(jezik["faze"]) and "dnevnik" in jezik["url"]

@@ -2,9 +2,16 @@
 
 import hashlib
 import json
+import logging
 import shutil
 from pathlib import Path
 from xml.sax.saxutils import escape
+
+log = logging.getLogger(__name__)
+
+# Cloudflare Pages ne objavi sajt u kojem je ijedna datoteka veća od 25 MiB, pa bi jedan
+# prevelik video iz CMS-a zaustavio i svaku iduću objavu, i izmjene proizvoda.
+NAJVECA_DATOTEKA = 25 * 1024 * 1024
 
 # Datoteke s hashom u imenu nikad se ne mijenjaju, pa smiju u cache zauvijek. Font treba
 # CORS jer ga učitavaju i stranice backenda s api.terpenstation.com. Adrese *.pages.dev
@@ -41,10 +48,24 @@ https://:version.:project.pages.dev/*
 """
 
 
+def prevelika(put: Path) -> bool:
+    return put.stat().st_size > NAJVECA_DATOTEKA
+
+
+def _prevelike(mapa: str, imena: list[str]) -> list[str]:
+    preskocene = []
+    for ime in imena:
+        put = Path(mapa) / ime
+        if put.is_file() and prevelika(put):
+            log.warning("%s je veća od 25 MiB i ne ide na sajt", put)
+            preskocene.append(ime)
+    return preskocene
+
+
 def pripremi(izlaz: Path, korijen: Path) -> None:
     if izlaz.exists():
         shutil.rmtree(izlaz)
-    shutil.copytree(korijen / "static", izlaz)
+    shutil.copytree(korijen / "static", izlaz, ignore=_prevelike)
     shutil.copytree(korijen / "wholesale", izlaz / "wholesale")
 
 

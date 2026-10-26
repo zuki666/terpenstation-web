@@ -55,6 +55,8 @@ Prijava u Sveltia CMS ide preko GitHuba, kroz mali Cloudflare Worker.
 4. U `static/admin/config.yml` zamijeni `RACUN` u `base_url` adresom Workera (PR).
 5. **Frend:** GitHub račun s njegovim mailom, poziv u ovaj repo s pravom pisanja (Settings → Collaborators). Na njegovom mobitelu otvori `terpenstation.com/admin`, prijava kroz GitHub, pa *Dodaj na početni zaslon*.
 
+**Dnevnik uzgoja** (W8) je druga zbirka u CMS-u. Zapis ima naslov, datum, tekst, fotke ili video (MP4 do 25 MB), fazu i sortu; kvačica „Objavljeno” ga skriva. Dnevnik se pojavi u izborniku čim postoji prvi objavljeni zapis, a zapisi sorte i na stranici proizvoda.
+
 ## 3. Mail
 
 1. Google Admin: alias `narudzbe@terpenstation.com` na korisniku sales@.
@@ -109,7 +111,7 @@ Tunel za `api.terpenstation.com`: `deploy/cloudflared.md`.
 
 **Ažuriranje** nakon spojenog PR-a: kao `trgovina` `git pull && .venv/bin/pip install ".[backend]" && .venv/bin/python -m backend migriraj`, pa kao root `systemctl restart trgovina`.
 
-**Dnevnik:** `journalctl -u trgovina -f`. Kopije baze su u `backup/` (30 dana).
+**Zapisnik:** `journalctl -u trgovina -f`. Kopije baze su u `backup/` (30 dana).
 
 ## 5. BOX NOW (W4)
 

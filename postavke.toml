@@ -17,6 +17,15 @@ slika_pregleda = "/mediji/gelonade-staklenka.jpg"
 # „Kako ste čuli za nas?” na blagajni; tekstovi su u jezici/<jezik>.toml, [izvori].
 izvori = ["instagram", "google", "preporuka", "paket", "drugo"]
 
+[dnevnik]
+# Faze uzgoja redom; tekstovi su u jezici/<jezik>.toml, [faze]. Isti popis je u CMS-u.
+faze = ["tlo", "vegetacija", "cvjetanje", "berba", "susenje", "analiza"]
+zapisa_po_stranici = 10
+na_naslovnoj = 5
+na_proizvodu = 3
+# Profil s kojeg dolaze zapisi, za link na vrhu dnevnika; prazno = bez linka.
+instagram = "canna_lab_hr"
+
 [mail]
 posiljatelj = "Terpen Station <narudzbe@terpenstation.com>"
 smtp_korisnik = "sales@terpenstation.com"

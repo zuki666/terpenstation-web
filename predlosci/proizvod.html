@@ -1,6 +1,7 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import slika_proizvoda with context %}
 {% from "_znakovi.html" import peron_kategorije with context %}
+{% from "_dnevnik.html" import red with context %}
 {% macro cijena_dostave(centi) %}{% if centi %}{{ novac(centi) }}{% else %}{{ t.blagajna.besplatno }}{% endif %}{% endmacro %}
 {% macro po_gramu(centi) %}<span class="po-jedinici broj">{{ t.proizvod.po_gramu.format(iznos=novac(centi)) }}</span>{% endmacro %}
 {% block sadrzaj %}
@@ -79,6 +80,15 @@
     <h2>{{ t.proizvod.opis }}</h2>
     {{ p.opis_html|safe }}
   </div>
+  {% endif %}
+
+  {% if zapisi %}
+  <section class="iz-dnevnika" aria-labelledby="iz-dnevnika">
+    <p class="nadnaslov">{{ t.dnevnik.kako_je_rasla }}</p>
+    <h2 id="iz-dnevnika">{{ t.dnevnik.iz_dnevnika }}</h2>
+    {{ red(zapisi) }}
+    <p class="iz-dnevnika-veza"><a class="zapis-sorta" href="{{ korijen }}{{ put('dnevnik', p.slug) }}">{{ t.dnevnik.cijeli_put.format(sorta=p.naziv) }}<span class="strelica" aria-hidden="true"></span></a></p>
+  </section>
   {% endif %}
 </article>
 {% endblock %}

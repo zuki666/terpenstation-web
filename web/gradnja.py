@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from functools import partial
 from pathlib import Path
 
-from web import datoteke, meta, stranice, strukturirani
+from web import datoteke, meta, stranice, stranice_dnevnika, strukturirani
 from web.postavke import KORIJEN, ucitaj_drzave, ucitaj_jezik, ucitaj_postavke
 from web.predlosci import (
     cijene_po_gramu,
@@ -17,24 +17,11 @@ from web.predlosci import (
     put_stranice,
     veze_kategorija,
 )
-from web.proizvodi import Proizvod, ucitaj_sirove, za_jezik
+from web.proizvodi import Proizvod, javni_proizvod, ucitaj_sirove, za_jezik
 from web.slike import Slike
+from web.stranica import Stranica
 
 log = logging.getLogger(__name__)
-
-
-@dataclass
-class Stranica:
-    kljuc: tuple[str, str]
-    put: str
-    predlozak: str
-    naslov: str
-    opis: str
-    podaci: dict = field(default_factory=dict)
-    indeks: bool = True
-    og_slika: str = ""
-    aktivna: str = ""
-    json_ld: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -45,6 +32,7 @@ class Drzava:
     jezik: dict
     proizvodi: list[dict]
     stranice: list[Stranica] = field(default_factory=list)
+    zapisi: list[dict] = field(default_factory=list)
 
 
 class Gradnja:
@@ -58,6 +46,7 @@ class Gradnja:
         self.verzija = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
         self.resursi: dict[str, str] = {}
         self.adresa = self.postavke["sajt"]["adresa"]
+        self.sirovi_dnevnika: list[tuple[str, dict]] = []
 
     def gradi(self) -> list[Drzava]:
         datoteke.pripremi(self.izlaz, self.korijen)
@@ -66,6 +55,7 @@ class Gradnja:
             "js": datoteke.s_hashom(self.izlaz, "js/kosarica.js"),
         }
         sirovi = ucitaj_sirove(self.korijen / "sadrzaj" / "proizvodi")
+        self.sirovi_dnevnika = ucitaj_sirove(self.korijen / "sadrzaj" / "dnevnik", "zapis")
         planovi = [self._planiraj(drzava, sirovi) for drzava in self.drzave]
         for plan in planovi:
             self._iscrtaj(plan, planovi)
@@ -103,9 +93,15 @@ class Gradnja:
             for p in za_jezik(sirovi, drzava["jezik"], kontekst_proizvoda)
         ]
         plan = Drzava(drzava, jezik, proizvodi)
+        plan.zapisi = stranice_dnevnika.ucitaj(self.sirovi_dnevnika, proizvodi, self._okvir(plan))
         plan.stranice = self._stranice(plan)
         log.info("%s: %d proizvoda, %d stranica", drzava["kod"], len(proizvodi), len(plan.stranice))
         return plan
+
+    def _okvir(self, plan: Drzava) -> stranice_dnevnika.Okvir:
+        return stranice_dnevnika.Okvir(
+            plan.drzava, plan.jezik, self.postavke, self.slike, self.adresa
+        )
 
     def _stranice(self, plan: Drzava) -> list[Stranica]:
         drzava, jezik, t = plan.drzava, plan.jezik, plan.jezik
@@ -120,7 +116,11 @@ class Gradnja:
                 "naslovna.html",
                 t["naslovna"]["naslov_stranice"],
                 t["naslovna"]["opis"],
-                {"istaknuti": plan.proizvodi[:istaknutih], "medij": self.slike.obradi},
+                {
+                    "istaknuti": plan.proizvodi[:istaknutih],
+                    "medij": self.slike.obradi,
+                    "zapisi": plan.zapisi[: self.postavke["dnevnik"]["na_naslovnoj"]],
+                },
                 json_ld=[strukturirani.organizacija(drzava, naziv, self.adresa)],
             ),
             Stranica(
@@ -183,7 +183,8 @@ class Gradnja:
                         {"tekst_html": tekstovi[kljuc]["html"]},
                     )
                 )
-        return popis + self._stranice_proizvoda(plan)
+        dnevnik_stranice = stranice_dnevnika.stranice(plan.zapisi, self._okvir(plan))
+        return popis + self._stranice_proizvoda(plan) + dnevnik_stranice
 
     def _stranice_proizvoda(self, plan: Drzava) -> list[Stranica]:
         drzava, jezik, t = plan.drzava, plan.jezik, plan.jezik
@@ -212,6 +213,8 @@ class Gradnja:
                     json_ld=[strukturirani.mrvice(drzava, t, self.adresa, [(naslov, url)])],
                 )
             )
+        po_sorti = stranice_dnevnika.po_sorti(plan.zapisi)
+        na_proizvodu = self.postavke["dnevnik"]["na_proizvodu"]
         for p in plan.proizvodi:
             koraci = [(t["kategorije_naslov"][p["kategorija"]], p["url_kategorije"])]
             koraci.append((p["naziv"], p["url"]))
@@ -222,7 +225,7 @@ class Gradnja:
                     "proizvod.html",
                     f"{p['naziv']} · {t['kategorije_naslov'][p['kategorija']]} · {naziv}",
                     p["kratki_opis"] or t["kategorije_opis"][p["kategorija"]],
-                    {"p": p},
+                    {"p": p, "zapisi": po_sorti.get(p["slug"], [])[:na_proizvodu]},
                     og_slika=p["pregled"],
                     aktivna=p["kategorija"],
                     json_ld=[
@@ -246,6 +249,7 @@ class Gradnja:
             "kategorije": veze_kategorija(plan.drzava, plan.jezik, self._kategorije(plan)),
             "pravne": stranice.pravne_veze(plan.drzava, plan.jezik, kljucevi, tekstovi),
             "drzave": izbornik_drzava(self.drzave),
+            "dnevnik_url": stranice_dnevnika.put_dnevnika(plan.zapisi, self._okvir(plan)),
         }
 
     def _iscrtaj(self, plan: Drzava, planovi: list[Drzava]) -> None:
@@ -276,22 +280,11 @@ class Gradnja:
                 "drzava": plan.drzava["kod"],
                 "datoteke": self.resursi,
                 "kategorije": self._kategorije(plan),
+                # Stranice backenda (zahvala, odustanak) iz ovoga znaju ima li dnevnik u izborniku.
+                "dnevnik": stranice_dnevnika.put_dnevnika(plan.zapisi, self._okvir(plan)),
                 "proizvodi": proizvodi,
             },
         )
-
-
-def javni_proizvod(p: dict) -> dict:
-    """Proizvod u proizvodi.json: ono što trebaju košarica i backend, bez opisa."""
-    return {
-        "id": p["slug"],
-        **{k: p[k] for k in ("naziv", "url", "kategorija")},
-        "slika": p["slika"].mala if p["slika"] else "",
-        "pakiranja": [
-            {k: getattr(pak, k) for k in ("id", "oznaka", "cijena_c", "tezina_g")}
-            for pak in p["pakiranja"]
-        ],
-    }
 
 
 def gradi(izlaz: Path, korijen: Path = KORIJEN) -> list[Drzava]:

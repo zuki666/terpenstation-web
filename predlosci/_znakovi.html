@@ -9,6 +9,9 @@
 
 {% macro peron(broj) %}<span class="peron-br" aria-hidden="true">{{ broj }}</span>{% endmacro %}
 
+{# Dnevnik nije peron: u istoj pločici su tri stanice na liniji umjesto broja. #}
+{% macro znak_dnevnika() %}<span class="peron-br" aria-hidden="true"><svg class="znak-linije" viewBox="0 0 16 16"><path d="M8 2.5v11" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="3.5" r="2.2" fill="currentColor"/><circle cx="8" cy="8" r="2.2" fill="currentColor"/><circle cx="8" cy="12.5" r="2.2" fill="currentColor"/></svg></span>{% endmacro %}
+
 {% macro peron_kategorije(kljuc) %}
 {%- for kategorija in kategorije if kategorija.kljuc == kljuc %}{{ peron(kategorija.peron) }}{% endfor -%}
 {% endmacro %}

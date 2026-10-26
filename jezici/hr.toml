@@ -21,6 +21,7 @@ dostava_i_placanje = "dostava-i-placanje"
 uvjeti_kupnje = "uvjeti-kupnje"
 privatnost = "privatnost"
 kontakt = "kontakt"
+dnevnik = "dnevnik"
 
 [kategorije]
 cvijet = "Cvijet"
@@ -47,12 +48,14 @@ natrag = "Natrag u trgovinu"
 [izbornik]
 oznaka = "Kategorije"
 kosarica = "Košarica"
+dnevnik = "Dnevnik"
 
 [podnozje]
 trgovina = "Trgovina"
 kupnja = "Kupnja"
 kontakt = "Kontakt"
 wholesale = "Wholesale"
+dnevnik = "Dnevnik uzgoja"
 drzave = "Država"
 bez_kolacica = "Stranica ne koristi kolačiće. Posjete broji Cloudflare Web Analytics, bez osobnih podataka."
 
@@ -144,6 +147,56 @@ sarza = "Šarža"
 analiza_pdf = "Laboratorijska analiza (PDF)"
 bez_slike = "Slika uskoro"
 galerija = "Slike proizvoda"
+
+# Dnevnik uzgoja na /dnevnik/: zapisi iz CMS-a, kasnije i s Instagrama (W39).
+[dnevnik]
+naslov = "Dnevnik uzgoja"
+# <title> popisa za Google; izbornik i naslov na stranici ostaju kratki.
+naslov_stranice = "Dnevnik uzgoja CBG cvijeta"
+opis = "Snimke iz naše uzgajaonice u Zagrebu: CBG cvijet od živog tla do staklenke."
+nadnaslov = "Iz uzgajaonice · Zagreb"
+uvod = "Snimke iz naše uzgajaonice, od živog tla do staklenke. Nove stižu same s Instagrama."
+sorta_naslov = "{sorta} · Dnevnik uzgoja"
+sorta_uvod = "Snimke uzgoja sorte {sorta}, od živog tla do staklenke."
+stranica = "stranica {broj}"
+zadnji = "Zadnji zapis"
+sorte = "Sorte u dnevniku"
+svi = "Svi zapisi"
+noviji = "Noviji zapisi"
+stariji = "Stariji zapisi"
+stranice = "Stranice dnevnika"
+mrvice = "Dnevnik"
+video = "Video"
+instagram = "Instagram"
+video_na_instagramu = "Pogledaj video na Instagramu"
+objava = "Objava na Instagramu"
+galerija = "Fotke zapisa"
+ova_sorta = "Ova sorta u trgovini"
+u_trgovinu = "U trgovinu"
+prethodni = "Prethodni zapis"
+sljedeci = "Sljedeći zapis"
+drugi = "Drugi zapisi"
+kako_je_rasla = "Kako je rasla"
+iz_dnevnika = "Iz dnevnika"
+cijeli_put = "Cijeli put sorte {sorta}"
+naslovna_nadnaslov = "Iz uzgajaonice"
+cijeli_dnevnik = "Cijeli dnevnik"
+# Oblik uz broj: jedan, dva do četiri, ostalo (1 zapis, 3 fotke, 5 fotki).
+zapisi = ["{broj} zapis", "{broj} zapisa", "{broj} zapisa"]
+fotke = ["{broj} fotka", "{broj} fotke", "{broj} fotki"]
+datum_kratko = "{dan}. {mjesec}."
+datum = "{dan}. {mjesec}. {godina}."
+mjesec_godina = "{mjesec} {godina}"
+mjeseci = ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"]
+
+# Faze uzgoja iz postavke.toml, [dnevnik].faze; isti ključevi su u CMS-u.
+[faze]
+tlo = "Živo tlo"
+vegetacija = "Vegetacija"
+cvjetanje = "Cvjetanje"
+berba = "Berba"
+susenje = "Sušenje"
+analiza = "Analiza"
 
 [kosarica]
 naslov = "Košarica"

@@ -1,13 +1,14 @@
-# Sveltia CMS za proizvode. Spremanje ide izravno u main, a svaka izmjena je commit (W10).
+# Sveltia CMS za proizvode i dnevnik uzgoja. Spremanje ide izravno u main, a svaka izmjena
+# je commit (W10); {{collection}} je ime zbirke u jednini (Proizvod, Zapis).
 backend:
   name: github
   repo: zuki666/terpenstation-web
   branch: main
   base_url: https://sveltia-cms-auth.drproper-dobarbad.workers.dev
   commit_messages:
-    create: "Proizvod: novi {{slug}}"
-    update: "Proizvod: izmjena {{slug}}"
-    delete: "Proizvod: brisanje {{slug}}"
+    create: "{{collection}}: novi {{slug}}"
+    update: "{{collection}}: izmjena {{slug}}"
+    delete: "{{collection}}: brisanje {{slug}}"
     uploadMedia: "Slika: {{path}}"
     deleteMedia: "Slika obrisana: {{path}}"
 
@@ -150,3 +151,107 @@ collections:
         media_folder: /static/analize
         public_folder: /analize
         hint: Laboratorijska analiza šarže koja je u prodaji.
+
+  # Dnevnik uzgoja (W39). Uvoz s Instagrama (W9) piše iste datoteke i ista polja.
+  - name: dnevnik
+    label: Dnevnik uzgoja
+    label_singular: Zapis
+    folder: sadrzaj/dnevnik
+    extension: json
+    format: json
+    create: true
+    delete: true
+    i18n: true
+    identifier_field: naslov
+    slug: "{{datum}}-{{naslov}}"
+    summary: "{{datum}} · {{naslov}}"
+    sortable_fields: [datum, naslov]
+    fields:
+      - name: naslov
+        label: Naslov
+        widget: string
+        i18n: true
+        hint: Iz datuma i naslova nastaje adresa zapisa pri prvom spremanju.
+      - name: datum
+        label: Datum
+        widget: datetime
+        type: date
+        format: YYYY-MM-DD
+        i18n: duplicate
+      - name: tekst
+        label: Tekst
+        widget: markdown
+        i18n: true
+        required: false
+        hint: Prvi odlomak ide i na popis dnevnika.
+      - name: slike
+        label: Fotke
+        widget: image
+        multiple: true
+        required: false
+        i18n: duplicate
+        media_folder: /static/slike/dnevnik
+        public_folder: /slike/dnevnik
+        hint: Prva je naslovna; uz video to je slika prije pokretanja.
+      - name: video
+        label: Video (MP4)
+        widget: file
+        required: false
+        i18n: duplicate
+        choose_url: false
+        media_folder: /static/mediji/dnevnik
+        public_folder: /mediji/dnevnik
+        # Pages ne objavi datoteku veću od 25 MiB, pa je CMS ni ne prima (gradnja je preskače).
+        media_libraries:
+          default:
+            config:
+              max_file_size: 26214400
+        hint: Najviše 25 MB. Duži video ostaje na Instagramu (kvačica ispod).
+      - name: trajanje_s
+        label: Trajanje videa (s)
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        i18n: duplicate
+        hint: Upisuje uvoz s Instagrama; može ostati prazno.
+      - name: video_na_instagramu
+        label: Video samo na Instagramu
+        widget: boolean
+        default: false
+        i18n: duplicate
+        hint: Za reel bez datoteke na sajtu; slika tada vodi na objavu.
+      - name: faza
+        label: Faza
+        widget: select
+        required: false
+        i18n: duplicate
+        options:
+          - { label: Živo tlo, value: tlo }
+          - { label: Vegetacija, value: vegetacija }
+          - { label: Cvjetanje, value: cvjetanje }
+          - { label: Berba, value: berba }
+          - { label: Sušenje, value: susenje }
+          - { label: Analiza, value: analiza }
+      - name: proizvod
+        label: Sorta
+        widget: relation
+        collection: proizvodi
+        value_field: "{{slug}}"
+        search_fields: [naziv]
+        display_fields: [naziv]
+        required: false
+        i18n: duplicate
+        hint: Zapis se pokaže i na stranici te sorte.
+      - name: instagram
+        label: Objava na Instagramu
+        widget: string
+        required: false
+        i18n: duplicate
+        hint: Link na objavu, npr. https://www.instagram.com/p/…
+      - name: objavljeno
+        label: Objavljeno
+        widget: boolean
+        default: true
+        i18n: duplicate
+        hint: Isključeno = zapis se ne prikazuje (npr. promocija s Instagrama).

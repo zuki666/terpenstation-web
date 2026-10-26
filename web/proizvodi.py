@@ -40,19 +40,22 @@ class Proizvod:
     analiza: str
 
 
-def ucitaj_sirove(mapa: Path) -> list[tuple[str, dict]]:
+def ucitaj_sirove(mapa: Path, vrsta: str = "proizvod") -> list[tuple[str, dict]]:
+    """JSON datoteke iz CMS-a kao (slug, podaci); `vrsta` je riječ u upozorenju u logu."""
     sirovi = []
     for put in sorted(mapa.glob("*.json")):
-        # Frend sprema izravno u main; pokvarena datoteka ne smije srušiti gradnju (W15).
+        # CMS sprema izravno u main; pokvarena datoteka ne smije srušiti gradnju (W15).
         try:
             podaci = json.loads(put.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, UnicodeDecodeError) as greska:
-            log.warning("proizvod %s preskočen: datoteka nije ispravan JSON (%s)", put.stem, greska)
+            log.warning(
+                "%s %s preskočen: datoteka nije ispravan JSON (%s)", vrsta, put.stem, greska
+            )
             continue
         if isinstance(podaci, dict):
             sirovi.append((put.stem, podaci))
         else:
-            log.warning("proizvod %s preskočen: očekivan JSON objekt", put.stem)
+            log.warning("%s %s preskočen: očekivan JSON objekt", vrsta, put.stem)
     return sirovi
 
 
@@ -101,7 +104,7 @@ def _redoslijed(vrijednost: object) -> int:
         return NA_KRAJ
 
 
-def _slike(vrijednost: object) -> tuple[str, ...]:
+def popis_slika(vrijednost: object) -> tuple[str, ...]:
     if isinstance(vrijednost, str):
         vrijednost = [vrijednost]
     if not isinstance(vrijednost, list):
@@ -109,7 +112,7 @@ def _slike(vrijednost: object) -> tuple[str, ...]:
     return tuple(slika for slika in vrijednost if isinstance(slika, str) and slika.strip())
 
 
-def _tekst(polja: dict, kljuc: str) -> str:
+def tekst_polja(polja: dict, kljuc: str) -> str:
     vrijednost = polja.get(kljuc)
     return str(vrijednost).strip() if vrijednost not in (None, False) else ""
 
@@ -121,29 +124,29 @@ def proizvod(slug: str, sirovi: dict, jezik: str, kontekst: dict) -> Proizvod | 
     uzimaju se iz zadanog jezika, jer ih CMS tamo uvijek ima.
     """
     lokalno = sirovi.get(jezik)
-    if not isinstance(lokalno, dict) or not _tekst(lokalno, "naziv"):
+    if not isinstance(lokalno, dict) or not tekst_polja(lokalno, "naziv"):
         if jezik == kontekst["zadani_jezik"]:
             raise NeispravanProizvod("nema naziv")
         return None
     zadano = sirovi.get(kontekst["zadani_jezik"])
     zajednicko = {**lokalno, **zadano} if isinstance(zadano, dict) else lokalno
-    kategorija = _tekst(zajednicko, "kategorija")
+    kategorija = tekst_polja(zajednicko, "kategorija")
     if kategorija not in kontekst["kategorije"]:
         raise NeispravanProizvod(f"nepoznata kategorija „{kategorija}”")
     return Proizvod(
         slug=slug,
-        naziv=_tekst(lokalno, "naziv"),
-        kratki_opis=_tekst(lokalno, "kratki_opis"),
-        opis=_tekst(lokalno, "opis"),
+        naziv=tekst_polja(lokalno, "naziv"),
+        kratki_opis=tekst_polja(lokalno, "kratki_opis"),
+        opis=tekst_polja(lokalno, "opis"),
         kategorija=kategorija,
         dostupno=zajednicko.get("dostupno", True) is not False,
         redoslijed=_redoslijed(zajednicko.get("redoslijed")),
-        slike=_slike(zajednicko.get("slike")),
+        slike=popis_slika(zajednicko.get("slike")),
         pakiranja=_pakiranja(slug, zajednicko.get("pakiranja")),
-        cbg=_tekst(zajednicko, "cbg"),
-        thc=_tekst(zajednicko, "thc"),
-        sarza=_tekst(zajednicko, "sarza"),
-        analiza=_tekst(zajednicko, "analiza"),
+        cbg=tekst_polja(zajednicko, "cbg"),
+        thc=tekst_polja(zajednicko, "thc"),
+        sarza=tekst_polja(zajednicko, "sarza"),
+        analiza=tekst_polja(zajednicko, "analiza"),
     )
 
 
@@ -161,3 +164,16 @@ def za_jezik(sirovi: list[tuple[str, dict]], jezik: str, kontekst: dict) -> list
         elif nadjen.dostupno:
             proizvodi.append(nadjen)
     return sorted(proizvodi, key=lambda p: (p.redoslijed, p.naziv.casefold()))
+
+
+def javni_proizvod(p: dict) -> dict:
+    """Proizvod u proizvodi.json: ono što trebaju košarica i backend, bez opisa."""
+    return {
+        "id": p["slug"],
+        **{k: p[k] for k in ("naziv", "url", "kategorija")},
+        "slika": p["slika"].mala if p["slika"] else "",
+        "pakiranja": [
+            {k: getattr(pak, k) for k in ("id", "oznaka", "cijena_c", "tezina_g")}
+            for pak in p["pakiranja"]
+        ],
+    }
