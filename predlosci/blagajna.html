@@ -87,7 +87,7 @@
       <legend>{{ t.blagajna.placanje }}</legend>
       {% for placanje in drzava.placanja %}
       <label class="izbor">
-        <input type="radio" name="placanje" value="{{ placanje }}" required{% if v.get('placanje') == placanje %} checked{% endif %}>
+        <input type="radio" name="placanje" value="{{ placanje }}" required{% if v.get('placanje') == placanje or drzava.placanja|length == 1 %} checked{% endif %}>
         <span class="izbor-naziv">{{ t.placanja[placanje] }}</span>
         {% if placanje == "pouzece" and drzava.placanje.pouzece.naknada_c %}
         <span class="izbor-cijena">+ {{ novac(drzava.placanje.pouzece.naknada_c) }}</span>

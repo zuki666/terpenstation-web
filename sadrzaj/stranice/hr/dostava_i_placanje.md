@@ -12,8 +12,6 @@ Cijena dostave prikazana je na blagajni prije narudžbe. Šaljemo unutar Hrvatsk
 
 ## Plaćanje
 
-**Uplata na račun.** Nakon narudžbe dobivate podatke za uplatu i HUB-3 barkod koji skenirate u aplikaciji banke. Paket šaljemo kad uplata stigne.
-
 **Pouzeće.** Plaćate pri preuzimanju paketa. Uz pouzeće se naplaćuje naknada prikazana na blagajni.
 
 Sve cijene uključuju PDV.

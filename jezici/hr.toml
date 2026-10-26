@@ -94,7 +94,7 @@ tekst = "BOX NOW paketomat ili GLS"
 
 [[naslovna.cinjenice]]
 oznaka = "Plaćanje"
-tekst = "Uplata na račun ili pouzeće"
+tekst = "Pouzeće, pri preuzimanju paketa"
 
 [naslovna.stanice.tlo]
 naslov = "Živo tlo"
@@ -117,7 +117,7 @@ tekst = "Laboratorij izmjeri CBG i THC svake šarže; analiza u PDF-u je na stra
 
 [naslovna.stanice.dostava]
 naslov = "Paketomat"
-tekst = "Šaljemo BOX NOW paketomatom ili GLS-om na adresu; plaćate uplatom ili pouzećem."
+tekst = "Šaljemo BOX NOW paketomatom ili GLS-om na adresu; plaćate pri preuzimanju."
 
 [proizvod]
 od = "od"
