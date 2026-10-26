@@ -66,21 +66,34 @@ Promjena lozinke Google računa poništi oba app passworda; tada se prave novi i
 
 ## 4. Server (Netcup)
 
+Postavljeno 26. 10. 2026. na Debianu 13 (Python 3.13; `git`, `sqlite3` i `curl` su već bili na serveru). Spaja se iz PowerShella: `ssh root@<IP servera>`.
+
 Kao root:
 
 ```bash
-adduser --disabled-password --gecos "" trgovina
-su - trgovina
-ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 && cat ~/.ssh/id_ed25519.pub
+apt-get install -y python3-venv
+useradd -m -s /bin/bash trgovina
+su - trgovina -c 'git clone https://github.com/zuki666/terpenstation-web.git'
+su - trgovina -c 'cd terpenstation-web && python3 -m venv .venv && .venv/bin/pip install ".[backend]"'
 ```
 
-Javni ključ ide u GitHub → repo → Settings → Deploy keys (samo čitanje). Zatim kao `trgovina`:
+Repo je javan, pa ga server klonira preko HTTPS-a, bez deploy ključa. Ako repo postane privatan, `git pull` prestaje raditi: tada kao `trgovina` `ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519`, javni ključ u GitHub → repo → Settings → Deploy keys (samo čitanje) i `git remote set-url origin git@github.com:zuki666/terpenstation-web.git`.
+
+`.env` kao `trgovina` (`su - trgovina`). Tajna linkova nastane sama, a app password se zalijepi u `read`, pa nije ni na ekranu ni u povijesti naredbi:
 
 ```bash
-git clone git@github.com:zuki666/terpenstation-web.git && cd terpenstation-web
-python3 -m venv .venv && .venv/bin/pip install ".[backend]"
-cp deploy/.env.example .env && nano .env      # SMTP_LOZINKA i TAJNA_LINKOVA
+cd terpenstation-web && cp deploy/.env.example .env && chmod 600 .env
+sed -i "s|^TAJNA_LINKOVA=.*|TAJNA_LINKOVA=$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')|" .env
+read -rsp "App password: " LOZ; echo
+```
+
+Kad `read` primi app password:
+
+```bash
+sed -i "s|^SMTP_LOZINKA=.*|SMTP_LOZINKA=${LOZ// /}|" .env && unset LOZ
+grep -c "^SMTP_LOZINKA=[a-z]\{16\}$" .env     # 1
 .venv/bin/python -m backend migriraj
+exit
 ```
 
 Kao root:

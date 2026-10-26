@@ -18,6 +18,7 @@ web = [
 ]
 backend = [
     "jinja2>=3.1",  # isti predlošci kao gradnja
+    "markdown>=3.5",  # iscrtavanje uvozi web/stranice.py, koji pretvara Markdown u HTML
     "pillow>=10.0",  # pdf417gen crta barkod kao sliku
     "flask>=3.0",  # rute narudžbe, zahvale, naljepnice i odustanka
     "gunicorn>=22.0",  # servis iza Cloudflare Tunnela
