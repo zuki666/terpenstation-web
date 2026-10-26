@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from backend.iscrtavanje import Iscrtavac
+from web.datoteke import NAJVECA_DATOTEKA
 from web.dnevnik import mnozina
 from web.gradnja import gradi
 from web.postavke import KORIJEN, ucitaj_drzave, ucitaj_postavke
@@ -182,6 +183,21 @@ def test_video_koji_ne_postoji(repo_kopija, tmp_path, caplog):
     izlaz = tmp_path / "dist"
     gradi(izlaz, repo_kopija)
     assert "video /mediji/dnevnik/nema.mp4 ne postoji" in caplog.text
+    assert "<video" not in _html(izlaz, "dnevnik/2026-10-22-v")
+
+
+def test_prevelik_video_ne_ide_na_sajt(repo_kopija, tmp_path, caplog):
+    _proizvod(repo_kopija)
+    video = _video(repo_kopija)
+    # Rijetka datoteka prijeđe granicu bez pisanja 25 MiB na disk.
+    with (repo_kopija / "static" / video.lstrip("/")).open("r+b") as datoteka:
+        datoteka.truncate(NAJVECA_DATOTEKA + 1)
+    _zapis(repo_kopija, "2026-10-22-v", naslov="Prevelik", video=video)
+    izlaz = tmp_path / "dist"
+    gradi(izlaz, repo_kopija)
+    assert "trihomi.mp4 je veća od 25 MiB i ne ide na sajt" in caplog.text
+    assert f"video {video} je veći od 25 MiB" in caplog.text
+    assert not (izlaz / video.lstrip("/")).exists()
     assert "<video" not in _html(izlaz, "dnevnik/2026-10-22-v")
 
 

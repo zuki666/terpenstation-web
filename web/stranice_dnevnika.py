@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from html import unescape
 
 from web import dnevnik, strukturirani
+from web.datoteke import prevelika
 from web.dnevnik import Zapis, mnozina
 from web.predlosci import put_stranice
 from web.slike import Slike
@@ -42,8 +43,14 @@ def _kratko(tekst_html: str) -> str:
 
 
 def _video(z: Zapis, slike: Slike) -> str:
-    if z.video and not (slike.static / z.video.lstrip("/")).is_file():
+    if not z.video:
+        return ""
+    datoteka = slike.static / z.video.lstrip("/")
+    if not datoteka.is_file():
         log.warning("zapis %s: video %s ne postoji, prikazuje se bez videa", z.slug, z.video)
+        return ""
+    if prevelika(datoteka):
+        log.warning("zapis %s: video %s je veći od 25 MiB, prikazuje se bez videa", z.slug, z.video)
         return ""
     return z.video
 
