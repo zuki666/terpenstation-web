@@ -1,7 +1,7 @@
 {
   "hr": {
     "naziv": "Propers mixes",
-    "kratki_opis": "Indica, 10 % CBG. Podrijetlo: Skunk #1 × Afghani. Uzgoj u živom tlu.",
+    "kratki_opis": "Indica. Podrijetlo: Skunk #1 × Afghani. Uzgoj u živom tlu",
     "opis": "Cvjetovi industrijske konoplje iz bio uzgoja u živom tlu, s bogatim spektrom hranjivih tvari.\n\n- **Bio:** uzgajani u živom tlu, u potpuno optimiziranim uvjetima.\n- **Svježina:** zahvaljujući preciznoj njezi cvjetovi su kompaktni i prepoznatljivog izgleda.\n- **Miris:** bogate, slojevite arome.\n- **Izgled:** kompaktni, gusto obloženi cvjetovi s atraktivnom strukturom i bojama.\n\nUzgoj u living soil sustavima daje balans hranjivih tvari za vrhunsku kvalitetu, za kolekcionare koji cijene napredne metode uzgoja.\n\n*Napomena:* ovaj proizvod je isključivo namijenjen za kolekcionarske i dekorativne svrhe. Nije namijenjen za konzumaciju. Sadržaj THC-a je ispod 0,2 %, što ga čini potpuno usklađenim sa zakonskim propisima.",
     "kategorija": "cvijet",
     "dostupno": true,
@@ -29,9 +29,13 @@
       },
       {
         "oznaka": "10 g",
-        "cijena": 45.0,
+        "cijena": 45,
         "tezina_g": 10
       }
-    ]
+    ],
+    "cbg": "",
+    "thc": "",
+    "sarza": "",
+    "analiza": ""
   }
 }
