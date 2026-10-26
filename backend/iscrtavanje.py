@@ -41,6 +41,7 @@ class Iscrtavac:
             "datoteke": katalog.get("datoteke")
             or {"css": "/css/stil.css", "js": "/js/kosarica.js"},
             "kategorije": veze_kategorija(drzava, jezik, katalog.get("kategorije", [])),
+            "dnevnik_url": katalog.get("dnevnik", ""),
             "pravne": stranice.pravne_veze(drzava, jezik, kljucevi, self.tekstovi[drzava["kod"]]),
             "drzave": izbornik_drzava(self.drzave),
         }

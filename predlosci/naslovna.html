@@ -1,6 +1,7 @@
 {% extends "osnova.html" %}
 {% from "_kartica.html" import kartica with context %}
 {% from "_znakovi.html" import ploce, peron, peron_kategorije with context %}
+{% from "_dnevnik.html" import red with context %}
 {# Fotke iz /mediji/ idu kroz istu obradu kao slike proizvoda (WebP, srcset); izvorni JPEG
    ostaje na istoj putanji za wholesale i kad obrada ne uspije. #}
 {% macro fotka(put, alt, sirina, visina, klasa="") %}
@@ -134,4 +135,16 @@
     {% endfor %}
   </ol>
 </section>
+
+{% if zapisi %}
+<section class="odjeljak" aria-labelledby="naslov-dnevnika">
+  <header class="naslov-odjeljka">
+    <p class="nadnaslov">{{ t.dnevnik.naslovna_nadnaslov }}</p>
+    <h2 id="naslov-dnevnika">{{ t.dnevnik.naslov }}</h2>
+    <p>{{ t.dnevnik.uvod }}</p>
+  </header>
+  {{ red(zapisi) }}
+  <p class="iz-dnevnika-veza"><a class="gumb" href="{{ korijen }}{{ dnevnik_url }}">{{ t.dnevnik.cijeli_dnevnik }}<span class="strelica" aria-hidden="true"></span></a></p>
+</section>
+{% endif %}
 {% endblock %}

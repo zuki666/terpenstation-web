@@ -1,4 +1,4 @@
-{% from "_znakovi.html" import peron with context %}
+{% from "_znakovi.html" import peron, znak_dnevnika with context %}
 <!doctype html>
 <html lang="{{ drzava.jezik }}">
 <head>
@@ -43,11 +43,14 @@
 <header class="vrh">
   <div class="vrh-unutra">
     <a class="logo" href="{{ korijen }}{{ put('naslovna') }}" aria-label="{{ t.opcenito.naziv_sajta }}"><span class="terpen">TERPEN</span><span class="station">STATION</span></a>
-    {% if kategorije %}
+    {% if kategorije or dnevnik_url %}
     <nav class="izbornik" aria-label="{{ t.izbornik.oznaka }}">
       {% for kategorija in kategorije %}
       <a href="{{ korijen }}{{ kategorija.url }}"{% if kategorija.kljuc == stranica.aktivna %} aria-current="page"{% endif %}>{{ peron(kategorija.peron) }}{{ kategorija.naziv }}</a>
       {% endfor %}
+      {% if dnevnik_url %}
+      <a href="{{ korijen }}{{ dnevnik_url }}"{% if stranica.aktivna == "dnevnik" %} aria-current="page"{% endif %}>{{ znak_dnevnika() }}{{ t.izbornik.dnevnik }}</a>
+      {% endif %}
     </nav>
     {% endif %}
     <a class="vrh-wholesale" href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
@@ -67,6 +70,9 @@
         {% for kategorija in kategorije %}
         <a href="{{ korijen }}{{ kategorija.url }}">{{ kategorija.naziv }}</a>
         {% endfor %}
+        {% if dnevnik_url %}
+        <a href="{{ korijen }}{{ dnevnik_url }}">{{ t.podnozje.dnevnik }}</a>
+        {% endif %}
         <a href="{{ korijen }}/wholesale/" hreflang="en">{{ t.podnozje.wholesale }}</a>
       </nav>
       {% endif %}

@@ -6,7 +6,7 @@ Specifikacija (`SPEC.md`), odluke (`ODLUKE.md`), status (`STATUS.md`) i kontekst
 
 ## Rad
 
-- Gradi se korak po korak (W1–W6 u `STATUS.md`). Jedan korak = jedna grana i jedan pull request. Merge ide kad prođu testovi i ruff; korak je gotov (☑) tek kad prođe njegov kriterij.
+- Gradi se korak po korak (koraci W… u `STATUS.md`). Jedan korak = jedna grana i jedan pull request. Merge ide kad prođu testovi i ruff; korak je gotov (☑) tek kad prođe njegov kriterij.
 - Frend sprema proizvode kroz CMS izravno u `main`; Claudeov kod uvijek ide kroz PR.
 - Svako odstupanje od SPEC-a upisuje se kao nova odluka u `ODLUKE.md`.
 
@@ -29,6 +29,7 @@ Python 3.11+ (zbog `tomllib`); server ima 3.13.
 | Država: put, valuta, PDV, dostave, plaćanja, cijene, primatelj | `drzave/<kod>.toml` |
 | Svi tekstovi sučelja, mailova i grešaka, oblik iznosa, URL-ovi | `jezici/<jezik>.toml` |
 | Proizvodi (piše CMS) | `sadrzaj/proizvodi/*.json` |
+| Dnevnik uzgoja (piše CMS; uvoz s Instagrama u W9) | `sadrzaj/dnevnik/*.json` |
 | Pravne stranice | `sadrzaj/stranice/<kod>/<ključ>.md` |
 | Predlošci stranica i mailova (isti za sve države) | `predlosci/` |
 | Gradnja sajta | `web/` |

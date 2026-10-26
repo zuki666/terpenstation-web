@@ -1,4 +1,4 @@
-"""JSON-LD za Google: proizvod s ponudama, put do stranice (mrvice) i podaci o trgovini.
+"""JSON-LD za Google: proizvod s ponudama, zapis dnevnika, mrvice i podaci o trgovini.
 
 Svi proizvodi koji se grade su dostupni (W4), pa je dostupnost uvijek InStock.
 """
@@ -54,6 +54,37 @@ def _dostave(drzava: dict) -> list[dict]:
         }
         for kljuc in drzava["dostave"]
     ]
+
+
+def zapis(z: dict, drzava: dict, adresa: str, naziv_sajta: str) -> dict:
+    """Zapis dnevnika kao objava na blogu; video samo kad je na sajtu, uz naslovnu sliku."""
+    url = f"{adresa}{z['url']}"
+    autor = {"@type": "Organization", "name": naziv_sajta, "url": f"{adresa}{drzava['put']}"}
+    podaci = {
+        "@context": SCHEMA,
+        "@type": "BlogPosting",
+        "headline": z["naslov"],
+        "datePublished": z["datum_iso"],
+        "url": url,
+        "mainEntityOfPage": url,
+        "inLanguage": drzava["jezik"],
+        "author": autor,
+        "publisher": autor,
+    }
+    if z["slike"]:
+        podaci["image"] = [f"{adresa}{slika.velika}" for slika in z["slike"]]
+    if z["kratko"]:
+        podaci["description"] = z["kratko"]
+    if z["video"] and z["slika"]:
+        podaci["video"] = {
+            "@type": "VideoObject",
+            "name": z["naslov"],
+            "description": z["kratko"] or z["naslov"],
+            "thumbnailUrl": f"{adresa}{z['slika'].velika}",
+            "uploadDate": z["datum_iso"],
+            "contentUrl": f"{adresa}{z['video']}",
+        }
+    return podaci
 
 
 def proizvod(p: dict, drzava: dict, adresa: str) -> dict:

@@ -113,6 +113,8 @@ def kontekst(drzava: dict, jezik: dict, postavke: dict, korijen: str = "") -> di
         "dostava_od_c": najjeftinija_dostava(drzava),
         "besplatna_od_c": drzava.get("besplatna_dostava_od_c", 0),
         "izvori": postavke["trgovina"]["izvori"],
+        # Gradnja i backend upišu put dnevnika kad on ima zapise; prazno = nema ga u izborniku.
+        "dnevnik_url": "",
         "js_podaci": {
             "tekstovi": jezik["js"],
             "oblik": jezik["oblik"],

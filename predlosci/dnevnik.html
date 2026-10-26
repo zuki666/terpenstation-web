@@ -1,0 +1,45 @@
+{% extends "osnova.html" %}
+{% from "_dnevnik.html" import stanica with context %}
+{% from "_znakovi.html" import znak_dnevnika with context %}
+{% block sadrzaj %}
+<header class="znak-perona znak-dnevnika">
+  <div>
+    <p class="nadnaslov">{{ t.dnevnik.nadnaslov }}</p>
+    <h1>{{ znak_dnevnika() }}<span>{{ sorta.naziv if sorta else t.dnevnik.naslov }}</span></h1>
+    <p>{% if sorta %}{{ t.dnevnik.sorta_uvod.format(sorta=sorta.naziv) }}{% else %}{{ t.dnevnik.uvod }}{% endif %}</p>
+  </div>
+  <p class="dnevnik-status">
+    <span class="dnevnik-oznaka">{{ t.dnevnik.zadnji }}</span>
+    <span class="dnevnik-zadnji broj">{{ zadnji }}</span>
+    <span class="dnevnik-izvor">
+      {% if instagram %}<a class="uzivo" href="{{ instagram.url }}" rel="noopener">{{ instagram.ime }}</a>{% endif %}
+      <span>{{ ukupno }}</span>
+    </span>
+  </p>
+</header>
+
+{% if gumbi %}
+<nav class="sorte" aria-label="{{ t.dnevnik.sorte }}">
+  {% for gumb in gumbi %}
+  <a href="{{ korijen }}{{ gumb.url }}"{% if gumb.kljuc == (sorta.slug if sorta else "") %} aria-current="page"{% endif %}>{{ gumb.naziv }}</a>
+  {% endfor %}
+</nav>
+{% endif %}
+
+<ol class="linija-dnevnika">
+  {% for stavka in stavke %}
+  {{ stanica(stavka) }}
+  {% endfor %}
+</ol>
+
+{% if noviji or stariji %}
+<nav class="stranice-dnevnika" aria-label="{{ t.dnevnik.stranice }}">
+  {% if noviji %}
+  <a class="gumb" href="{{ korijen }}{{ noviji }}"><span class="strelica natrag" aria-hidden="true"></span>{{ t.dnevnik.noviji }}</a>
+  {% endif %}
+  {% if stariji %}
+  <a class="gumb" href="{{ korijen }}{{ stariji }}">{{ t.dnevnik.stariji }}<span class="strelica" aria-hidden="true"></span></a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

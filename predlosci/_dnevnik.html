@@ -1,0 +1,57 @@
+{# Zapisi dnevnika: oznaka vrste na slici, uspravni okvir kao zaslon mobitela (reelovi su
+   uspravni), stanica na liniji popisa i red zapisa za proizvod i naslovnu. #}
+
+{% macro oznaka(z) %}
+{% if z.video %}
+<span class="oznaka-medija broj"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>{{ z.trajanje or t.dnevnik.video }}</span>
+{% elif z.video_na_instagramu %}
+<span class="oznaka-medija">{{ t.dnevnik.instagram }}<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3H3v10h10V9.5M9.5 3H13v3.5M13 3 7.5 8.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>
+{% elif z.broj_fotki %}
+<span class="oznaka-medija"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 1.5h9.5V11H5zM2 4.5V14h9.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>{{ z.broj_fotki }}</span>
+{% endif %}
+{% endmacro %}
+
+{% macro meta(z, oznaka_tag="p") %}
+<{{ oznaka_tag }} class="zapis-meta"><time class="zapis-datum broj" datetime="{{ z.datum_iso }}">{{ z.datum_kratko }}</time>{% if z.faza %}<span class="faza">{{ z.naziv_faze }}</span>{% endif %}</{{ oznaka_tag }}>
+{% endmacro %}
+
+{% macro slika(z, sizes) %}
+<img src="{{ z.slika.src }}" srcset="{{ z.slika.srcset }}" sizes="{{ sizes }}" width="{{ z.slika.sirina }}" height="{{ z.slika.visina }}" alt="" loading="lazy">
+{% endmacro %}
+
+{# Slika vodi na isti zapis kao naslov, pa je čitaču ekrana i tipkovnici skrivena. #}
+{% macro stanica(stavka) %}
+{% set z = stavka.z %}
+{% if stavka.mjesec %}
+<li class="mjesec-dnevnika">{{ stavka.mjesec }}</li>
+{% endif %}
+<li class="zapis-stanica{% if not z.slika %} samo-tekst{% endif %}">
+  {{ meta(z) }}
+  {% if z.slika %}
+  <a class="zapis-slika" href="{{ korijen }}{{ z.url }}" tabindex="-1" aria-hidden="true">{{ slika(z, "(min-width: 60rem) 14rem, 8.25rem") }}{{ oznaka(z) }}</a>
+  {% endif %}
+  <div class="zapis-tekst">
+    <h2><a href="{{ korijen }}{{ z.url }}">{{ z.naslov }}</a></h2>
+    {% if z.kratko %}
+    <p>{{ z.kratko }}</p>
+    {% endif %}
+    {% if z.proizvod %}
+    <a class="zapis-sorta" href="{{ korijen }}{{ z.proizvod.url }}">{{ z.proizvod.naziv }}<span class="strelica" aria-hidden="true"></span></a>
+    {% endif %}
+  </div>
+</li>
+{% endmacro %}
+
+{% macro red(zapisi) %}
+<ul class="red-zapisa">
+  {% for z in zapisi %}
+  <li>
+    <a href="{{ korijen }}{{ z.url }}">
+      <span class="zapis-slika">{% if z.slika %}{{ slika(z, "(min-width: 48rem) 12rem, 9.4rem") }}{% endif %}{{ oznaka(z) }}</span>
+      {{ meta(z, "span") }}
+      <span class="red-naslov">{{ z.naslov }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endmacro %}

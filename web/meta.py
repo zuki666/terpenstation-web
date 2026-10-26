@@ -2,6 +2,9 @@
 
 from web.slike import PREGLED
 
+# og:type po vrsti stranice; ostale su "website".
+OG_TIPOVI = {"proizvod": "product", "zapis": "article"}
+
 
 def prazna(naslov: str) -> dict:
     """Stranice backenda: bez indeksa, kanonskog linka i pregleda."""
@@ -28,7 +31,7 @@ def za_stranicu(stranica: object, plan: object, planovi: list, adresa: str) -> d
         "bez_indeksa": not indeks,
         "kanonski": f"{adresa}{stranica.put}" if indeks else "",
         "alternativni": alternative(stranica, planovi, adresa) if indeks else [],
-        "og_tip": "product" if stranica.kljuc[0] == "proizvod" else "website",
+        "og_tip": OG_TIPOVI.get(stranica.kljuc[0], "website"),
         "og_slika": f"{adresa}{stranica.og_slika}" if stranica.og_slika else "",
         "json_ld": stranica.json_ld,
         "aktivna": stranica.aktivna,
