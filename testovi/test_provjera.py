@@ -2,12 +2,12 @@ import copy
 import json
 
 import pytest
-from conftest import katalog_probni, obrazac
+from conftest import drzave_s_oba_placanja, katalog_probni, obrazac
 
 from backend.provjera import ispravan_oib, medjunarodni, provjeri, vrijednosti
-from web.postavke import ucitaj_drzave, ucitaj_jezik
+from web.postavke import ucitaj_jezik
 
-HR = ucitaj_drzave()[0]
+HR = drzave_s_oba_placanja()[0]
 JEZIK = ucitaj_jezik("hr")
 G = JEZIK["greske"]
 

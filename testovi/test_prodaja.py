@@ -26,7 +26,7 @@ def _gradi(korijen: Path, izlaz: Path, **drzava) -> None:
         put = korijen / "drzave" / "hr.toml"
         tekst = put.read_text(encoding="utf-8")
         for kljuc, vrijednost in drzava.items():
-            tekst = re.sub(rf"^{kljuc} = \d+", f"{kljuc} = {vrijednost}", tekst, flags=re.M)
+            tekst = re.sub(rf"^{kljuc} = .*$", f"{kljuc} = {vrijednost}", tekst, flags=re.M)
         put.write_text(tekst, encoding="utf-8")
     gradi(izlaz, korijen)
 
@@ -103,7 +103,7 @@ def test_sitemap_zaglavlja_i_prva_slika(repo_kopija, tmp_path):
 
 def test_red_uz_gumb_i_besplatna_dostava(repo_kopija, tmp_path):
     izlaz = tmp_path / "dist"
-    _gradi(repo_kopija, izlaz)
+    _gradi(repo_kopija, izlaz, placanja='["uplata", "pouzece"]')
     html = (izlaz / "proizvod" / "gelonade" / "index.html").read_text()
     assert "BOX NOW <span" in html and "uplata na račun ili pouzeće" in html
     assert "Besplatna dostava" not in html
@@ -114,6 +114,16 @@ def test_red_uz_gumb_i_besplatna_dostava(repo_kopija, tmp_path):
     html = (izlaz / "proizvod" / "gelonade" / "index.html").read_text()
     assert "Besplatna dostava od 40,00\xa0€." in html
     assert 'data-besplatna-od="4000"' in (izlaz / "kosarica" / "index.html").read_text()
+
+
+def test_samo_pouzece(repo_kopija, tmp_path):
+    izlaz = tmp_path / "dist"
+    _gradi(repo_kopija, izlaz, placanja='["pouzece"]')
+    proizvod = (izlaz / "proizvod" / "gelonade" / "index.html").read_text()
+    blagajna = (izlaz / "blagajna" / "index.html").read_text()
+    assert "uplata na račun" not in proizvod
+    assert 'value="uplata"' not in blagajna
+    assert 'value="pouzece" required checked' in blagajna
 
 
 def test_sirine_bez_dvostruke_najvece():

@@ -36,6 +36,14 @@ class LazniKatalog:
         return self.podaci
 
 
+def drzave_s_oba_placanja() -> list[dict]:
+    """Trgovina može privremeno isključiti plaćanje (P12), a testovi i dalje pokrivaju oba."""
+    drzave = ucitaj_drzave()
+    for drzava in drzave:
+        drzava["placanja"] = ["uplata", "pouzece"]
+    return drzave
+
+
 def katalog_probni() -> dict:
     return {
         "verzija": "2026-10-21T10:00:00Z",
@@ -92,7 +100,7 @@ def okolina(tmp_path: Path) -> Okolina:
         "adresa": "https://terpenstation.com",
         "api": "https://api.terpenstation.com",
     }
-    drzave = ucitaj_drzave()
+    drzave = drzave_s_oba_placanja()
     putanja = tmp_path / "trgovina.db"
     veza = baza.povezi(putanja)
     baza.migriraj(veza)

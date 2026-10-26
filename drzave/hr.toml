@@ -5,7 +5,7 @@ put = "/"                  # HR na korijenu; ostale "/si/", "/at/"
 valuta = "EUR"
 pdv_posto = 25
 dostave = ["boxnow", "gls"]
-placanja = ["uplata", "pouzece"]
+placanja = ["pouzece"]      # "uplata" se vraća s pravim IBAN-om u [primatelj] (P12)
 besplatna_dostava_od_c = 0 # 0 = nema besplatne dostave
 rok_uplate_dana = 5
 pozivni_broj = "385"        # 09x… → +3859x…; BOX NOW traži međunarodni oblik
