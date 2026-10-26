@@ -148,7 +148,7 @@ analiza_pdf = "Laboratorijska analiza (PDF)"
 bez_slike = "Slika uskoro"
 galerija = "Slike proizvoda"
 
-# Dnevnik uzgoja na /dnevnik/: zapisi iz CMS-a, kasnije i s Instagrama (W38).
+# Dnevnik uzgoja na /dnevnik/: zapisi iz CMS-a, kasnije i s Instagrama (W39).
 [dnevnik]
 naslov = "Dnevnik uzgoja"
 # <title> popisa za Google; izbornik i naslov na stranici ostaju kratki.

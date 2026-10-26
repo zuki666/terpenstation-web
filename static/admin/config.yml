@@ -152,7 +152,7 @@ collections:
         public_folder: /analize
         hint: Laboratorijska analiza šarže koja je u prodaji.
 
-  # Dnevnik uzgoja (W38). Uvoz s Instagrama (W9) piše iste datoteke i ista polja.
+  # Dnevnik uzgoja (W39). Uvoz s Instagrama (W9) piše iste datoteke i ista polja.
   - name: dnevnik
     label: Dnevnik uzgoja
     label_singular: Zapis
