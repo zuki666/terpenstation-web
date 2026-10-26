@@ -4,11 +4,19 @@
     "kratki_opis": "Probni proizvod za W1.",
     "opis": "Četverodijelni grinder od aluminija, promjer 50 mm.",
     "kategorija": "pribor",
-    "dostupno": true,
+    "dostupno": false,
     "redoslijed": 11,
     "slike": [],
     "pakiranja": [
-      { "oznaka": "1 kom", "cijena": 14.9, "tezina_g": 120 }
-    ]
+      {
+        "oznaka": "1 kom",
+        "cijena": 14.9,
+        "tezina_g": 120
+      }
+    ],
+    "cbg": "",
+    "thc": "",
+    "sarza": "",
+    "analiza": ""
   }
 }
