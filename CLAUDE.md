@@ -7,7 +7,7 @@ Specifikacija (`SPEC.md`), odluke (`ODLUKE.md`), status (`STATUS.md`) i kontekst
 ## Rad
 
 - Gradi se korak po korak (koraci W… u `STATUS.md`). Jedan korak = jedna grana i jedan pull request. Merge ide kad prođu testovi i ruff; korak je gotov (☑) tek kad prođe njegov kriterij.
-- Frend sprema proizvode kroz CMS izravno u `main`; Claudeov kod uvijek ide kroz PR.
+- CMS sprema proizvode, zapise dnevnika, tekstove i stranice izravno u `main`; Claudeov kod uvijek ide kroz PR.
 - Svako odstupanje od SPEC-a upisuje se kao nova odluka u `ODLUKE.md`.
 
 ```bash
@@ -28,9 +28,11 @@ Python 3.11+ (zbog `tomllib`); server ima 3.13.
 | Zajedničke postavke (mail, BOX NOW, zaštita, kategorije) | `postavke.toml` |
 | Država: put, valuta, PDV, dostave, plaćanja, cijene, primatelj | `drzave/<kod>.toml` |
 | Svi tekstovi sučelja, mailova i grešaka, oblik iznosa, URL-ovi | `jezici/<jezik>.toml` |
+| Tekstovi koje uređuje CMS (imaju prednost pred `jezici/`) | `sadrzaj/tekstovi/<jezik>/*.json` |
 | Proizvodi (piše CMS) | `sadrzaj/proizvodi/*.json` |
 | Dnevnik uzgoja (piše CMS; uvoz s Instagrama u W9) | `sadrzaj/dnevnik/*.json` |
-| Pravne stranice | `sadrzaj/stranice/<kod>/<ključ>.md` |
+| Pravne stranice (piše CMS) | `sadrzaj/stranice/<kod>/<ključ>.json` |
+| CMS: proizvodi i dnevnik / tekstovi i stranice | `static/admin/config.yml` / `static/admin/tekstovi.toml` |
 | Predlošci stranica i mailova (isti za sve države) | `predlosci/` |
 | Gradnja sajta | `web/` |
 | Backend | `backend/`, migracije u `backend/migracije/` |
@@ -42,6 +44,7 @@ Python 3.11+ (zbog `tomllib`); server ima 3.13.
 - Komentar objašnjava zašto, nikad što. Bez zakomentiranog koda, povijesti razvoja i AI tragova.
 - Jedna funkcija, jedan posao. Datoteka do ~300 redaka, funkcija do ~60, najviše 4 parametra. Nema `utils.py`; pomoćna funkcija živi uz ono čemu služi.
 - Tekstovi su u `jezici/`, postavke države u `drzave/`, proizvodi u `sadrzaj/`, nikad u kodu. Država se nikad ne kopira kao kod.
+- Tekst koji je u CMS-u mijenja se u `sadrzaj/tekstovi/`; isti ključ u `jezici/` je samo zamjena kad tekst iz CMS-a fali ili nije ispravan (W42). Tekst koji iscrtava i server (blagajna, zahvala, mailovi, greške) ne ide u CMS.
 - Iznosi su cijeli brojevi u centima; decimalni broj samo na ulazu (CMS) i izlazu (prikaz).
 - Cijene narudžbe računa backend iz objavljenog `proizvodi.json`; cijena iz preglednika se ne koristi (W14).
 - Neispravan proizvod ne ruši gradnju: preskače se uz upozorenje (W15).

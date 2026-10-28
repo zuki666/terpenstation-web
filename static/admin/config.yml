@@ -1,5 +1,6 @@
-# Sveltia CMS za proizvode i dnevnik uzgoja. Spremanje ide izravno u main, a svaka izmjena
-# je commit (W10); {{collection}} je ime zbirke u jednini (Proizvod, Zapis).
+# Sveltia CMS za proizvode i dnevnik uzgoja; zbirke Tekstovi i Stranice su u tekstovi.toml, koju
+# Sveltia spoji s ovom datotekom. Spremanje ide izravno u main, a svaka izmjena je commit (W10);
+# {{collection}} je ime zbirke u jednini (Proizvod, Zapis, Tekst, Stranica).
 backend:
   name: github
   repo: zuki666/terpenstation-web

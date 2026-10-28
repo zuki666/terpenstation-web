@@ -1,0 +1,14 @@
+{
+  "izbornik": {
+    "kosarica": "Košarica",
+    "dnevnik": "Dnevnik"
+  },
+  "podnozje": {
+    "trgovina": "Trgovina",
+    "kupnja": "Kupnja",
+    "kontakt": "Kontakt",
+    "dnevnik": "Dnevnik uzgoja",
+    "wholesale": "Wholesale",
+    "bez_kolacica": "Stranica ne koristi kolačiće. Posjete broji Cloudflare Web Analytics, bez osobnih podataka."
+  }
+}

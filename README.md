@@ -53,9 +53,13 @@ Prijava u Sveltia CMS ide preko GitHuba, kroz mali Cloudflare Worker.
 2. **GitHub OAuth aplikacija:** GitHub → Settings → Developer settings → OAuth Apps → New. Homepage `https://terpenstation.com`, Authorization callback URL `<adresa Workera>/callback`. Zapiši Client ID i napravi Client secret.
 3. **Varijable Workera** (Settings → Variables): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (kao *Secret*), `ALLOWED_DOMAINS` = `terpenstation.com,www.terpenstation.com`.
 4. U `static/admin/config.yml` zamijeni `RACUN` u `base_url` adresom Workera (PR).
-5. **Frend:** GitHub račun s njegovim mailom, poziv u ovaj repo s pravom pisanja (Settings → Collaborators). Na njegovom mobitelu otvori `terpenstation.com/admin`, prijava kroz GitHub, pa *Dodaj na početni zaslon*.
+5. **Frend, bez GitHub računa** (W32): na GitHubu `zuki666` Settings → Developer settings → Personal access tokens → Fine-grained tokens → *Generate new token*: ime „CMS frend”, Repository access → *Only select repositories* → `terpenstation-web`, Permissions → Contents: *Read and write*. Na frendovom mobitelu otvori `terpenstation.com/admin` → *Prijava pomoću pristupnog tokena* (*Sign In Using Access Token*), zalijepi token, pa *Dodaj na početni zaslon*. Token ne ide u chat ni mail; ukida se jednim klikom (*Revoke*).
 
 **Dnevnik uzgoja** (W8) je druga zbirka u CMS-u. Zapis ima naslov, datum, tekst, fotke ili video (MP4 do 25 MB), fazu i sortu; kvačica „Objavljeno” ga skriva. Dnevnik se pojavi u izborniku čim postoji prvi objavljeni zapis, a zapisi sorte i na stranici proizvoda.
+
+**Tekstovi i Stranice** (W42) su zbirke iz `static/admin/tekstovi.toml`, koju `index.html` učitava uz `config.yml`. Tekstovi su složeni po stranicama (naslovna, kategorije, dnevnik, stranica proizvoda, košarica, izbornik i podnožje) i spremaju se u `sadrzaj/tekstovi/<jezik>/*.json`. Tekst odande ima prednost pred `jezici/<jezik>.toml`; prazan ili neispravan (npr. bez `{sorta}`) gradnja zamijeni onim iz `jezici/` uz upozorenje u logu. Stranice (dostava i plaćanje, uvjeti kupnje, privatnost, kontakt, odustanak) su `sadrzaj/stranice/<kod>/*.json`, s naslovom i tekstom.
+
+Tekstovi blagajne, zahvale, mailova i grešaka nisu u CMS-u, jer ih iscrtava i server iz svoje kopije repoa. Izbornik i podnožje na stranicama servera (zahvala, potvrda odustanka) promijene se tek nakon `git pull` i restarta na serveru (§4).
 
 ## 3. Mail
 
@@ -121,4 +125,4 @@ Pošiljka nastaje klikom na link u mailu trgovini, pa na gumb (W19); ponovni kli
 
 ## Nova država
 
-Bez promjene koda (SPEC §10): `drzave/<kod>.toml`, `jezici/<jezik>.toml` (test javi ključ koji fali), `sadrzaj/stranice/<kod>/*.md`, jezik u `locales` u `static/admin/config.yml`. Izbornik država i `hreflang` pojave se sami.
+Bez promjene koda (SPEC §10): `drzave/<kod>.toml`, `jezici/<jezik>.toml` (test javi ključ koji fali), `sadrzaj/stranice/<kod>/*.json` i njihove datoteke u zbirci Stranice (`static/admin/tekstovi.toml`), jezik u `locales` u `static/admin/config.yml`. Tekst novog jezika koji nije upisan u CMS-u dolazi iz `jezici/<jezik>.toml`. Izbornik država i `hreflang` pojave se sami.

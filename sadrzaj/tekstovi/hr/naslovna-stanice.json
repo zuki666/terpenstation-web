@@ -1,0 +1,26 @@
+{
+  "naslovna": {
+    "stanice": {
+      "tlo": {
+        "naslov": "Živo tlo",
+        "tekst": "Mlade biljke rastu u gredicama živog tla, pod malčem."
+      },
+      "cvat": {
+        "naslov": "Cvjetanje",
+        "tekst": "Dok biljke cvjetaju, grane drže mreže."
+      },
+      "krosnja": {
+        "naslov": "Krošnja",
+        "tekst": "Cijela krošnja raste pod LED svjetlom."
+      },
+      "analiza": {
+        "naslov": "Analiza",
+        "tekst": "Laboratorij izmjeri CBG i THC svake šarže; analiza u PDF-u je na stranici proizvoda."
+      },
+      "dostava": {
+        "naslov": "Paketomat",
+        "tekst": "Šaljemo BOX NOW paketomatom ili GLS-om na adresu; plaćate pri preuzimanju."
+      }
+    }
+  }
+}

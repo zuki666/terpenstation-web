@@ -1,5 +1,7 @@
 # Svi tekstovi sučelja, mailova i grešaka za hrvatski. Novi jezik je kopija ove datoteke
 # s istim ključevima (test provjerava da nijedan ne fali). {broj}, {iznos}… se ne prevode.
+# Dio tekstova (naslovna, kategorije, dnevnik, proizvod, košarica, izbornik, podnožje) uređuje
+# se u CMS-u, u sadrzaj/tekstovi/hr/; tekst odande ima prednost, a ovaj je zamjena (W42).
 
 [oblik]
 decimalni_znak = ","

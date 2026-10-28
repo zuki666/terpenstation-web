@@ -1,0 +1,17 @@
+{
+  "kategorije": {
+    "cvijet": "Cvijet",
+    "pribor": "Pribor",
+    "ulje": "Ulje"
+  },
+  "kategorije_naslov": {
+    "cvijet": "CBG cvijet",
+    "pribor": "Papirići i grinderi",
+    "ulje": "CBD ulje"
+  },
+  "kategorije_opis": {
+    "cvijet": "Indoor CBG cvijet iz Zagreba, uzgojen u živom tlu, s laboratorijskom analizom šarže.",
+    "pribor": "Papirići, grinderi i ostali pribor.",
+    "ulje": "CBD ulja od organski uzgojene konoplje."
+  }
+}

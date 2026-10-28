@@ -1,0 +1,22 @@
+{
+  "naslovna": {
+    "cinjenice": [
+      {
+        "oznaka": "Analiza",
+        "tekst": "Laboratorijska analiza svake šarže"
+      },
+      {
+        "oznaka": "Uzgoj",
+        "tekst": "Zagreb, u živom tlu"
+      },
+      {
+        "oznaka": "Dostava",
+        "tekst": "BOX NOW paketomat ili GLS"
+      },
+      {
+        "oznaka": "Plaćanje",
+        "tekst": "Pouzeće, pri preuzimanju paketa"
+      }
+    ]
+  }
+}
