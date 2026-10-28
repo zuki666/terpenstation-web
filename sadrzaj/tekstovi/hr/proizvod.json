@@ -1,0 +1,16 @@
+{
+  "proizvod": {
+    "pakiranje": "Pakiranje",
+    "kolicina": "Količina",
+    "dodaj": "Dodaj u košaricu",
+    "rok_slanja": "",
+    "dodano": "Dodano u košaricu.",
+    "u_kosaricu": "Otvori košaricu",
+    "pdv_ukljucen": "Cijene uključuju PDV.",
+    "besplatna_od": "Besplatna dostava od {iznos}.",
+    "analiza_naslov": "Analiza šarže",
+    "analiza_pdf": "Laboratorijska analiza (PDF)",
+    "opis": "Opis",
+    "bez_slike": "Slika uskoro"
+  }
+}

@@ -180,7 +180,10 @@ class Gradnja:
                         "stranica.html",
                         f"{tekstovi[kljuc]['naslov']} · {naziv}",
                         tekstovi[kljuc]["opis"],
-                        {"tekst_html": tekstovi[kljuc]["html"]},
+                        {
+                            "naslov_teksta": tekstovi[kljuc]["naslov"],
+                            "tekst_html": tekstovi[kljuc]["html"],
+                        },
                     )
                 )
         dnevnik_stranice = stranice_dnevnika.stranice(plan.zapisi, self._okvir(plan))

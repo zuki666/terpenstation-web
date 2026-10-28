@@ -1,0 +1,35 @@
+{
+  "dnevnik": {
+    "nadnaslov": "Iz uzgajaonice · Zagreb",
+    "naslov": "Dnevnik uzgoja",
+    "uvod": "Snimke iz naše uzgajaonice, od živog tla do staklenke. Nove stižu same s Instagrama.",
+    "zadnji": "Zadnji zapis",
+    "noviji": "Noviji zapisi",
+    "stariji": "Stariji zapisi",
+    "objava": "Objava na Instagramu",
+    "ova_sorta": "Ova sorta u trgovini",
+    "u_trgovinu": "U trgovinu",
+    "prethodni": "Prethodni zapis",
+    "sljedeci": "Sljedeći zapis",
+    "svi": "Svi zapisi",
+    "video": "Video",
+    "instagram": "Instagram",
+    "naslovna_nadnaslov": "Iz uzgajaonice",
+    "cijeli_dnevnik": "Cijeli dnevnik",
+    "kako_je_rasla": "Kako je rasla",
+    "iz_dnevnika": "Iz dnevnika",
+    "cijeli_put": "Cijeli put sorte {sorta}",
+    "sorta_uvod": "Snimke uzgoja sorte {sorta}, od živog tla do staklenke.",
+    "naslov_stranice": "Dnevnik uzgoja CBG cvijeta",
+    "opis": "Snimke iz naše uzgajaonice u Zagrebu: CBG cvijet od živog tla do staklenke.",
+    "sorta_naslov": "{sorta} · Dnevnik uzgoja"
+  },
+  "faze": {
+    "tlo": "Živo tlo",
+    "vegetacija": "Vegetacija",
+    "cvjetanje": "Cvjetanje",
+    "berba": "Berba",
+    "susenje": "Sušenje",
+    "analiza": "Analiza"
+  }
+}

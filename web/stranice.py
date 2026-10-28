@@ -1,4 +1,4 @@
-"""Pravne stranice iz sadrzaj/stranice/<država>/<ključ>.md i Markdown u HTML."""
+"""Pravne stranice iz CMS-a (sadrzaj/stranice/<država>/<ključ>.json) i Markdown u HTML."""
 
 import re
 from pathlib import Path
@@ -6,6 +6,7 @@ from pathlib import Path
 import markdown
 
 from web.predlosci import put_stranice
+from web.proizvodi import tekst_polja, ucitaj_sirove
 
 
 def u_html(tekst: str) -> str:
@@ -24,14 +25,15 @@ def _opis(tekst: str) -> str:
 
 
 def ucitaj(mapa: Path) -> dict[str, dict]:
+    """Naslov, tekst u HTML-u i opis za Google; naslov ide u <h1> preko predloška."""
     stranice = {}
-    for put in sorted(mapa.glob("*.md")):
-        tekst = put.read_text(encoding="utf-8")
-        naslov = next(
-            (redak[2:].strip() for redak in tekst.splitlines() if redak.startswith("# ")),
-            put.stem,
-        )
-        stranice[put.stem] = {"naslov": naslov, "html": u_html(tekst), "opis": _opis(tekst)}
+    for kljuc, podaci in ucitaj_sirove(mapa, "tekst stranice"):
+        tekst = tekst_polja(podaci, "tekst")
+        stranice[kljuc] = {
+            "naslov": tekst_polja(podaci, "naslov") or kljuc,
+            "html": u_html(tekst),
+            "opis": _opis(tekst),
+        }
     return stranice
 
 

@@ -1,0 +1,13 @@
+{
+  "kosarica": {
+    "naslov": "Košarica",
+    "prazna": "Košarica je prazna.",
+    "u_trgovinu": "Pogledaj ponudu",
+    "kolicina": "Količina",
+    "ukloni": "Ukloni",
+    "meduzbroj": "Međuzbroj",
+    "dostava_napomena": "Dostava i način plaćanja biraju se na blagajni.",
+    "na_blagajnu": "Na blagajnu",
+    "nastavi": "Nastavi kupnju"
+  }
+}

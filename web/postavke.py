@@ -4,6 +4,8 @@ import os
 import tomllib
 from pathlib import Path
 
+from web import tekstovi
+
 KORIJEN = Path(__file__).resolve().parent.parent
 
 
@@ -39,7 +41,9 @@ def ucitaj_drzave(korijen: Path = KORIJEN) -> list[dict]:
 
 
 def ucitaj_jezik(kod: str, korijen: Path = KORIJEN) -> dict:
-    return ucitaj_toml(korijen / "jezici" / f"{kod}.toml")
+    """Tekstovi jezika; oni iz CMS-a imaju prednost, a jezici/ je zamjena kad tamo fale."""
+    jezik = ucitaj_toml(korijen / "jezici" / f"{kod}.toml")
+    return tekstovi.ucitaj(jezik, korijen / "sadrzaj" / "tekstovi" / kod)
 
 
 def drzava_po_kodu(drzave: list[dict], kod: str) -> dict | None:

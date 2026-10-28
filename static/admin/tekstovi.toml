@@ -1,0 +1,372 @@
+# Zbirke „Tekstovi” i „Stranice” u Sveltia CMS-u (W42). index.html je učitava uz config.yml, a
+# Sveltia ih spoji u jednu postavku. TOML, a ne YAML, jer ga testovi čitaju bez novog paketa:
+# svako polje mora postojati u jezici/hr.toml (testovi/test_tekstovi.py).
+#
+# Tekstovi blagajne, zahvale, mailova i grešaka nisu ovdje: njih iscrtava i server iz svoje
+# kopije repoa, pa bi izmjena iz CMS-a na webu vrijedila odmah, a u mailu tek nakon git pull.
+# Polje s {sorta} ili {iznos} ima pattern, jer gradnja tekst bez toga odbije i ostavi stari.
+
+[[collections]]
+name = "tekstovi"
+label = "Tekstovi"
+label_singular = "Tekst"
+description = "Tekstovi na webu, po stranicama. Spremljena izmjena je na sajtu za oko 3 minute."
+format = "json"
+i18n = true
+editor = { preview = false }
+
+[[collections.files]]
+name = "naslovna"
+label = "Naslovna"
+file = "sadrzaj/tekstovi/{{locale}}/naslovna.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "naslovna"
+label = "Naslovna"
+widget = "object"
+i18n = true
+fields = [
+  { name = "nadnaslov", label = "Nadnaslov", widget = "string", i18n = true, hint = "Mali natpis iznad TERPEN STATION, na vrhu stranice." },
+  { name = "uvod", label = "Uvod", widget = "text", i18n = true, hint = "Odlomak ispod TERPEN STATION." },
+  { name = "u_trgovinu", label = "Gumb u trgovinu", widget = "string", i18n = true, hint = "Prvi gumb ispod uvoda." },
+  { name = "kako_raste", label = "Gumb do uzgoja", widget = "string", i18n = true, hint = "Drugi gumb ispod uvoda; vodi niže, na stanice od tla do paketa." },
+  { name = "polasci", label = "Ploča: naslov", widget = "string", i18n = true, hint = "Ploča s proizvodima uz uvod, kao ploča polazaka na kolodvoru." },
+  { name = "polasci_opis", label = "Ploča: podnaslov", widget = "string", i18n = true },
+  { name = "mjesto", label = "Ploča: mjesto uz sat", widget = "string", i18n = true },
+  { name = "dostupno", label = "Ploča: status u retku", widget = "string", i18n = true, hint = "Desno u svakom retku ploče." },
+  { name = "ponuda_nadnaslov", label = "Ponuda: nadnaslov", widget = "string", i18n = true, hint = "Iznad popisa proizvoda." },
+  { name = "istaknuto", label = "Ponuda: naslov", widget = "string", i18n = true },
+  { name = "izbliza_nadnaslov", label = "Izbliza: nadnaslov", widget = "string", i18n = true, hint = "Odjeljak sa snimkom i dvije fotke cvijeta." },
+  { name = "izbliza_naslov", label = "Izbliza: naslov", widget = "string", i18n = true },
+  { name = "izbliza_tekst", label = "Izbliza: tekst", widget = "text", i18n = true },
+  { name = "linija_nadnaslov", label = "Stanice: nadnaslov", widget = "string", i18n = true, hint = "Odjeljak s pet stanica od tla do paketa; same stanice su u „Naslovna: stanice”." },
+  { name = "linija_naslov", label = "Stanice: naslov", widget = "string", i18n = true },
+  { name = "linija_uvod", label = "Stanice: uvod", widget = "text", i18n = true },
+  { name = "naslov_stranice", label = "Naslov za Google", widget = "string", i18n = true, hint = "Naslov naslovne u Googleu i na kartici preglednika." },
+  { name = "opis", label = "Opis za Google", widget = "text", i18n = true, hint = "Opis naslovne u Googleu i u pregledu linka (WhatsApp, Instagram); najbolje do 160 znakova." },
+]
+
+[[collections.files]]
+name = "naslovna-vozni-red"
+label = "Naslovna: vozni red"
+file = "sadrzaj/tekstovi/{{locale}}/naslovna-vozni-red.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "naslovna"
+label = "Naslovna"
+widget = "object"
+i18n = true
+
+[[collections.files.fields.fields]]
+name = "cinjenice"
+label = "Vozni red"
+label_singular = "redak"
+widget = "list"
+i18n = true
+min = 2
+max = 8
+summary = "{{oznaka}} · {{tekst}}"
+hint = "Retci ispod uvoda: oznaka lijevo, tekst desno. Na mobitelu idu dva u red, na računalu četiri, pa najbolje izgleda 4 ili 8 redaka."
+fields = [
+  { name = "oznaka", label = "Oznaka", widget = "string", i18n = true, hint = "Kratko, npr. Analiza." },
+  { name = "tekst", label = "Tekst", widget = "string", i18n = true },
+]
+
+[[collections.files]]
+name = "naslovna-stanice"
+label = "Naslovna: stanice"
+file = "sadrzaj/tekstovi/{{locale}}/naslovna-stanice.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "naslovna"
+label = "Naslovna"
+widget = "object"
+i18n = true
+
+[[collections.files.fields.fields]]
+name = "stanice"
+label = "Stanice od tla do paketa"
+widget = "object"
+i18n = true
+hint = "Idu redom: uz prve tri je snimka, uz četvrtu analiza sorte, uz petu cijena dostave."
+
+[[collections.files.fields.fields.fields]]
+name = "tlo"
+label = "1. stanica (snimka tla)"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "tekst", label = "Tekst", widget = "text", i18n = true },
+]
+
+[[collections.files.fields.fields.fields]]
+name = "cvat"
+label = "2. stanica (snimka mreža u cvatu)"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "tekst", label = "Tekst", widget = "text", i18n = true },
+]
+
+[[collections.files.fields.fields.fields]]
+name = "krosnja"
+label = "3. stanica (snimka krošnje)"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "tekst", label = "Tekst", widget = "text", i18n = true },
+]
+
+[[collections.files.fields.fields.fields]]
+name = "analiza"
+label = "4. stanica (analiza)"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "tekst", label = "Tekst", widget = "text", i18n = true },
+]
+
+[[collections.files.fields.fields.fields]]
+name = "dostava"
+label = "5. stanica (dostava)"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "tekst", label = "Tekst", widget = "text", i18n = true },
+]
+
+[[collections.files]]
+name = "kategorije"
+label = "Kategorije"
+file = "sadrzaj/tekstovi/{{locale}}/kategorije.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "kategorije"
+label = "Nazivi"
+widget = "object"
+i18n = true
+hint = "Kratki nazivi u izborniku, u podnožju i na karticama proizvoda."
+fields = [
+  { name = "cvijet", label = "Cvijet", widget = "string", i18n = true },
+  { name = "pribor", label = "Pribor", widget = "string", i18n = true },
+  { name = "ulje", label = "Ulje", widget = "string", i18n = true },
+]
+
+[[collections.files.fields]]
+name = "kategorije_naslov"
+label = "Naslovi"
+widget = "object"
+i18n = true
+hint = "Naslov stranice kategorije u Googleu i na kartici preglednika."
+fields = [
+  { name = "cvijet", label = "Cvijet", widget = "string", i18n = true },
+  { name = "pribor", label = "Pribor", widget = "string", i18n = true },
+  { name = "ulje", label = "Ulje", widget = "string", i18n = true },
+]
+
+[[collections.files.fields]]
+name = "kategorije_opis"
+label = "Opisi"
+widget = "object"
+i18n = true
+hint = "Ispod naslova na stranici kategorije i u Googleu."
+fields = [
+  { name = "cvijet", label = "Cvijet", widget = "text", i18n = true },
+  { name = "pribor", label = "Pribor", widget = "text", i18n = true },
+  { name = "ulje", label = "Ulje", widget = "text", i18n = true },
+]
+
+[[collections.files]]
+name = "dnevnik"
+label = "Dnevnik uzgoja"
+file = "sadrzaj/tekstovi/{{locale}}/dnevnik.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "dnevnik"
+label = "Dnevnik uzgoja"
+widget = "object"
+i18n = true
+fields = [
+  { name = "nadnaslov", label = "Nadnaslov", widget = "string", i18n = true, hint = "Iznad naslova, na vrhu dnevnika." },
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true, hint = "Na vrhu dnevnika, iznad zapisa na naslovnoj i u poveznicama natrag na dnevnik." },
+  { name = "uvod", label = "Uvod", widget = "text", i18n = true, hint = "Ispod naslova dnevnika i iznad zapisa na naslovnoj." },
+  { name = "zadnji", label = "Natpis uz zadnji zapis", widget = "string", i18n = true, hint = "Na vrhu dnevnika, uz datum zadnjeg zapisa." },
+  { name = "noviji", label = "Gumb: noviji zapisi", widget = "string", i18n = true, hint = "Na dnu dnevnika, kad zapisa ima više nego stane na jednu stranicu." },
+  { name = "stariji", label = "Gumb: stariji zapisi", widget = "string", i18n = true },
+  { name = "objava", label = "Gumb na Instagram", widget = "string", i18n = true, hint = "Na zapisu s linkom na objavu." },
+  { name = "ova_sorta", label = "Okvir sa sortom: naslov", widget = "string", i18n = true, hint = "Na zapisu uz koji je odabrana sorta." },
+  { name = "u_trgovinu", label = "Okvir sa sortom: poveznica", widget = "string", i18n = true },
+  { name = "prethodni", label = "Prethodni zapis", widget = "string", i18n = true, hint = "Na dnu zapisa." },
+  { name = "sljedeci", label = "Sljedeći zapis", widget = "string", i18n = true, hint = "Na dnu zapisa." },
+  { name = "svi", label = "Svi zapisi", widget = "string", i18n = true, hint = "Na dnu zapisa, uz broj zapisa." },
+  { name = "video", label = "Oznaka videa", widget = "string", i18n = true, hint = "Na slici zapisa s videom, kad trajanje nije upisano." },
+  { name = "instagram", label = "Oznaka videa s Instagrama", widget = "string", i18n = true, hint = "Na slici zapisa čiji je video samo na Instagramu." },
+  { name = "naslovna_nadnaslov", label = "Naslovna: nadnaslov", widget = "string", i18n = true, hint = "Iznad zapisa na naslovnoj." },
+  { name = "cijeli_dnevnik", label = "Naslovna: gumb", widget = "string", i18n = true, hint = "Ispod zapisa na naslovnoj; vodi na dnevnik." },
+  { name = "kako_je_rasla", label = "Proizvod: nadnaslov", widget = "string", i18n = true, hint = "Iznad zapisa na stranici proizvoda." },
+  { name = "iz_dnevnika", label = "Proizvod: naslov", widget = "string", i18n = true },
+  { name = "cijeli_put", label = "Proizvod: poveznica", widget = "string", i18n = true, hint = "Ispod zapisa na stranici proizvoda. {sorta} se zamijeni nazivom sorte i mora ostati u tekstu.", pattern = ['^[^{}]*\{sorta\}[^{}]*$', "Tekst mora imati {sorta}, jednom, bez drugih vitičastih zagrada."] },
+  { name = "sorta_uvod", label = "Stranica sorte: uvod", widget = "text", i18n = true, hint = "Ispod naslova na stranici jedne sorte. {sorta} se zamijeni nazivom sorte i mora ostati u tekstu.", pattern = ['^[^{}]*\{sorta\}[^{}]*$', "Tekst mora imati {sorta}, jednom, bez drugih vitičastih zagrada."] },
+  { name = "naslov_stranice", label = "Naslov za Google", widget = "string", i18n = true, hint = "Naslov dnevnika u Googleu i na kartici preglednika." },
+  { name = "opis", label = "Opis za Google", widget = "text", i18n = true, hint = "Opis dnevnika u Googleu i u pregledu linka; najbolje do 160 znakova." },
+  { name = "sorta_naslov", label = "Stranica sorte: naslov za Google", widget = "string", i18n = true, hint = "{sorta} se zamijeni nazivom sorte i mora ostati u tekstu.", pattern = ['^[^{}]*\{sorta\}[^{}]*$', "Tekst mora imati {sorta}, jednom, bez drugih vitičastih zagrada."] },
+]
+
+[[collections.files.fields]]
+name = "faze"
+label = "Faze uzgoja"
+widget = "object"
+i18n = true
+hint = "Nazivi faza na zapisima dnevnika."
+fields = [
+  { name = "tlo", label = "Tlo", widget = "string", i18n = true },
+  { name = "vegetacija", label = "Vegetacija", widget = "string", i18n = true },
+  { name = "cvjetanje", label = "Cvjetanje", widget = "string", i18n = true },
+  { name = "berba", label = "Berba", widget = "string", i18n = true },
+  { name = "susenje", label = "Sušenje", widget = "string", i18n = true },
+  { name = "analiza", label = "Analiza", widget = "string", i18n = true },
+]
+
+[[collections.files]]
+name = "proizvod"
+label = "Stranica proizvoda"
+file = "sadrzaj/tekstovi/{{locale}}/proizvod.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "proizvod"
+label = "Stranica proizvoda"
+widget = "object"
+i18n = true
+hint = "Isti tekstovi za sve proizvode; naziv, opis i cijene svakog proizvoda su u zbirci Proizvodi."
+fields = [
+  { name = "pakiranje", label = "Naslov pakiranja", widget = "string", i18n = true, hint = "Iznad izbora pakiranja (1 g, 3 g…)." },
+  { name = "kolicina", label = "Količina", widget = "string", i18n = true, hint = "Uz polje za količinu." },
+  { name = "dodaj", label = "Gumb za košaricu", widget = "string", i18n = true },
+  { name = "rok_slanja", label = "Rok slanja", widget = "string", i18n = true, required = false, hint = "U redu ispod gumba, npr. Šaljemo isti ili idući radni dan. Prazno se ne prikazuje." },
+  { name = "dodano", label = "Poruka nakon dodavanja", widget = "string", i18n = true, hint = "Kad kupac doda proizvod u košaricu." },
+  { name = "u_kosaricu", label = "Poveznica u poruci", widget = "string", i18n = true, hint = "Uz poruku nakon dodavanja; vodi u košaricu." },
+  { name = "pdv_ukljucen", label = "Napomena o PDV-u", widget = "string", i18n = true, hint = "Ispod gumba." },
+  { name = "besplatna_od", label = "Besplatna dostava", widget = "string", i18n = true, hint = "Uz napomenu o PDV-u, kad je upisan prag besplatne dostave. {iznos} se zamijeni pragom i mora ostati u tekstu.", pattern = ['^[^{}]*\{iznos\}[^{}]*$', "Tekst mora imati {iznos}, jednom, bez drugih vitičastih zagrada."] },
+  { name = "analiza_naslov", label = "Naslov analize", widget = "string", i18n = true, hint = "Iznad CBG-a, THC-a i šarže." },
+  { name = "analiza_pdf", label = "Poveznica na analizu", widget = "string", i18n = true, hint = "Vodi na PDF analize." },
+  { name = "opis", label = "Naslov opisa", widget = "string", i18n = true, hint = "Iznad opisa proizvoda." },
+  { name = "bez_slike", label = "Bez slike", widget = "string", i18n = true, hint = "Umjesto slike, dok je proizvod nema." },
+]
+
+[[collections.files]]
+name = "kosarica"
+label = "Košarica"
+file = "sadrzaj/tekstovi/{{locale}}/kosarica.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "kosarica"
+label = "Košarica"
+widget = "object"
+i18n = true
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", i18n = true },
+  { name = "prazna", label = "Prazna košarica", widget = "string", i18n = true, hint = "Kad u košarici nema ničega." },
+  { name = "u_trgovinu", label = "Gumb u trgovinu", widget = "string", i18n = true, hint = "Uz praznu košaricu, i na blagajni kad je košarica prazna." },
+  { name = "kolicina", label = "Količina", widget = "string", i18n = true },
+  { name = "ukloni", label = "Gumb za brisanje", widget = "string", i18n = true, hint = "Uz svaku stavku." },
+  { name = "meduzbroj", label = "Međuzbroj", widget = "string", i18n = true },
+  { name = "dostava_napomena", label = "Napomena o dostavi", widget = "string", i18n = true, hint = "Ispod međuzbroja; uz nju se sama doda najniža cijena dostave." },
+  { name = "na_blagajnu", label = "Gumb na blagajnu", widget = "string", i18n = true },
+  { name = "nastavi", label = "Nastavi kupnju", widget = "string", i18n = true },
+]
+
+[[collections.files]]
+name = "izbornik-i-podnozje"
+label = "Izbornik i podnožje"
+file = "sadrzaj/tekstovi/{{locale}}/izbornik-i-podnozje.json"
+i18n = true
+
+[[collections.files.fields]]
+name = "izbornik"
+label = "Izbornik"
+widget = "object"
+i18n = true
+fields = [
+  { name = "kosarica", label = "Košarica", widget = "string", i18n = true, hint = "Gore desno, uz broj stavki." },
+  { name = "dnevnik", label = "Dnevnik", widget = "string", i18n = true, hint = "U izborniku, uz kategorije." },
+]
+
+[[collections.files.fields]]
+name = "podnozje"
+label = "Podnožje"
+widget = "object"
+i18n = true
+fields = [
+  { name = "trgovina", label = "Stupac s kategorijama", widget = "string", i18n = true },
+  { name = "kupnja", label = "Stupac sa stranicama", widget = "string", i18n = true, hint = "Iznad poveznica na dostavu, uvjete, privatnost i kontakt." },
+  { name = "kontakt", label = "Stupac s kontaktom", widget = "string", i18n = true },
+  { name = "dnevnik", label = "Poveznica na dnevnik", widget = "string", i18n = true },
+  { name = "wholesale", label = "Poveznica na wholesale", widget = "string", i18n = true, hint = "U podnožju i gore u zaglavlju." },
+  { name = "bez_kolacica", label = "Rečenica o kolačićima", widget = "text", i18n = true, hint = "Na dnu svake stranice. Neka ostane točna: stranica nema kolačiće, a posjete broji Cloudflare Web Analytics." },
+]
+
+# Stranice su po državi, ne po jeziku (DE i AT dijele jezik, a ne uvjete), pa su bez i18n.
+[[collections]]
+name = "stranice"
+label = "Stranice"
+label_singular = "Stranica"
+description = "Dostava i plaćanje, uvjeti kupnje, privatnost, kontakt i odustanak. Spremljena izmjena je na sajtu za oko 3 minute."
+format = "json"
+editor = { preview = false }
+
+[[collections.files]]
+name = "dostava_i_placanje"
+label = "Dostava i plaćanje"
+file = "sadrzaj/stranice/hr/dostava_i_placanje.json"
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", hint = "Na vrhu stranice, u podnožju i u Googleu." },
+  { name = "tekst", label = "Tekst", widget = "markdown", hint = "Naslov iznad je već na vrhu stranice; podnaslovi u tekstu idu kao Naslov 2." },
+]
+
+[[collections.files]]
+name = "uvjeti_kupnje"
+label = "Uvjeti kupnje"
+file = "sadrzaj/stranice/hr/uvjeti_kupnje.json"
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", hint = "Na vrhu stranice, u podnožju i u Googleu." },
+  { name = "tekst", label = "Tekst", widget = "markdown", hint = "Naslov iznad je već na vrhu stranice; podnaslovi u tekstu idu kao Naslov 2." },
+]
+
+[[collections.files]]
+name = "privatnost"
+label = "Privatnost"
+file = "sadrzaj/stranice/hr/privatnost.json"
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", hint = "Na vrhu stranice, u podnožju i u Googleu." },
+  { name = "tekst", label = "Tekst", widget = "markdown", hint = "Naslov iznad je već na vrhu stranice; podnaslovi u tekstu idu kao Naslov 2." },
+]
+
+[[collections.files]]
+name = "kontakt"
+label = "Kontakt"
+file = "sadrzaj/stranice/hr/kontakt.json"
+fields = [
+  { name = "naslov", label = "Naslov", widget = "string", hint = "Na vrhu stranice, u podnožju i u Googleu." },
+  { name = "tekst", label = "Tekst", widget = "markdown", hint = "Naslov iznad je već na vrhu stranice; podnaslovi u tekstu idu kao Naslov 2." },
+]
+
+# Naslov i obrazac odustanka su iz jezici/ ([odustanak]), jer ih iscrtava i server.
+[[collections.files]]
+name = "odustanak"
+label = "Odustanak od ugovora"
+file = "sadrzaj/stranice/hr/odustanak.json"
+fields = [
+  { name = "tekst", label = "Tekst", widget = "markdown", hint = "Iznad gumba „Odustani od ugovora”; naslov i obrazac se ovdje ne mijenjaju." },
+]
